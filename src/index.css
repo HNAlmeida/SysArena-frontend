@@ -1,2 +1,71 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark,
+    sunset,
+    night,
+    dim --prefersdark;
+  root: ":root";
+  include:;
+  exclude:;
+  prefix:;
+  logs: false;
+}
+@theme {
+  --font-sans: InterVariable, sans-serif;
+  --font-sans--font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* #root {
+  max-width: 1280px;
+  --background: #ffffff;
+  --foreground: #171717;
+} */
+
+/* @media (prefers-color-scheme: dark) {
+  #root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+@layer utilities {
+  .boxed {
+    @apply mx-auto w-full lg:max-w-5xl xl:max-w-7xl;
+    @apply px-7 xl:px-0;
+  }
+  .ml-on-hover-not-checked:hover:not(.peer-checked) {
+    margin-left: 1rem;
+  }
+}
+
+@layer components {
+  .botao {
+    @apply bg-blue-500 text-white;
+    @apply rounded-md px-4 py-2;
+  }
+  .botao.vermelho {
+    @apply bg-red-500;
+  }
+}
+
+.submenu {
+  /* margin-left: -1px; */ /* cola o submenu no botão pai */
+}
+
+#d-menus-sidebar {
+  .menu {
+    & :where(li > details > summary),
+    & :where(li > .menu-dropdown-toggle) {
+      &::after {
+        position: absolute;
+      }
+    }
+  }
+}
+
+summary .tooltip.tooltip-right::after,
+summary .tooltip.tooltip-right::before {
+  transform: translate(calc(0.25rem + 15px), -50%) !important;
+}
