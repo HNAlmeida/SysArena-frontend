@@ -55,8 +55,8 @@ export default function DrawerSidebarDaisy() {
         <footer className="footer items-center bg-neutral p-3 text-neutral-content sm:footer-horizontal">
           <aside className="grid-flow-col items-center">
             <svg
-              width="36"
-              height="36"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
               fillRule="evenodd"
@@ -143,10 +143,13 @@ export default function DrawerSidebarDaisy() {
           </nav>
 
           {/* BOTÃO DE COLAPSAR */}
-          <div className="border-t border-base-300 p-2">
+          <div
+            className={`tooltip tooltip-right border-t border-base-300 ${collapsed ? "p-2 text-center" : "px-3 py-2"}`}
+            data-tip={collapsed ? "Expandir sidebar" : undefined}
+          >
             <button
               className="tooltip btn tooltip-right btn-circle btn-ghost"
-              data-tip={collapsed ? "Expandir sidebar" : "Recolher sidebar"}
+              data-tip={collapsed ? undefined : "Recolher sidebar"}
               onClick={toggleSidebar}
               aria-label={collapsed ? "Expandir sidebar" : "Recolher sidebar"}
               aria-expanded={!collapsed}
