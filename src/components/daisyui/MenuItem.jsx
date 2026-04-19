@@ -34,7 +34,7 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
       <li className={config.padding}>
         <details className={detailsGroup}>
           <summary
-            className={` ${collapsed ? `group py-0 pl-2 ${depth <= 1 ? "pr-0.5" : ""}` : ""} ${rotateSummaryArrow ? "[&::after]:translate-y-0 [&::after]:rotate-[135deg]" : ""} `}
+            className={`${collapsed ? `group py-0 pl-2 ${depth <= 1 ? "pr-0.5" : ""}` : ""} ${rotateSummaryArrow ? "[&::after]:translate-y-0 [&::after]:rotate-[135deg]" : ""}`}
           >
             <div
               className={`flex items-center gap-3 ${collapsed ? `py-1 ${depth === 0 ? "pl-2" : "px-1"}` : ""}`}

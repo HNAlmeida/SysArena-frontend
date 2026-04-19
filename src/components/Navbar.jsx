@@ -130,7 +130,7 @@ export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
           </div>
           <div
             tabIndex={0}
-            className="card-compact dropdown-content card z-1 mt-3 w-52 bg-base-100 shadow"
+            className="dropdown-content card z-1 mt-3 w-52 bg-base-100 shadow card-sm"
           >
             <div className="card-body">
               <span className="text-lg font-bold">8 Items</span>
