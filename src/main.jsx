@@ -5,15 +5,28 @@ import App from "./App.jsx";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import TaskPage from "./pages/TaskPage.jsx";
+import TasksPage from "./pages/TasksPage.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  {
-    path: "/task",
-    element: <TaskPage />,
+    children: [
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+        index: true,
+      },
+      {
+        path: "tasks",
+        element: <TasksPage />,
+      },
+      {
+        path: "tasks/:id",
+        element: <TaskPage />,
+      },
+    ],
   },
 ]);
 

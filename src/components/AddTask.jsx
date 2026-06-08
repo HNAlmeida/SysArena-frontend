@@ -5,7 +5,7 @@ function AddTask({ onAddTaskSubmit }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   return (
-    <div className="card card-border bg-base-100 shadow mb-5">
+    <div className="card mb-5 bg-base-100 shadow card-border">
       <div className="card-body">
         <Input
           type="text"
@@ -28,7 +28,7 @@ function AddTask({ onAddTaskSubmit }) {
             setTitle("");
             setDescription("");
           }}
-          className="btn btn-primary mt-3"
+          className="btn mt-3 btn-primary"
         >
           Adicionar
         </button>

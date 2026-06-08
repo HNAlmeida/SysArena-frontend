@@ -1,12 +1,45 @@
+import { useEffect, useState } from "react";
 import {
   PanelLeftOpen,
   PanelLeftClose,
   Search,
   ShoppingCart,
   SquareMenu,
+  Moon,
+  Sun,
 } from "lucide-react";
 
 export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    const htmlTheme = document.documentElement.dataset.theme;
+    const prefersDark = window.matchMedia?.(
+      "(prefers-color-scheme: dim)",
+    ).matches;
+    const theme = storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "pastel");
+    const darkMode = theme === "dim";
+    setIsDarkTheme(darkMode);
+
+    if (storedTheme || !htmlTheme) {
+      document.documentElement.setAttribute(
+        "data-theme",
+        darkMode ? "dim" : "pastel",
+      );
+    }
+  }, []);
+
+  const toggleTheme = (event) => {
+    const darkMode = event.target.checked;
+    setIsDarkTheme(darkMode);
+    document.documentElement.setAttribute(
+      "data-theme",
+      darkMode ? "dim" : "pastel",
+    );
+    localStorage.setItem("theme", darkMode ? "dim" : "pastel");
+  };
+
   const toggleSidebar = () => {
     if (isMobile) {
       // No mobile, apenas fecha o drawer
@@ -19,7 +52,7 @@ export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-sm sm:gap-1 md:gap-2">
+    <div className="navbar sticky top-0 z-10 border-b border-base-300 bg-base-100/95 px-4 shadow-md backdrop-blur sm:gap-1 md:gap-2">
       <div className="navbar-start">
         {/* Botão abre/fecha no mobile */}
         <label
@@ -116,6 +149,27 @@ export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
           className="input-bordered input hidden w-24 md:w-auto lg:block"
           aria-label="Campo de busca"
         />
+        <label
+          className="tooltip swap tooltip-bottom h-10 swap-rotate"
+          data-tip="Alternar tema claro/escuro"
+          aria-label="Alternar tema claro/escuro"
+        >
+          {/* this hidden checkbox controls the state */}
+          <input
+            type="checkbox"
+            checked={isDarkTheme}
+            onChange={toggleTheme}
+            aria-label={
+              isDarkTheme ? "Tema escuro ativado" : "Tema claro ativado"
+            }
+          />
+
+          {/* sun icon */}
+          <Sun className="swap-on" />
+
+          {/* moon icon */}
+          <Moon className="swap-off" />
+        </label>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}

@@ -4,6 +4,8 @@ import { Navbar } from "./Navbar";
 import { menus } from "../data/menus";
 import SidebarSection from "./daisyui/SidebarSection";
 import { useSidebar } from "../hooks/useSidebar";
+import Dashboard from "../pages/Dashboard";
+import { Outlet } from "react-router";
 
 export default function DrawerSidebarDaisy() {
   const { collapsed, setCollapsed, isMobile } = useSidebar();
@@ -34,22 +36,16 @@ export default function DrawerSidebarDaisy() {
       {/* CONTEÚDO */}
       <div className="drawer-content flex min-h-screen flex-col transition-all duration-300">
         {/* NAVBAR */}
-        <div className="sticky top-0 z-30">
-          <Navbar
-            collapsed={collapsed}
-            setCollapsed={setCollapsed}
-            drawerRef={drawerRef}
-            isMobile={isMobile}
-          />
-        </div>
+        <Navbar
+          collapsed={collapsed}
+          setCollapsed={setCollapsed}
+          drawerRef={drawerRef}
+          isMobile={isMobile}
+        />
 
         {/* CONTEÚDO PRINCIPAL */}
         <div className="flex-1 p-5">
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <p className="mt-2 text-gray-500">
-            A sidebar se adapta: compacta em md, expandida em xl e sempre
-            expandida no mobile.
-          </p>
+          <Outlet />
         </div>
 
         <footer className="footer items-center bg-neutral p-3 text-neutral-content sm:footer-horizontal">
@@ -106,7 +102,7 @@ export default function DrawerSidebarDaisy() {
       </div>
 
       {/* SIDEBAR */}
-      <div className="drawer-side overflow-visible">
+      <div className={`drawer-side ${collapsed && "overflow-visible"}`}>
         <label
           htmlFor="drawer-main"
           className="drawer-overlay"
@@ -114,16 +110,16 @@ export default function DrawerSidebarDaisy() {
         />
 
         <aside
-          className={`flex min-h-screen flex-col justify-between border-r border-base-300 bg-base-200 transition-all duration-300 ${collapsed ? "w-17" : "w-56"}`}
+          className={`flex min-h-full flex-col items-center gap-1.5 border-r border-base-300 bg-base-200 transition-all duration-300 ${collapsed ? "w-17" : "w-56"}`}
           role="navigation"
           aria-label="Main navigation"
         >
           {/* HEADER */}
           <div
-            className={`navbar sticky top-0 z-40 flex h-16 items-center bg-base-200 shadow-sm ${collapsed ? "justify-center" : ""}`}
+            className={`navbar sticky top-0 z-10 flex h-16 items-center bg-base-200 ${collapsed ? "justify-center" : ""}`}
           >
             <button
-              className={`btn w-full text-xl font-bold btn-ghost ${collapsed ? "" : "justify-start px-1.5"}`}
+              className={`btn w-full text-xl font-bold btn-ghost ${collapsed ? "" : "justify-start px-2.5"}`}
               aria-label={collapsed ? "SysArena" : undefined}
             >
               {collapsed ? "SA" : "SysArena"}
@@ -131,7 +127,7 @@ export default function DrawerSidebarDaisy() {
           </div>
 
           {/* MENU */}
-          <nav className="flex flex-1 flex-col py-2" id="d-menus-sidebar">
+          <nav className="flex w-full grow flex-col" id="d-menus-sidebar">
             {menus.map((section, idx) => (
               <SidebarSection
                 key={idx}
@@ -144,7 +140,7 @@ export default function DrawerSidebarDaisy() {
 
           {/* BOTÃO DE COLAPSAR */}
           <div
-            className={`tooltip tooltip-right border-t border-base-300 ${collapsed ? "p-2 text-center" : "px-3 py-2"}`}
+            className={`w-full border-t border-base-300 ${collapsed ? "tooltip tooltip-right p-2 text-center" : "px-3 py-2"}`}
             data-tip={collapsed ? "Expandir sidebar" : undefined}
           >
             <button

@@ -2,11 +2,11 @@ import MenuItem from "./MenuItem";
 
 export default function SidebarSection({ section, collapsed = false }) {
   return (
-    <ul className="sidebar-menu menu w-full py-0">
+    <ul className="sidebar-menu menu w-full gap-0.5 py-0">
       {section.title && (
         <li>
           <h2
-            className={`menu-title pb-1 ${collapsed ? "px-0 text-center" : "text-left"}`}
+            className={`menu-title pb-1 text-base-content/50 ${collapsed ? "px-0 text-center" : "text-left"}`}
           >
             {collapsed ? section.title.xs : section.title.sm}
           </h2>

@@ -1,6 +1,16 @@
 import { useMemo } from "react";
+import { useNavigate, useLocation } from "react-router";
 
 export default function MenuItem({ item, collapsed = false, depth = 0 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = useMemo(() => {
+    if (!item.path) return false;
+    if (location.pathname === item.path) return true;
+    return item.path !== "/" && location.pathname.startsWith(`${item.path}/`);
+  }, [item.path, location.pathname]);
+
   const config = useMemo(
     () => ({
       hasSubmenu: item.submenu?.length > 0,
@@ -32,12 +42,12 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
 
     return (
       <li className={config.padding}>
-        <details className={detailsGroup}>
+        <details className={`${detailsGroup} flex flex-col gap-0.5`}>
           <summary
-            className={`${collapsed ? `group py-0 pl-2 ${depth <= 1 ? "pr-0.5" : ""}` : ""} ${rotateSummaryArrow ? "[&::after]:translate-y-0 [&::after]:rotate-[135deg]" : ""}`}
+            className={`${collapsed ? `group py-0 pl-2 ${depth <= 1 ? "pr-0.75" : ""}` : ""} ${rotateSummaryArrow ? "[&::after]:translate-y-0 [&::after]:rotate-135" : ""}`}
           >
             <div
-              className={`flex items-center gap-3 ${collapsed ? `py-1 ${depth === 0 ? "pl-2" : "px-1"}` : ""}`}
+              className={`flex items-center gap-3 ${collapsed ? `py-1.25 ${depth === 0 ? "pl-2" : "px-1"}` : ""}`}
             >
               {Icon}
               {config.showText && <span>{item.name}</span>}
@@ -68,11 +78,19 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
     );
   }
 
+  const handleClick = (btn) => {
+    if (item.path) {
+      navigate(item.path);
+    }
+  };
+
   return (
-    <li className={collapsed ? `group ${config.padding}` : ""}>
+    <li className={`${collapsed ? `group ${config.padding}` : ""}`}>
       <button
-        className={`flex items-center gap-3 ${collapsed && depth === 0 ? "justify-center py-1.5" : ""}`}
+        className={`flex items-center gap-3 ${collapsed && depth === 0 ? "justify-center py-1.25" : ""} ${isActive ? "menu-active" : ""}`}
         aria-label={config.showTooltip ? item.name : undefined}
+        data-tip={config.showTooltip ? item.name : undefined}
+        onClick={(e) => handleClick(e.currentTarget)}
       >
         {Icon}
         {config.showText && <span>{item.name}</span>}
