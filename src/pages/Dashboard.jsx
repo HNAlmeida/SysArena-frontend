@@ -8,6 +8,8 @@ import {
   Activity,
   ArrowUpRight,
   ArrowDownLeft,
+  Heart,
+  Play,
 } from "lucide-react";
 
 function Dashboard() {
@@ -117,6 +119,88 @@ function Dashboard() {
       {/* Conteúdo Principal */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Atividades Recentes */}
+        {/* <ul className="list rounded-box border border-base-300 bg-base-100 shadow-lg lg:col-span-2">
+          <li className="p-4 pb-2">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold">Atividades Recentes</h2>
+                <p className="mt-1 text-sm text-base-content/60">
+                  Últimas atualizações do seu projeto
+                </p>
+              </div>
+              <button className="btn btn-ghost btn-sm">Ver tudo</button>
+            </div>
+          </li>
+
+          <li className="list-row transition hover:bg-base-200/50">
+            <div>
+              <div className="rounded-full bg-success/20 p-1.5">
+                <CheckCircle className="size-7 text-success" />
+              </div>
+            </div>
+            <div>
+              <div>Reunião de equipe agendada</div>
+              <div className="mt-1 text-sm text-base-content/60">
+                Novo comentário no documento
+              </div>
+              <div className="mt-2 text-xs text-base-content/40">
+                Há 2 horas
+              </div>
+            </div>
+            <button className="btn btn-square btn-ghost">
+              <Play className="size-4" />
+            </button>
+            <button className="btn btn-square btn-ghost">
+              <Heart className="size-4" />
+            </button>
+          </li>
+
+          <li className="list-row transition hover:bg-base-200/50">
+            <div>
+              <div className="rounded-full bg-info/20 p-1.5">
+                <Activity className="size-7 text-info" />
+              </div>
+            </div>
+            <div>
+              <div>Design revisado e pronto</div>
+              <div className="mt-1 text-sm text-base-content/60">
+                Atualização do projeto
+              </div>
+              <div className="mt-2 text-xs text-base-content/40">
+                Há 4 horas
+              </div>
+            </div>
+            <button className="btn btn-square btn-ghost">
+              <Play className="size-4" />
+            </button>
+            <button className="btn btn-square btn-ghost">
+              <Heart className="size-4" />
+            </button>
+          </li>
+
+          <li className="list-row transition hover:bg-base-200/50">
+            <div>
+              <div className="rounded-full bg-warning/20 p-1.5">
+                <Clock className="size-7 text-warning" />
+              </div>
+            </div>
+            <div>
+              <div>Deploy agendado para hoje</div>
+              <div className="mt-1 text-sm text-base-content/60">
+                Versão 2.1.0 pronta para produção
+              </div>
+              <div className="mt-2 text-xs text-base-content/40">
+                Há 6 horas
+              </div>
+            </div>
+            <button className="btn btn-square btn-ghost">
+              <Play className="size-4" />
+            </button>
+            <button className="btn btn-square btn-ghost">
+              <Heart className="size-4" />
+            </button>
+          </li>
+        </ul> */}
         <div className="card border border-base-300 bg-base-100 shadow-lg lg:col-span-2">
           <div className="card-body">
             <div className="flex items-center justify-between">
