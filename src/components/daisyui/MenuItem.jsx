@@ -99,7 +99,7 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
     );
   }
 
-  const handleClick = (btn) => {
+  const handleClick = () => {
     if (item.path) {
       navigate(item.path);
     }
@@ -111,7 +111,7 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
         className={`flex items-center gap-3 ${collapsed && depth === 0 ? "justify-center py-1.25" : ""} ${isActive ? "menu-active" : ""}`}
         aria-label={config.showTooltip ? item.name : undefined}
         data-tip={config.showTooltip ? item.name : undefined}
-        onClick={(e) => handleClick(e.currentTarget)}
+        onClick={handleClick}
       >
         {Icon}
         {config.showText && <span>{item.name}</span>}

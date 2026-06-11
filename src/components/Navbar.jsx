@@ -9,26 +9,25 @@ import {
   Sun,
 } from "lucide-react";
 
-export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
-
-  useEffect(() => {
+export function Navbar({ collapsed, setCollapsed, isMobile }) {
+  const getInitialDarkMode = () => {
     const storedTheme = localStorage.getItem("theme");
     const htmlTheme = document.documentElement.dataset.theme;
     const prefersDark = window.matchMedia?.(
       "(prefers-color-scheme: dim)",
     ).matches;
     const theme = storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "pastel");
-    const darkMode = theme === "dim";
-    setIsDarkTheme(darkMode);
+    return theme === "dim";
+  };
 
-    if (storedTheme || !htmlTheme) {
-      document.documentElement.setAttribute(
-        "data-theme",
-        darkMode ? "dim" : "pastel",
-      );
+  const [isDarkTheme, setIsDarkTheme] = useState(getInitialDarkMode);
+
+  useEffect(() => {
+    const theme = isDarkTheme ? "dim" : "pastel";
+    if (document.documentElement.dataset.theme !== theme) {
+      document.documentElement.setAttribute("data-theme", theme);
     }
-  }, []);
+  }, [isDarkTheme]);
 
   const toggleTheme = (event) => {
     const darkMode = event.target.checked;
@@ -40,11 +39,17 @@ export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
     localStorage.setItem("theme", darkMode ? "dim" : "pastel");
   };
 
+  const closeDrawer = () => {
+    const drawerInput = document.getElementById("drawer-main");
+    if (drawerInput) {
+      drawerInput.checked = false;
+    }
+  };
+
   const toggleSidebar = () => {
     if (isMobile) {
       // No mobile, apenas fecha o drawer
-      const drawerInput = drawerRef?.current;
-      if (drawerInput) drawerInput.checked = false;
+      closeDrawer();
     } else {
       // No desktop/tablet, alterna o estado de colapso
       setCollapsed(!collapsed);

@@ -1,6 +1,6 @@
 function Button(props) {
   return (
-    <button className="btn btn-soft btn-outline" {...props}>
+    <button className="btn btn-outline btn-soft" {...props}>
       {props.children}
     </button>
   );
