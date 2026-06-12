@@ -1,17 +1,55 @@
+import { useEffect, useState } from "react";
 import {
   PanelLeftOpen,
   PanelLeftClose,
   Search,
   ShoppingCart,
   SquareMenu,
+  Moon,
+  Sun,
 } from "lucide-react";
 
-export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
+export function Navbar({ collapsed, setCollapsed, isMobile }) {
+  const getInitialDarkMode = () => {
+    const storedTheme = localStorage.getItem("theme");
+    const htmlTheme = document.documentElement.dataset.theme;
+    const prefersDark = window.matchMedia?.(
+      "(prefers-color-scheme: dim)",
+    ).matches;
+    const theme = storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "pastel");
+    return theme === "dim";
+  };
+
+  const [isDarkTheme, setIsDarkTheme] = useState(getInitialDarkMode);
+
+  useEffect(() => {
+    const theme = isDarkTheme ? "dim" : "pastel";
+    if (document.documentElement.dataset.theme !== theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+  }, [isDarkTheme]);
+
+  const toggleTheme = (event) => {
+    const darkMode = event.target.checked;
+    setIsDarkTheme(darkMode);
+    document.documentElement.setAttribute(
+      "data-theme",
+      darkMode ? "dim" : "pastel",
+    );
+    localStorage.setItem("theme", darkMode ? "dim" : "pastel");
+  };
+
+  const closeDrawer = () => {
+    const drawerInput = document.getElementById("drawer-main");
+    if (drawerInput) {
+      drawerInput.checked = false;
+    }
+  };
+
   const toggleSidebar = () => {
     if (isMobile) {
       // No mobile, apenas fecha o drawer
-      const drawerInput = drawerRef?.current;
-      if (drawerInput) drawerInput.checked = false;
+      closeDrawer();
     } else {
       // No desktop/tablet, alterna o estado de colapso
       setCollapsed(!collapsed);
@@ -19,7 +57,7 @@ export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-sm sm:gap-1 md:gap-2">
+    <div className="navbar sticky top-0 z-10 border-b border-base-300/70 bg-base-100/95 px-4 shadow-sm backdrop-blur sm:gap-1 md:gap-2">
       <div className="navbar-start">
         {/* Botão abre/fecha no mobile */}
         <label
@@ -116,6 +154,27 @@ export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
           className="input-bordered input hidden w-24 md:w-auto lg:block"
           aria-label="Campo de busca"
         />
+        <label
+          className="tooltip swap tooltip-bottom h-10 swap-rotate"
+          data-tip="Alternar tema claro/escuro"
+          aria-label="Alternar tema claro/escuro"
+        >
+          {/* this hidden checkbox controls the state */}
+          <input
+            type="checkbox"
+            checked={isDarkTheme}
+            onChange={toggleTheme}
+            aria-label={
+              isDarkTheme ? "Tema escuro ativado" : "Tema claro ativado"
+            }
+          />
+
+          {/* sun icon */}
+          <Sun className="swap-on" />
+
+          {/* moon icon */}
+          <Moon className="swap-off" />
+        </label>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
@@ -130,7 +189,7 @@ export function Navbar({ collapsed, setCollapsed, drawerRef, isMobile }) {
           </div>
           <div
             tabIndex={0}
-            className="card-compact dropdown-content card z-1 mt-3 w-52 bg-base-100 shadow"
+            className="dropdown-content card z-1 mt-3 w-52 bg-base-100 shadow card-sm"
           >
             <div className="card-body">
               <span className="text-lg font-bold">8 Items</span>

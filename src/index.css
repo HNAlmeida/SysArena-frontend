@@ -1,16 +1,15 @@
 @import "tailwindcss";
 @plugin "daisyui" {
   themes:
-    light --default,
+    light,
+    nord,
+    winter,
+    cmyk,
+    pastel --default,
     dark,
     sunset,
     night,
     dim --prefersdark;
-  root: ":root";
-  include:;
-  exclude:;
-  prefix:;
-  logs: false;
 }
 @theme {
   --font-sans: InterVariable, sans-serif;
@@ -61,6 +60,10 @@
       &::after {
         position: absolute;
       }
+    }
+    & details,
+    & details::details-content {
+      transition: none !important;
     }
   }
 }

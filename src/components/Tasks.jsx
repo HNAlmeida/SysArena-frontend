@@ -13,17 +13,17 @@ function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
     const query = new URLSearchParams();
     query.set("title", task.title);
     query.set("description", task.description);
-    navigate(`/task?${query.toString()}`);
+    navigate(`/tasks/${task.id}?${query.toString()}`);
   }
 
   return (
-    <div className="card card-border bg-base-100 shadow">
+    <div className="card bg-base-100 shadow card-border">
       <div className="card-body space-y-2">
         {tasks.map((task) => (
           <div key={task.id} className="join w-full">
             <button
               onClick={() => onTaskClick(task.id)}
-              className={`btn btn-soft btn-outline flex-1 join-item flex items-center gap-2 ${
+              className={`btn join-item flex flex-1 items-center gap-2 btn-outline btn-soft ${
                 task.isCompleted && "line-through"
               }`}
             >
@@ -32,13 +32,13 @@ function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
             </button>
             <button
               onClick={() => onSeeDetailsClick(task)}
-              className="btn btn-soft btn-outline flex-none join-item"
+              className="btn join-item flex-none btn-outline btn-soft"
             >
               <ChevronRightIcon />
             </button>
             <button
               onClick={() => onDeleteTaskClick(task.id)}
-              className="btn btn-soft btn-error flex-none join-item"
+              className="btn join-item flex-none btn-soft btn-error"
             >
               <Trash2Icon />
             </button>

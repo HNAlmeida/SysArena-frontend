@@ -18,16 +18,22 @@ import {
   ChartNoAxesColumn,
   ChartLine,
   Settings2,
+  ListTodo,
 } from "lucide-react";
 
 export const menus = [
   {
-    items: [{ name: "Início", icon: Home }],
+    items: [{ name: "Início", icon: Home, path: "/" }],
   },
   {
     title: { sm: "BUSINESS", xs: "BUS" },
     items: [
-      { name: "Dashboard", icon: ChartNoAxesColumn, isActive: true },
+      {
+        name: "Dashboard",
+        icon: ChartNoAxesColumn,
+        isActive: true,
+        path: "/dashboard",
+      },
       {
         name: "Analytics",
         icon: PieChart,
@@ -52,6 +58,7 @@ export const menus = [
         ],
       },
       { name: "Notificações", icon: Bell },
+      { name: "Tasks", icon: ListTodo, path: "/tasks" },
     ],
   },
   {
