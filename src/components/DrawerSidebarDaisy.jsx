@@ -35,7 +35,7 @@ export default function DrawerSidebarDaisy() {
       />
 
       {/* CONTEÚDO */}
-      <div className="drawer-content flex min-h-screen flex-col bg-base-200 transition-all duration-300">
+      <div className="drawer-content flex min-h-screen flex-col bg-base-200/50 transition-all duration-300">
         {/* NAVBAR */}
         <Navbar
           collapsed={collapsed}
@@ -67,7 +67,7 @@ export default function DrawerSidebarDaisy() {
         >
           {/* HEADER */}
           <div
-            className={`navbar sticky top-0 z-10 flex h-16 items-center ${collapsed ? "justify-center" : ""}`}
+            className={`navbar sticky top-0 z-10 flex h-16 items-center bg-base-300 ${collapsed ? "justify-center" : ""}`}
           >
             <button
               className={`btn w-full text-xl font-bold btn-ghost ${collapsed ? "" : "justify-start px-2.5"}`}

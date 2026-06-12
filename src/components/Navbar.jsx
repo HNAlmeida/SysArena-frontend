@@ -57,7 +57,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
   };
 
   return (
-    <div className="navbar sticky top-0 z-10 border-b border-base-300 bg-base-100/95 px-4 shadow-sm backdrop-blur sm:gap-1 md:gap-2">
+    <div className="navbar sticky top-0 z-10 border-b border-base-300/70 bg-base-100/95 px-4 shadow-sm backdrop-blur sm:gap-1 md:gap-2">
       <div className="navbar-start">
         {/* Botão abre/fecha no mobile */}
         <label

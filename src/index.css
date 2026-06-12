@@ -61,6 +61,10 @@
         position: absolute;
       }
     }
+    & details,
+    & details::details-content {
+      transition: none !important;
+    }
   }
 }
 

@@ -61,7 +61,9 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
 
     return (
       <li className={config.padding}>
-        <details className={`${detailsGroup} flex flex-col gap-0.5`}>
+        <details
+          className={`${detailsGroup} flex flex-col gap-0.5 overflow-visible`}
+        >
           <summary
             className={`${collapsed ? `group/summary py-0 pl-2 ${depth <= 1 ? "pr-0.75" : ""}` : ""} ${rotateSummaryArrow ? "[&::after]:translate-y-0 [&::after]:rotate-135" : ""}`}
           >
@@ -78,7 +80,7 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
               collapsed && depth === 1
                 ? `invisible absolute -top-1 left-full z-50 ml-2 w-48 -translate-x-3 rounded-md bg-base-300 pt-0.5 pb-1 pl-0.5 shadow-lg transition-all group-hover/details-1:visible group-hover/details-1:translate-x-0 group-hover/details-1:opacity-100`
                 : collapsed && depth < 1
-                  ? "ml-0 rounded-md bg-base-300 py-1 pl-0.5"
+                  ? "ml-0 rounded-md bg-base-100/60 py-1 pl-0.5"
                   : "border-l"
             }
           >
