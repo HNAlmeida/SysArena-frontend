@@ -1,5 +1,5 @@
 import { Hash, PanelLeftClose, PanelLeftOpen } from "lucide-react";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { Navbar } from "./Navbar";
 import { menus } from "../data/menus";
 import SidebarSection from "./daisyui/SidebarSection";
@@ -12,16 +12,22 @@ export default function DrawerSidebarDaisy() {
   const { collapsed, setCollapsed, isMobile } = useSidebar();
   const drawerRef = useRef(null);
 
-  const toggleSidebar = () => {
+  const toggleSidebar = useCallback(() => {
     if (isMobile) {
-      // No mobile: apenas fecha a sidebar (drawer)
-      const drawerInput = drawerRef?.current;
-      if (drawerInput) drawerInput.checked = false;
-    } else {
-      // No desktop/tablet, alterna o estado de colapso entre expandido e compacto
-      setCollapsed(!collapsed);
+      drawerRef.current && (drawerRef.current.checked = false);
+      return;
     }
-  };
+
+    setCollapsed((prev) => !prev);
+  }, [isMobile, setCollapsed]);
+
+  const sidebarWidth = collapsed ? "w-17" : "w-56";
+
+  const navScrollClass = collapsed
+    ? "grow scrollbar-none"
+    : "min-h-0 scrollbar-thin scrollbar-thumb-base-content/20 scrollbar-track-transparent hover:scrollbar-thumb-base-content/30";
+
+  const ToggleIcon = collapsed ? PanelLeftOpen : PanelLeftClose;
 
   return (
     <div className="drawer sm:drawer-open">
@@ -63,16 +69,16 @@ export default function DrawerSidebarDaisy() {
         />
 
         <aside
-          className={`flex h-screen flex-col items-center space-y-1.5 border-r border-base-300 bg-base-300 transition-all duration-300 ${collapsed ? "w-17" : "w-56"}`}
+          className={`flex h-screen flex-col items-center space-y-1.5 border-r border-base-300 bg-base-300 transition-all duration-300 ${sidebarWidth}`}
           role="navigation"
           aria-label="Main navigation"
         >
           {/* HEADER */}
           <div
-            className={`navbar sticky top-0 z-10 flex h-16 items-center border-b border-base-100/50 bg-base-300 ${collapsed ? "justify-center" : ""}`}
+            className={`navbar sticky top-0 z-10 flex h-16 items-center border-b border-base-100/50 bg-base-300 ${collapsed && "justify-center"}`}
           >
             <button
-              className={`btn w-full text-xl font-bold btn-ghost ${collapsed ? "" : "justify-start px-2.5"}`}
+              className={`btn w-full text-xl font-bold btn-ghost ${!collapsed && "justify-start px-2.5"}`}
               aria-label={collapsed ? "SysArena" : undefined}
             >
               {collapsed ? "SA" : "SysArena"}
@@ -81,12 +87,12 @@ export default function DrawerSidebarDaisy() {
 
           {/* MENU (com scroll vertical; overflow horizontal visível para tooltips/submenus flutuantes) */}
           <nav
-            className={`flex w-full flex-1 flex-col overflow-y-auto ${collapsed ? "grow scrollbar-none" : "min-h-0 scrollbar-thin scrollbar-thumb-base-content/20 scrollbar-track-transparent hover:scrollbar-thumb-base-content/30"}`}
+            className={`flex w-full flex-1 flex-col overflow-y-auto ${navScrollClass}`}
             id="d-menus-sidebar"
           >
             {menus.map((section, idx) => (
               <SidebarSection
-                key={idx}
+                key={section.title?.sm ?? idx}
                 collapsed={collapsed}
                 section={section}
                 depth={0}
@@ -95,7 +101,7 @@ export default function DrawerSidebarDaisy() {
           </nav>
 
           {/* BOTÃO DE COLAPSAR */}
-          <nav className="flex w-full flex-col border-t border-base-100/50 bg-base-300">
+          <div className="flex w-full flex-col border-t border-base-100/50 bg-base-300">
             <ul className="menu w-full">
               <li>
                 <button
@@ -105,16 +111,12 @@ export default function DrawerSidebarDaisy() {
                   aria-label={collapsed ? "Expandir" : "Recolher"}
                   aria-expanded={!collapsed}
                 >
-                  {collapsed ? (
-                    <PanelLeftOpen className="my-1 inline-block size-5" />
-                  ) : (
-                    <PanelLeftClose className="my-1 inline-block size-5" />
-                  )}
+                  <ToggleIcon className="my-1 inline-block size-5" />
                   {!collapsed && <span>Recolher</span>}
                 </button>
               </li>
             </ul>
-          </nav>
+          </div>
         </aside>
       </div>
     </div>

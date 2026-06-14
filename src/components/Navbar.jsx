@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   PanelLeftOpen,
   PanelLeftClose,
@@ -9,52 +9,42 @@ import {
   Sun,
 } from "lucide-react";
 
-export function Navbar({ collapsed, setCollapsed, isMobile }) {
-  const getInitialDarkMode = () => {
-    const storedTheme = localStorage.getItem("theme");
-    const htmlTheme = document.documentElement.dataset.theme;
-    const prefersDark = window.matchMedia?.(
-      "(prefers-color-scheme: dim)",
-    ).matches;
-    const theme = storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "pastel");
-    return theme === "dim";
-  };
+function getInitialDarkMode() {
+  const storedTheme = localStorage.getItem("theme");
+  const htmlTheme = document.documentElement.dataset.theme;
+  const prefersDark = window.matchMedia?.(
+    "(prefers-color-scheme: dark)",
+  ).matches;
 
+  return (
+    (storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "pastel")) === "dim"
+  );
+}
+
+export function Navbar({ collapsed, setCollapsed, isMobile }) {
   const [isDarkTheme, setIsDarkTheme] = useState(getInitialDarkMode);
 
   useEffect(() => {
     const theme = isDarkTheme ? "dim" : "pastel";
-    if (document.documentElement.dataset.theme !== theme) {
-      document.documentElement.setAttribute("data-theme", theme);
-    }
+
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
   }, [isDarkTheme]);
 
-  const toggleTheme = (event) => {
-    const darkMode = event.target.checked;
-    setIsDarkTheme(darkMode);
-    document.documentElement.setAttribute(
-      "data-theme",
-      darkMode ? "dim" : "pastel",
-    );
-    localStorage.setItem("theme", darkMode ? "dim" : "pastel");
-  };
+  const toggleTheme = useCallback((event) => {
+    setIsDarkTheme(event.target.checked);
+  }, []);
 
-  const closeDrawer = () => {
-    const drawerInput = document.getElementById("drawer-main");
-    if (drawerInput) {
-      drawerInput.checked = false;
-    }
-  };
-
-  const toggleSidebar = () => {
+  const toggleSidebar = useCallback(() => {
     if (isMobile) {
-      // No mobile, apenas fecha o drawer
-      closeDrawer();
-    } else {
-      // No desktop/tablet, alterna o estado de colapso
-      setCollapsed(!collapsed);
+      document.getElementById("drawer-main")?.click();
+      return;
     }
-  };
+
+    setCollapsed((prev) => !prev);
+  }, [isMobile, setCollapsed]);
+
+  const SidebarIcon = collapsed ? PanelLeftOpen : PanelLeftClose;
 
   return (
     <div className="navbar sticky top-0 z-10 border-b border-base-300/70 bg-base-100/95 px-4 shadow-sm backdrop-blur sm:gap-1 md:gap-2">
@@ -76,7 +66,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
             aria-label={collapsed ? "Expandir sidebar" : "Recolher sidebar"}
             aria-expanded={!collapsed}
           >
-            {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
+            <SidebarIcon />
           </button>
         )}
 
@@ -168,11 +158,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
               isDarkTheme ? "Tema escuro ativado" : "Tema claro ativado"
             }
           />
-
-          {/* sun icon */}
           <Sun className="swap-on" />
-
-          {/* moon icon */}
           <Moon className="swap-off" />
         </label>
         <div className="dropdown dropdown-end">
