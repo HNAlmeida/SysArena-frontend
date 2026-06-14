@@ -1,6 +1,9 @@
+import { useState } from "react";
 import MenuItem from "./MenuItem";
 
 export default function SidebarSection({ section, collapsed = false }) {
+  const [openItems, setOpenItems] = useState({});
+
   return (
     <ul className="sidebar-menu menu w-full gap-0.5 py-0">
       {section.title && (
@@ -19,6 +22,8 @@ export default function SidebarSection({ section, collapsed = false }) {
           collapsed={collapsed}
           item={item}
           depth={0}
+          openItems={openItems}
+          setOpenItems={setOpenItems}
         />
       ))}
     </ul>

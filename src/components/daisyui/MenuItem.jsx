@@ -1,7 +1,25 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router";
+import FloatingTooltip from "../FloatingTooltip";
+import {
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset,
+  safePolygon,
+  shift,
+  useFloating,
+  useHover,
+  useInteractions,
+} from "@floating-ui/react";
 
-export default function MenuItem({ item, collapsed = false, depth = 0 }) {
+export default function MenuItem({
+  item,
+  collapsed = false,
+  depth = 0,
+  openItems,
+  setOpenItems,
+}) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -17,85 +35,171 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
       size: depth > 0 ? "size-4" : "size-5",
       padding: depth >= 1 && depth <= 2 && collapsed ? "px-1" : "",
       showText: !collapsed || depth > 1,
-      showTooltip: collapsed && depth <= 1,
+      showTooltip:
+        collapsed &&
+        (depth === 0 || (depth <= 1 && !(item.submenu?.length > 0))),
     }),
     [item.submenu, collapsed, depth],
   );
 
-  // O Tooltip pode estar dentro de um <summary> (itens com submenu) ou de um <button>
-  // (itens sem submenu). Cada wrapper tem um grupo nomeado diferente:
-  //   - <summary className="group/summary"> → escuta group-hover/summary:
-  //   - <li className="group/btn">           → escuta group-hover/btn:
-  // A classe é escolhida com base em hasSubmenu, mantendo nomes literais que o
-  // scanner do Tailwind v4 consegue detectar.
-  const tooltipHoverClass = config.hasSubmenu
-    ? "group-hover/summary:visible group-hover/summary:translate-x-0 group-hover/summary:opacity-100"
-    : "group-hover/btn:visible group-hover/btn:translate-x-0 group-hover/btn:opacity-100";
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  const Tooltip = config.showTooltip && (
-    <div
-      className={`invisible absolute left-full ml-3 -translate-x-3 rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content opacity-0 transition-all ${tooltipHoverClass}`}
-      role="tooltip"
-    >
-      {item.name}
-    </div>
-  );
+  const { refs: tooltipRefs, floatingStyles: tooltipStyles } = useFloating({
+    open: tooltipOpen,
+    placement: "right",
+    whileElementsMounted: autoUpdate,
+    middleware: [offset(12)],
+  });
+
+  const [submenuOpen, setSubmenuOpen] = useState(false);
+
+  const {
+    refs: submenuRefs,
+    floatingStyles: submenuStyles,
+    context: submenuContext,
+  } = useFloating({
+    open: submenuOpen,
+    onOpenChange: setSubmenuOpen,
+    placement: "right-start",
+    whileElementsMounted: autoUpdate,
+    middleware: [offset(12), flip(), shift({ padding: 8 })],
+  });
+
+  const hover = useHover(submenuContext, {
+    handleClose: safePolygon(),
+  });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
+
+  const previousCollapsed = useRef(collapsed);
+
+  useEffect(() => {
+    if (previousCollapsed.current === false && collapsed === true) {
+      setSubmenuOpen(false);
+    }
+
+    previousCollapsed.current = collapsed;
+  }, [collapsed]);
+
+  const menuKey = `${depth}-${item.name}-${item.path ?? ""}`;
+
+  const toggleItem = (key) => {
+    setOpenItems?.((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
 
   const Icon = item.icon && (
     <item.icon className={`my-1 inline-block ${config.size}`} />
   );
 
   if (config.hasSubmenu) {
-    // No Tailwind v4, o scanner de classes só gera CSS para nomes que aparecem
-    // literalmente no código-fonte — interpolações como `group/d${depth}` não são
-    // detectadas. Como a única profundidade que de fato precisa do grupo nomeado
-    // para abrir o submenu flutuante é depth === 1 (collapsed), emitimos a classe
-    // literal via switch, garantindo que o Tailwind gere o CSS correspondente.
-    //
-    // Para depth >= 2, os submenus aninhados não usam hover-flutuante (eles
-    // empilham verticalmente), então um `group` simples é suficiente: o escopo
-    // continua local a cada <details>.
-    const detailsGroup = depth === 1 && collapsed ? "group/details-1" : "group";
     // Rotaciona a seta ::after quando compacto e depth === 1
     const rotateSummaryArrow = collapsed && depth === 1;
 
     return (
       <li className={config.padding}>
         <details
-          className={`${detailsGroup} flex flex-col gap-0.5 overflow-visible`}
+          className={`${depth === 1 && collapsed && "group"} flex flex-col gap-0.5 overflow-visible`}
+          open={!!openItems?.[menuKey]}
         >
           <summary
-            className={`${collapsed ? `group/summary py-0 pl-2 ${depth <= 1 ? "pr-0.75" : ""}` : ""} ${rotateSummaryArrow ? "[&::after]:translate-y-0 [&::after]:rotate-135" : ""}`}
+            ref={
+              depth === 0 ? tooltipRefs.setReference : submenuRefs.setReference
+            }
+            {...(depth === 0 ? {} : getReferenceProps())}
+            onMouseEnter={() => {
+              if (depth === 0) {
+                setTooltipOpen(true);
+              }
+            }}
+            onMouseLeave={() => {
+              if (depth === 0) {
+                setTooltipOpen(false);
+              }
+            }}
+            className={`${collapsed ? `group/summary py-0 pl-2 ${depth <= 1 ? "pr-0.75" : ""}` : ""} ${
+              rotateSummaryArrow
+                ? "[&::after]:translate-y-0 [&::after]:rotate-135"
+                : ""
+            }`}
+            onClick={(e) => {
+              e.preventDefault();
+
+              toggleItem(menuKey);
+            }}
           >
             <div
-              className={`flex items-center gap-3 ${collapsed ? `py-1.25 ${depth === 0 ? "pl-2" : "px-1"}` : ""}`}
+              className={`flex items-center gap-3 ${
+                collapsed ? `py-1.25 ${depth === 0 ? "pl-2" : "px-1"}` : ""
+              }`}
             >
               {Icon}
               {config.showText && <span>{item.name}</span>}
             </div>
-            {Tooltip}
           </summary>
-          <ul
-            className={
-              collapsed && depth === 1
-                ? `invisible absolute -top-1 left-full z-50 ml-2 w-48 -translate-x-3 rounded-md bg-base-300 pt-0.5 pb-1 pl-0.5 shadow-lg transition-all group-hover/details-1:visible group-hover/details-1:translate-x-0 group-hover/details-1:opacity-100`
-                : collapsed && depth < 1
-                  ? "ml-0 rounded-md bg-base-100/60 py-1 pl-0.5"
-                  : "border-l"
-            }
-          >
-            {collapsed && depth == 1 && (
-              <li className="menu-title">{item.name}</li>
-            )}
-            {item.submenu.map((sub, subIdx) => (
-              <MenuItem
-                key={subIdx + 1}
-                collapsed={collapsed}
-                item={sub}
-                depth={depth + 1}
-              />
-            ))}
-          </ul>
+          {collapsed && depth === 1 ? (
+            <>
+              {submenuOpen && (
+                <FloatingPortal>
+                  <ul
+                    ref={submenuRefs.setFloating}
+                    style={submenuStyles}
+                    {...getFloatingProps()}
+                    className={`menu z-[9999] -mt-1 w-48 rounded-md bg-base-300 pt-0.5 pb-1 pl-0.5 shadow-lg transition-opacity duration-100 ${
+                      submenuOpen ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    <li className="menu-title">{item.name}</li>
+
+                    {item.submenu.map((sub, subIdx) => (
+                      <MenuItem
+                        key={subIdx + 1}
+                        collapsed={collapsed}
+                        item={sub}
+                        depth={depth + 1}
+                        openItems={openItems}
+                        setOpenItems={setOpenItems}
+                      />
+                    ))}
+                  </ul>
+                </FloatingPortal>
+              )}
+            </>
+          ) : (
+            !!openItems?.[menuKey] && (
+              <ul
+                className={
+                  collapsed && depth < 1
+                    ? "ml-0 rounded-md bg-base-100/60 py-1 pl-0.5"
+                    : "border-l"
+                }
+              >
+                {item.submenu.map((sub, subIdx) => (
+                  <MenuItem
+                    key={subIdx + 1}
+                    collapsed={collapsed}
+                    item={sub}
+                    depth={depth + 1}
+                    openItems={openItems}
+                    setOpenItems={setOpenItems}
+                  />
+                ))}
+              </ul>
+            )
+          )}
+          {config.showTooltip && tooltipOpen && (
+            <FloatingPortal>
+              <div
+                ref={tooltipRefs.setFloating}
+                style={tooltipStyles}
+                className="z-[9999] rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content shadow-lg"
+              >
+                {item.name}
+              </div>
+            </FloatingPortal>
+          )}
         </details>
       </li>
     );
@@ -108,17 +212,33 @@ export default function MenuItem({ item, collapsed = false, depth = 0 }) {
   };
 
   return (
-    <li className={`${collapsed ? `group/btn ${config.padding}` : ""}`}>
-      <button
-        className={`flex items-center gap-3 ${collapsed && depth === 0 ? "justify-center py-1.25" : ""} ${isActive ? "menu-active" : ""}`}
-        aria-label={config.showTooltip ? item.name : undefined}
-        data-tip={config.showTooltip ? item.name : undefined}
-        onClick={handleClick}
-      >
-        {Icon}
-        {config.showText && <span>{item.name}</span>}
-        {Tooltip}
-      </button>
-    </li>
+    <>
+      <li className={config.padding}>
+        <button
+          ref={tooltipRefs.setReference}
+          className={`flex items-center gap-3 ${
+            collapsed && depth === 0 ? "justify-center py-1.25" : ""
+          } ${isActive ? "menu-active" : ""}`}
+          onMouseEnter={() => config.showTooltip && setTooltipOpen(true)}
+          onMouseLeave={() => config.showTooltip && setTooltipOpen(false)}
+          onClick={handleClick}
+        >
+          {Icon}
+          {config.showText && <span>{item.name}</span>}
+        </button>
+      </li>
+
+      {config.showTooltip && tooltipOpen && (
+        <FloatingPortal>
+          <div
+            ref={tooltipRefs.setFloating}
+            style={tooltipStyles}
+            className={`z-[9999] rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content shadow-lg ${collapsed && depth == 1 && "ml-1"}`}
+          >
+            {item.name}
+          </div>
+        </FloatingPortal>
+      )}
+    </>
   );
 }

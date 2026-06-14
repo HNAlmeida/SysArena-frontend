@@ -53,7 +53,9 @@ export default function DrawerSidebarDaisy() {
       </div>
 
       {/* SIDEBAR */}
-      <div className={`drawer-side ${collapsed && "overflow-visible"}`}>
+      <div
+        className={`drawer-side h-screen ${collapsed ? "overflow-visible" : ""}`}
+      >
         <label
           htmlFor="drawer-main"
           className="drawer-overlay"
@@ -61,13 +63,13 @@ export default function DrawerSidebarDaisy() {
         />
 
         <aside
-          className={`flex min-h-full flex-col items-center gap-1.5 border-r border-base-300 bg-base-300 transition-all duration-300 ${collapsed ? "w-17" : "w-56"}`}
+          className={`flex h-screen flex-col items-center space-y-1.5 border-r border-base-300 bg-base-300 transition-all duration-300 ${collapsed ? "w-17" : "w-56"}`}
           role="navigation"
           aria-label="Main navigation"
         >
           {/* HEADER */}
           <div
-            className={`navbar sticky top-0 z-10 flex h-16 items-center bg-base-300 ${collapsed ? "justify-center" : ""}`}
+            className={`navbar sticky top-0 z-10 flex h-16 items-center border-b border-base-100/50 bg-base-300 ${collapsed ? "justify-center" : ""}`}
           >
             <button
               className={`btn w-full text-xl font-bold btn-ghost ${collapsed ? "" : "justify-start px-2.5"}`}
@@ -77,8 +79,11 @@ export default function DrawerSidebarDaisy() {
             </button>
           </div>
 
-          {/* MENU */}
-          <nav className="flex w-full grow flex-col" id="d-menus-sidebar">
+          {/* MENU (com scroll vertical; overflow horizontal visível para tooltips/submenus flutuantes) */}
+          <nav
+            className={`flex w-full flex-1 flex-col overflow-y-auto ${collapsed ? "grow scrollbar-none" : "min-h-0 scrollbar-thin scrollbar-thumb-base-content/20 scrollbar-track-transparent hover:scrollbar-thumb-base-content/30"}`}
+            id="d-menus-sidebar"
+          >
             {menus.map((section, idx) => (
               <SidebarSection
                 key={idx}
@@ -90,24 +95,26 @@ export default function DrawerSidebarDaisy() {
           </nav>
 
           {/* BOTÃO DE COLAPSAR */}
-          <div
-            className={`w-full border-t border-base-300 ${collapsed ? "tooltip tooltip-right p-2 text-center" : "px-3 py-2"}`}
-            data-tip={collapsed ? "Expandir sidebar" : undefined}
-          >
-            <button
-              className="tooltip btn tooltip-right btn-circle btn-ghost"
-              data-tip={collapsed ? undefined : "Recolher sidebar"}
-              onClick={toggleSidebar}
-              aria-label={collapsed ? "Expandir sidebar" : "Recolher sidebar"}
-              aria-expanded={!collapsed}
-            >
-              {collapsed ? (
-                <PanelLeftOpen className="size-5" />
-              ) : (
-                <PanelLeftClose className="size-5" />
-              )}
-            </button>
-          </div>
+          <nav className="flex w-full flex-col border-t border-base-100/50 bg-base-300">
+            <ul className="menu w-full">
+              <li>
+                <button
+                  className={`flex items-center gap-3 py-1.5 ${collapsed && "tooltip tooltip-right justify-center"}`}
+                  data-tip={collapsed ? "Expandir" : "Recolher"}
+                  onClick={toggleSidebar}
+                  aria-label={collapsed ? "Expandir" : "Recolher"}
+                  aria-expanded={!collapsed}
+                >
+                  {collapsed ? (
+                    <PanelLeftOpen className="my-1 inline-block size-5" />
+                  ) : (
+                    <PanelLeftClose className="my-1 inline-block size-5" />
+                  )}
+                  {!collapsed && <span>Recolher</span>}
+                </button>
+              </li>
+            </ul>
+          </nav>
         </aside>
       </div>
     </div>
