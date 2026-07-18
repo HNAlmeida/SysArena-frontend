@@ -7,6 +7,7 @@ import { RouterProvider } from "react-router/dom";
 import TaskPage from "./pages/TaskPage.jsx";
 import TasksPage from "./pages/TasksPage.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import ClientesPage from "./pages/ClientesPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,14 @@ const router = createBrowserRouter([
         path: "tasks/:id",
         element: <TaskPage />,
       },
+      {
+        path: "clientes",
+        element: <ClientesPage />,
+      },
+      /* {
+        path: "clientes/:id",
+        element: <ClientePage />,
+      }, */
     ],
   },
 ]);

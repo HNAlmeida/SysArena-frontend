@@ -66,7 +66,7 @@ export const menus = [
     items: [
       { name: "Chat", icon: MessageCircle },
       { name: "Notes", icon: StickyNote },
-      { name: "Customers", icon: User },
+      { name: "Clientes", icon: User, path: "/clientes" },
       { name: "Mail", icon: Mail },
       { name: "Configurações", icon: Settings2 },
     ],
