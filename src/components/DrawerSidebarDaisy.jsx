@@ -41,7 +41,7 @@ export default function DrawerSidebarDaisy() {
       />
 
       {/* CONTEÚDO */}
-      <div className="drawer-content flex min-h-screen flex-col bg-base-200/50 transition-all duration-300">
+      <div className="drawer-content flex min-h-screen flex-col bg-base-300/50 transition-all duration-300">
         {/* NAVBAR */}
         <Navbar
           collapsed={collapsed}

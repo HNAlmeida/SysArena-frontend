@@ -138,12 +138,15 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
         >
           <Search />
         </button>
-        <input
-          type="text"
-          placeholder="Search"
-          className="input-bordered input hidden w-24 md:w-auto lg:block"
-          aria-label="Campo de busca"
-        />
+        <label className="input hidden md:w-auto lg:flex">
+          <Search className="h-[1em] opacity-50" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="grow"
+            aria-label="Campo de busca"
+          />
+        </label>
         <label
           className="tooltip swap tooltip-bottom h-10 swap-rotate"
           data-tip="Alternar tema claro/escuro"

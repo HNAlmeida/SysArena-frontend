@@ -49,15 +49,32 @@ function TasksPage() {
   }
 
   return (
-    <div className="container flex justify-center p-6">
-      <div className="w-125 space-y-5">
-        <Title>Gerenciador de Tarefas</Title>
-        <AddTask onAddTaskSubmit={onAddTaskSubmit} />
-        <Tasks
-          tasks={tasks}
-          onTaskClick={onTaskClick}
-          onDeleteTaskClick={onDeleteTaskClick}
-        />
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <p className="text-lg font-medium">Tarefas</p>
+        <div className="breadcrumbs hidden p-0 text-sm sm:inline">
+          <ul>
+            <li>
+              <a href="/" data-discover="true">
+                Business
+              </a>
+            </li>
+            <li className="opacity-80">Tarefas</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="container flex justify-center p-6">
+        <div className="w-125 space-y-5">
+          <Title>Gerenciador de Tarefas</Title>
+          <AddTask onAddTaskSubmit={onAddTaskSubmit} />
+          <Tasks
+            tasks={tasks}
+            onTaskClick={onTaskClick}
+            onDeleteTaskClick={onDeleteTaskClick}
+          />
+        </div>
       </div>
     </div>
   );
