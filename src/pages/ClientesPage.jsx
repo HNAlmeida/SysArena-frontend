@@ -174,13 +174,17 @@ function ClientesPage() {
     });
   }, [busca, clientes, status]);
 
-  const totalPaginas = Math.max(1, Math.ceil(clientesFiltrados.length / porPagina));
+  const totalPaginas = Math.max(
+    1,
+    Math.ceil(clientesFiltrados.length / porPagina),
+  );
   const paginaAtual = Math.min(pagina, totalPaginas);
   const inicio = (paginaAtual - 1) * porPagina;
   const clientesPaginados = clientesFiltrados.slice(inicio, inicio + porPagina);
   const idsDaPagina = clientesPaginados.map((cliente) => cliente.id);
   const todosSelecionados =
-    idsDaPagina.length > 0 && idsDaPagina.every((id) => selecionados.includes(id));
+    idsDaPagina.length > 0 &&
+    idsDaPagina.every((id) => selecionados.includes(id));
 
   function atualizarBusca(valor) {
     setBusca(valor);
@@ -260,7 +264,7 @@ function ClientesPage() {
                 />
               </label>
               <select
-                className="select select-sm w-full sm:w-44"
+                className="select w-full select-sm sm:w-44"
                 aria-label="Status de verificação"
                 value={status}
                 onChange={(event) => atualizarStatus(event.target.value)}
@@ -295,7 +299,10 @@ function ClientesPage() {
                 >
                   <ul className="menu w-full p-2">
                     <li>
-                      <button type="button" disabled={selecionados.length === 0}>
+                      <button
+                        type="button"
+                        disabled={selecionados.length === 0}
+                      >
                         <Wand className="size-4" />
                         Ações em massa
                       </button>
@@ -393,7 +400,9 @@ function ClientesPage() {
                         )}
                       </div>
                     </td>
-                    <td className="text-center text-sm">{cliente.dataAdesao}</td>
+                    <td className="text-center text-sm">
+                      {cliente.dataAdesao}
+                    </td>
                     <td className="text-center">
                       <div className="inline-flex w-fit">
                         <Link
@@ -425,7 +434,10 @@ function ClientesPage() {
 
                 {clientesPaginados.length === 0 && (
                   <tr>
-                    <td className="py-10 text-center text-base-content/70" colSpan="10">
+                    <td
+                      className="py-10 text-center text-base-content/70"
+                      colSpan="10"
+                    >
                       Nenhum cliente encontrado.
                     </td>
                   </tr>
@@ -467,20 +479,21 @@ function ClientesPage() {
               >
                 <ChevronLeft />
               </button>
-              {Array.from({ length: totalPaginas }, (_, index) => index + 1).map(
-                (numero) => (
-                  <button
-                    key={numero}
-                    className={`btn btn-circle btn-xs sm:btn-sm ${
-                      numero === paginaAtual ? "btn-primary" : "btn-ghost"
-                    }`}
-                    type="button"
-                    onClick={() => setPagina(numero)}
-                  >
-                    {numero}
-                  </button>
-                ),
-              )}
+              {Array.from(
+                { length: totalPaginas },
+                (_, index) => index + 1,
+              ).map((numero) => (
+                <button
+                  key={numero}
+                  className={`btn btn-circle btn-xs sm:btn-sm ${
+                    numero === paginaAtual ? "btn-primary" : "btn-ghost"
+                  }`}
+                  type="button"
+                  onClick={() => setPagina(numero)}
+                >
+                  {numero}
+                </button>
+              ))}
               <button
                 className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
                 aria-label="Próxima página"
@@ -521,14 +534,17 @@ function ClientesPage() {
           <div className="modal-action">
             <form method="dialog">
               <button
-                className="btn btn-ghost btn-sm"
+                className="btn btn-sm"
                 onClick={() => setClienteParaExcluir(null)}
               >
                 Não
               </button>
             </form>
             <form method="dialog">
-              <button className="btn btn-sm btn-error" onClick={confirmarExclusao}>
+              <button
+                className="btn btn-sm btn-error"
+                onClick={confirmarExclusao}
+              >
                 Sim, exclua
               </button>
             </form>
