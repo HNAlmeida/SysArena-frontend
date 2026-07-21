@@ -516,7 +516,7 @@ function ClientesPage() {
             Confirmar Exclusão
             <form method="dialog">
               <button
-                className="btn btn-circle btn-ghost btn-sm"
+                className="btn absolute top-2 right-2 btn-circle btn-ghost btn-sm"
                 aria-label="Fechar modal"
                 onClick={() => setClienteParaExcluir(null)}
               >

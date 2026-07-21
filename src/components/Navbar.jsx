@@ -106,28 +106,218 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
         </div>
       </div>
       <div className="navbar-center">
-        <ul className="menu menu-horizontal hidden p-1 md:flex">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
+        <div
+          className="megamenu megamenu-wide hidden megamenu-sm max-sm:megamenu-vertical md:flex"
+          id="my-megamenu"
+          popover="auto"
+        >
+          <span className="megamenu-active"></span>
+          <button popoverTarget="d1">Acadêmico</button>
+          <div id="d1" popover="auto">
+            <div className="flex items-start max-sm:flex-col">
+              <ul className="menu w-full items-start md:menu-horizontal">
                 <li>
-                  <a>Submenu 1</a>
+                  <a>Secretaria</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Notas</a>
+                    </li>
+                    <li>
+                      <a>Históricos</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                    <li>
+                      <a>Gráficos</a>
+                    </li>
+                    <li>
+                      <a>Censo Escolar</a>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <a>Professor</a>
+                  <ul>
+                    <li>
+                      <a>Registro de aula / Frequência</a>
+                    </li>
+                    <li>
+                      <a>Comunicados / Ocorrências</a>
+                    </li>
+                    <li>
+                      <a>Notas</a>
+                    </li>
+                    <li>
+                      <a>Tarefas</a>
+                    </li>
+                    <li>
+                      <a>Redação</a>
+                    </li>
+                    <li>
+                      <a>EAD</a>
+                    </li>
+                    <li>
+                      <a>Coordenação</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Escolas</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Empresas</a>
+                    </li>
+                    <li>
+                      <a>Rotinas</a>
+                    </li>
+                    <li>
+                      <a>Dicionário de dados</a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
-        <a className="btn text-xl btn-ghost md:hidden">SysArena</a>
+            </div>
+          </div>
+          <button popoverTarget="d2">Financeiro</button>
+          <div id="d2" popover="auto">
+            <div className="flex items-start max-sm:flex-col">
+              <ul className="menu w-full items-start md:menu-horizontal">
+                <li>
+                  <a>Receber</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Duplicatas</a>
+                    </li>
+                    <li>
+                      <a>Notas fiscais</a>
+                    </li>
+                    <li>
+                      <a>Caixas</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                    <li>
+                      <a>Gráficos</a>
+                    </li>
+                    <li>
+                      <a>Matrícula Online</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Pagar</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Lançamentos</a>
+                    </li>
+                    <li>
+                      <a>Caixas</a>
+                    </li>
+                    <li>
+                      <a>Controle Bancário</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Conciliação Bancária</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Notas</a>
+                    </li>
+                    <li>
+                      <a>Históricos</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                    <li>
+                      <a>Gráficos</a>
+                    </li>
+                    <li>
+                      <a>Censo Escolar</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button popoverTarget="d3">Administrativo</button>
+          <div id="d3" popover="auto">
+            <div className="flex items-start max-sm:flex-col">
+              <ul className="menu w-full items-start md:menu-horizontal">
+                <li>
+                  <a>Estoque</a>
+                  <ul>
+                    <li>
+                      <a>Vendas</a>
+                    </li>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Caixas</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>CRM</a>
+                  <ul>
+                    <li>
+                      <a>Funil</a>
+                    </li>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Acesso</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Faltas</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                    <li>
+                      <a>Processamento</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a className="btn btn-ghost text-xl md:hidden">SysArena</a>
       </div>
       <div className="navbar-end flex gap-3 lg:flex-none">
         <button
