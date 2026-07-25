@@ -119,7 +119,7 @@ function MenuItem({
                 setTooltipOpen(false);
               }
             }}
-            className={`${collapsed ? `group/summary py-0 pl-2 ${depth <= 1 ? "pr-0.75" : ""}` : ""} ${
+            className={`${collapsed ? `group/summary py-0 pl-2 ${depth <= 1 ? "pr-0.75" : ""}` : "px-2"} ${
               rotateSummaryArrow
                 ? "[&::after]:translate-y-0 [&::after]:rotate-135"
                 : ""
@@ -135,10 +135,16 @@ function MenuItem({
                 collapsed ? `py-1.25 ${depth === 0 ? "pl-2" : "px-1"}` : ""
               }`}
             >
-              {IconComponent && (
+              {(depth === 0 || (collapsed && depth === 1)) && IconComponent && (
                 <IconComponent className={`my-1 inline-block ${size}`} />
               )}
-              {showText && <span>{item.name}</span>}
+              {showText && (
+                <span
+                  className={`${depth == 1 ? "text-sm" : depth > 1 ? "text-xs" : ""}`}
+                >
+                  {item.name}
+                </span>
+              )}
             </div>
           </summary>
           {collapsed && depth === 1
@@ -148,7 +154,7 @@ function MenuItem({
                     ref={submenuRefs.setFloating}
                     style={submenuStyles}
                     {...getFloatingProps()}
-                    className={`menu z-[9999] -mt-1 w-48 rounded-md bg-base-300 pt-0.5 pb-1 pl-0.5 shadow-lg transition-opacity duration-100 ${
+                    className={`menu z-[9999] -mt-1 w-48 rounded-md bg-base-300 pt-0.5 pb-1 pl-0.5 shadow-md transition-opacity duration-100 ${
                       submenuOpen ? "opacity-100" : "opacity-0"
                     }`}
                   >
@@ -172,7 +178,7 @@ function MenuItem({
                   className={
                     collapsed && depth < 1
                       ? "ml-0 rounded-md bg-base-100/60 py-1 pl-0.5"
-                      : "border-l"
+                      : "ml-2.5 rounded-r-md border-l bg-base-200/80 pl-1.5"
                   }
                 >
                   {item.submenu.map((sub) => (
@@ -209,16 +215,26 @@ function MenuItem({
         <button
           ref={tooltipRefs.setReference}
           className={`flex items-center gap-3 ${
-            collapsed && depth === 0 ? "justify-center py-1.25" : ""
+            collapsed && depth === 0
+              ? "justify-center py-1.25"
+              : !collapsed
+                ? "px-2"
+                : ""
           } ${isActive ? "menu-active" : ""}`}
           onMouseEnter={() => showTooltip && setTooltipOpen(true)}
           onMouseLeave={() => showTooltip && setTooltipOpen(false)}
           onClick={handleClick}
         >
-          {IconComponent && (
+          {(depth === 0 || (collapsed && depth === 1)) && IconComponent && (
             <IconComponent className={`my-1 inline-block ${size}`} />
           )}
-          {showText && <span>{item.name}</span>}
+          {showText && (
+            <span
+              className={`${depth == 1 ? "text-sm" : depth > 1 ? "text-xs" : ""}`}
+            >
+              {item.name}
+            </span>
+          )}
         </button>
       </li>
 

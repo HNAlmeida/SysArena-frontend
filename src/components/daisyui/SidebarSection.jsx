@@ -11,13 +11,13 @@ function SidebarSection({ section, collapsed = false, depth = 0 }) {
       {title && (
         <li>
           <h2
-            className={`menu-title pb-1 text-base-content/50 ${collapsed ? "px-0 text-center" : "text-left"}`}
+            className={`menu-title pb-1 text-base-content/50 ${collapsed ? "px-0 text-center" : "px-2 text-left"}`}
           >
             {title}
           </h2>
         </li>
       )}
-      {section.items.map((item, idx) => (
+      {section.items?.map((item, idx) => (
         <MenuItem
           key={`${item.name}-${item.path ?? idx}`}
           collapsed={collapsed}

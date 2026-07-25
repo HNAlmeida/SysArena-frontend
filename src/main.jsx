@@ -15,6 +15,66 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: "secretaria",
+        element: null,
+        children: [],
+      },
+      {
+        path: "professor",
+        element: null,
+        children: [],
+      },
+      {
+        path: "escolas",
+        element: null,
+        children: [],
+      },
+      {
+        path: "receber",
+        element: null,
+        children: [],
+      },
+      {
+        path: "pagar",
+        element: null,
+        children: [],
+      },
+      {
+        path: "conciliacao_bancaria",
+        element: null,
+        children: [],
+      },
+      {
+        path: "estoque",
+        element: null,
+        children: [],
+      },
+      {
+        path: "crm",
+        element: null,
+        children: [],
+      },
+      {
+        path: "acesso",
+        element: null,
+        children: [],
+      },
+      {
+        path: "horarios",
+        element: null,
+        children: [],
+      },
+      {
+        path: "compras",
+        element: null,
+        children: [],
+      },
+      {
+        path: "biblioteca",
+        element: null,
+        children: [],
+      },
+      {
         path: "dashboard",
         element: <Dashboard />,
         index: true,

@@ -1,14 +1,18 @@
 import { Hash, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useCallback, useRef } from "react";
 import { Navbar } from "./Navbar";
-import { menus } from "../data/menus";
+//import { menus } from "../data/menus";
 import SidebarSection from "./daisyui/SidebarSection";
 import { useSidebar } from "../hooks/useSidebar";
 import Dashboard from "../pages/Dashboard";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import { Footer } from "./Footer";
+import { getModuloByPath } from "../data/modulos";
 
 export default function DrawerSidebarDaisy() {
+  const location = useLocation();
+  const moduloAtual = getModuloByPath(location.pathname);
+
   const { collapsed, setCollapsed, isMobile } = useSidebar();
   const drawerRef = useRef(null);
 
@@ -78,7 +82,7 @@ export default function DrawerSidebarDaisy() {
             className={`navbar sticky top-0 z-10 flex h-16 items-center border-b border-base-100/50 bg-base-300 ${collapsed && "justify-center"}`}
           >
             <button
-              className={`btn w-full text-xl font-bold btn-ghost ${!collapsed && "justify-start px-2.5"}`}
+              className={`btn w-full btn-ghost text-xl font-bold ${!collapsed && "justify-start px-2.5"}`}
               aria-label={collapsed ? "SysArena" : undefined}
             >
               {collapsed ? "SA" : "SysArena"}
@@ -90,7 +94,7 @@ export default function DrawerSidebarDaisy() {
             className={`flex w-full flex-1 flex-col overflow-y-auto ${navScrollClass}`}
             id="d-menus-sidebar"
           >
-            {menus.map((section, idx) => (
+            {moduloAtual.menus?.map((section, idx) => (
               <SidebarSection
                 key={section.title?.sm ?? idx}
                 collapsed={collapsed}
