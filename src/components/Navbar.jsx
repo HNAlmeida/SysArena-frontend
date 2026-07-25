@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   PanelLeftOpen,
   PanelLeftClose,
@@ -9,52 +9,42 @@ import {
   Sun,
 } from "lucide-react";
 
-export function Navbar({ collapsed, setCollapsed, isMobile }) {
-  const getInitialDarkMode = () => {
-    const storedTheme = localStorage.getItem("theme");
-    const htmlTheme = document.documentElement.dataset.theme;
-    const prefersDark = window.matchMedia?.(
-      "(prefers-color-scheme: dim)",
-    ).matches;
-    const theme = storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "pastel");
-    return theme === "dim";
-  };
+function getInitialDarkMode() {
+  const storedTheme = localStorage.getItem("theme");
+  const htmlTheme = document.documentElement.dataset.theme;
+  const prefersDark = window.matchMedia?.(
+    "(prefers-color-scheme: dark)",
+  ).matches;
 
+  return (
+    (storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "pastel")) === "dim"
+  );
+}
+
+export function Navbar({ collapsed, setCollapsed, isMobile }) {
   const [isDarkTheme, setIsDarkTheme] = useState(getInitialDarkMode);
 
   useEffect(() => {
     const theme = isDarkTheme ? "dim" : "pastel";
-    if (document.documentElement.dataset.theme !== theme) {
-      document.documentElement.setAttribute("data-theme", theme);
-    }
+
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
   }, [isDarkTheme]);
 
-  const toggleTheme = (event) => {
-    const darkMode = event.target.checked;
-    setIsDarkTheme(darkMode);
-    document.documentElement.setAttribute(
-      "data-theme",
-      darkMode ? "dim" : "pastel",
-    );
-    localStorage.setItem("theme", darkMode ? "dim" : "pastel");
-  };
+  const toggleTheme = useCallback((event) => {
+    setIsDarkTheme(event.target.checked);
+  }, []);
 
-  const closeDrawer = () => {
-    const drawerInput = document.getElementById("drawer-main");
-    if (drawerInput) {
-      drawerInput.checked = false;
-    }
-  };
-
-  const toggleSidebar = () => {
+  const toggleSidebar = useCallback(() => {
     if (isMobile) {
-      // No mobile, apenas fecha o drawer
-      closeDrawer();
-    } else {
-      // No desktop/tablet, alterna o estado de colapso
-      setCollapsed(!collapsed);
+      document.getElementById("drawer-main")?.click();
+      return;
     }
-  };
+
+    setCollapsed((prev) => !prev);
+  }, [isMobile, setCollapsed]);
+
+  const SidebarIcon = collapsed ? PanelLeftOpen : PanelLeftClose;
 
   return (
     <div className="navbar sticky top-0 z-10 border-b border-base-300/70 bg-base-100/95 px-4 shadow-sm backdrop-blur sm:gap-1 md:gap-2">
@@ -76,7 +66,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
             aria-label={collapsed ? "Expandir sidebar" : "Recolher sidebar"}
             aria-expanded={!collapsed}
           >
-            {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
+            <SidebarIcon />
           </button>
         )}
 
@@ -116,28 +106,218 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
         </div>
       </div>
       <div className="navbar-center">
-        <ul className="menu menu-horizontal hidden p-1 md:flex">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
+        <div
+          className="megamenu megamenu-wide hidden megamenu-sm max-sm:megamenu-vertical md:flex"
+          id="my-megamenu"
+          popover="auto"
+        >
+          <span className="megamenu-active"></span>
+          <button popoverTarget="d1">Acadêmico</button>
+          <div id="d1" popover="auto">
+            <div className="flex items-start max-sm:flex-col">
+              <ul className="menu w-full items-start md:menu-horizontal">
                 <li>
-                  <a>Submenu 1</a>
+                  <a>Secretaria</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Notas</a>
+                    </li>
+                    <li>
+                      <a>Históricos</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                    <li>
+                      <a>Gráficos</a>
+                    </li>
+                    <li>
+                      <a>Censo Escolar</a>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <a>Professor</a>
+                  <ul>
+                    <li>
+                      <a>Registro de aula / Frequência</a>
+                    </li>
+                    <li>
+                      <a>Comunicados / Ocorrências</a>
+                    </li>
+                    <li>
+                      <a>Notas</a>
+                    </li>
+                    <li>
+                      <a>Tarefas</a>
+                    </li>
+                    <li>
+                      <a>Redação</a>
+                    </li>
+                    <li>
+                      <a>EAD</a>
+                    </li>
+                    <li>
+                      <a>Coordenação</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Escolas</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Empresas</a>
+                    </li>
+                    <li>
+                      <a>Rotinas</a>
+                    </li>
+                    <li>
+                      <a>Dicionário de dados</a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
-        <a className="btn text-xl btn-ghost md:hidden">SysArena</a>
+            </div>
+          </div>
+          <button popoverTarget="d2">Financeiro</button>
+          <div id="d2" popover="auto">
+            <div className="flex items-start max-sm:flex-col">
+              <ul className="menu w-full items-start md:menu-horizontal">
+                <li>
+                  <a>Receber</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Duplicatas</a>
+                    </li>
+                    <li>
+                      <a>Notas fiscais</a>
+                    </li>
+                    <li>
+                      <a>Caixas</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                    <li>
+                      <a>Gráficos</a>
+                    </li>
+                    <li>
+                      <a>Matrícula Online</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Pagar</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Lançamentos</a>
+                    </li>
+                    <li>
+                      <a>Caixas</a>
+                    </li>
+                    <li>
+                      <a>Controle Bancário</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Conciliação Bancária</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Notas</a>
+                    </li>
+                    <li>
+                      <a>Históricos</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                    <li>
+                      <a>Gráficos</a>
+                    </li>
+                    <li>
+                      <a>Censo Escolar</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button popoverTarget="d3">Administrativo</button>
+          <div id="d3" popover="auto">
+            <div className="flex items-start max-sm:flex-col">
+              <ul className="menu w-full items-start md:menu-horizontal">
+                <li>
+                  <a>Estoque</a>
+                  <ul>
+                    <li>
+                      <a>Vendas</a>
+                    </li>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Caixas</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>CRM</a>
+                  <ul>
+                    <li>
+                      <a>Funil</a>
+                    </li>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Acesso</a>
+                  <ul>
+                    <li>
+                      <a>Cadastros</a>
+                    </li>
+                    <li>
+                      <a>Faltas</a>
+                    </li>
+                    <li>
+                      <a>Relatórios</a>
+                    </li>
+                    <li>
+                      <a>Processamento</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a className="btn btn-ghost text-xl md:hidden">SysArena</a>
       </div>
       <div className="navbar-end flex gap-3 lg:flex-none">
         <button
@@ -148,12 +328,15 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
         >
           <Search />
         </button>
-        <input
-          type="text"
-          placeholder="Search"
-          className="input-bordered input hidden w-24 md:w-auto lg:block"
-          aria-label="Campo de busca"
-        />
+        <label className="input hidden md:w-auto lg:flex">
+          <Search className="h-[1em] opacity-50" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="grow"
+            aria-label="Campo de busca"
+          />
+        </label>
         <label
           className="tooltip swap tooltip-bottom h-10 swap-rotate"
           data-tip="Alternar tema claro/escuro"
@@ -168,11 +351,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
               isDarkTheme ? "Tema escuro ativado" : "Tema claro ativado"
             }
           />
-
-          {/* sun icon */}
           <Sun className="swap-on" />
-
-          {/* moon icon */}
           <Moon className="swap-off" />
         </label>
         <div className="dropdown dropdown-end">

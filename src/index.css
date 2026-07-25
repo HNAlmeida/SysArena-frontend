@@ -72,3 +72,7 @@ summary .tooltip.tooltip-right::after,
 summary .tooltip.tooltip-right::before {
   transform: translate(calc(0.25rem + 15px), -50%) !important;
 }
+
+.megamenu-wide [popover] {
+  width: unset;
+}

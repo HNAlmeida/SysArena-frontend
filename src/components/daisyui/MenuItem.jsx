@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router";
 import FloatingTooltip from "../FloatingTooltip";
 import {
@@ -13,7 +13,7 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 
-export default function MenuItem({
+function MenuItem({
   item,
   collapsed = false,
   depth = 0,
@@ -23,24 +23,20 @@ export default function MenuItem({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isActive = useMemo(() => {
-    if (!item.path) return false;
-    if (location.pathname === item.path) return true;
-    return item.path !== "/" && location.pathname.startsWith(`${item.path}/`);
-  }, [item.path, location.pathname]);
+  const isActive =
+    item.path &&
+    (location.pathname === item.path ||
+      (item.path !== "/" && location.pathname.startsWith(`${item.path}/`)));
 
-  const config = useMemo(
-    () => ({
-      hasSubmenu: item.submenu?.length > 0,
-      size: depth > 0 ? "size-4" : "size-5",
-      padding: depth >= 1 && depth <= 2 && collapsed ? "px-1" : "",
-      showText: !collapsed || depth > 1,
-      showTooltip:
-        collapsed &&
-        (depth === 0 || (depth <= 1 && !(item.submenu?.length > 0))),
-    }),
-    [item.submenu, collapsed, depth],
-  );
+  const hasSubmenu = item.submenu?.length > 0;
+
+  const size = depth > 0 ? "size-4" : "size-5";
+
+  const padding = depth >= 1 && depth <= 2 && collapsed ? "px-1" : "";
+
+  const showText = !collapsed || depth > 1;
+
+  const showTooltip = collapsed && (depth === 0 || (depth <= 1 && !hasSubmenu));
 
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -83,23 +79,27 @@ export default function MenuItem({
 
   const menuKey = `${depth}-${item.name}-${item.path ?? ""}`;
 
-  const toggleItem = (key) => {
+  const toggleItem = useCallback(() => {
     setOpenItems?.((prev) => ({
       ...prev,
-      [key]: !prev[key],
+      [menuKey]: !prev[menuKey],
     }));
-  };
+  }, [menuKey, setOpenItems]);
 
-  const Icon = item.icon && (
-    <item.icon className={`my-1 inline-block ${config.size}`} />
-  );
+  const IconComponent = item.icon;
 
-  if (config.hasSubmenu) {
+  const handleClick = useCallback(() => {
+    if (item.path) {
+      navigate(item.path);
+    }
+  }, [item.path, navigate]);
+
+  if (hasSubmenu) {
     // Rotaciona a seta ::after quando compacto e depth === 1
     const rotateSummaryArrow = collapsed && depth === 1;
 
     return (
-      <li className={config.padding}>
+      <li className={padding}>
         <details
           className={`${depth === 1 && collapsed && "group"} flex flex-col gap-0.5 overflow-visible`}
           open={!!openItems?.[menuKey]}
@@ -119,7 +119,7 @@ export default function MenuItem({
                 setTooltipOpen(false);
               }
             }}
-            className={`${collapsed ? `group/summary py-0 pl-2 ${depth <= 1 ? "pr-0.75" : ""}` : ""} ${
+            className={`${collapsed ? `group/summary py-0 pl-2 ${depth <= 1 ? "pr-0.75" : ""}` : "px-2"} ${
               rotateSummaryArrow
                 ? "[&::after]:translate-y-0 [&::after]:rotate-135"
                 : ""
@@ -127,7 +127,7 @@ export default function MenuItem({
             onClick={(e) => {
               e.preventDefault();
 
-              toggleItem(menuKey);
+              toggleItem();
             }}
           >
             <div
@@ -135,27 +135,34 @@ export default function MenuItem({
                 collapsed ? `py-1.25 ${depth === 0 ? "pl-2" : "px-1"}` : ""
               }`}
             >
-              {Icon}
-              {config.showText && <span>{item.name}</span>}
+              {(depth === 0 || (collapsed && depth === 1)) && IconComponent && (
+                <IconComponent className={`my-1 inline-block ${size}`} />
+              )}
+              {showText && (
+                <span
+                  className={`${depth == 1 ? "text-sm" : depth > 1 ? "text-xs" : ""}`}
+                >
+                  {item.name}
+                </span>
+              )}
             </div>
           </summary>
-          {collapsed && depth === 1 ? (
-            <>
-              {submenuOpen && (
+          {collapsed && depth === 1
+            ? submenuOpen && (
                 <FloatingPortal>
                   <ul
                     ref={submenuRefs.setFloating}
                     style={submenuStyles}
                     {...getFloatingProps()}
-                    className={`menu z-[9999] -mt-1 w-48 rounded-md bg-base-300 pt-0.5 pb-1 pl-0.5 shadow-lg transition-opacity duration-100 ${
+                    className={`menu z-[9999] -mt-1 w-48 rounded-md bg-base-300 pt-0.5 pb-1 pl-0.5 shadow-md transition-opacity duration-100 ${
                       submenuOpen ? "opacity-100" : "opacity-0"
                     }`}
                   >
                     <li className="menu-title">{item.name}</li>
 
-                    {item.submenu.map((sub, subIdx) => (
+                    {item.submenu.map((sub) => (
                       <MenuItem
-                        key={subIdx + 1}
+                        key={`${depth}-${sub.name}-${sub.path ?? ""}`}
                         collapsed={collapsed}
                         item={sub}
                         depth={depth + 1}
@@ -165,31 +172,28 @@ export default function MenuItem({
                     ))}
                   </ul>
                 </FloatingPortal>
+              )
+            : !!openItems?.[menuKey] && (
+                <ul
+                  className={
+                    collapsed && depth < 1
+                      ? "ml-0 rounded-md bg-base-100/60 py-1 pl-0.5"
+                      : "ml-2.5 rounded-r-md border-l bg-base-200/80 pl-1.5"
+                  }
+                >
+                  {item.submenu.map((sub) => (
+                    <MenuItem
+                      key={`${depth}-${sub.name}-${sub.path ?? ""}`}
+                      collapsed={collapsed}
+                      item={sub}
+                      depth={depth + 1}
+                      openItems={openItems}
+                      setOpenItems={setOpenItems}
+                    />
+                  ))}
+                </ul>
               )}
-            </>
-          ) : (
-            !!openItems?.[menuKey] && (
-              <ul
-                className={
-                  collapsed && depth < 1
-                    ? "ml-0 rounded-md bg-base-100/60 py-1 pl-0.5"
-                    : "border-l"
-                }
-              >
-                {item.submenu.map((sub, subIdx) => (
-                  <MenuItem
-                    key={subIdx + 1}
-                    collapsed={collapsed}
-                    item={sub}
-                    depth={depth + 1}
-                    openItems={openItems}
-                    setOpenItems={setOpenItems}
-                  />
-                ))}
-              </ul>
-            )
-          )}
-          {config.showTooltip && tooltipOpen && (
+          {showTooltip && tooltipOpen && (
             <FloatingPortal>
               <div
                 ref={tooltipRefs.setFloating}
@@ -205,35 +209,41 @@ export default function MenuItem({
     );
   }
 
-  const handleClick = () => {
-    if (item.path) {
-      navigate(item.path);
-    }
-  };
-
   return (
     <>
-      <li className={config.padding}>
+      <li className={padding}>
         <button
           ref={tooltipRefs.setReference}
           className={`flex items-center gap-3 ${
-            collapsed && depth === 0 ? "justify-center py-1.25" : ""
+            collapsed && depth === 0
+              ? "justify-center py-1.25"
+              : !collapsed
+                ? "px-2"
+                : ""
           } ${isActive ? "menu-active" : ""}`}
-          onMouseEnter={() => config.showTooltip && setTooltipOpen(true)}
-          onMouseLeave={() => config.showTooltip && setTooltipOpen(false)}
+          onMouseEnter={() => showTooltip && setTooltipOpen(true)}
+          onMouseLeave={() => showTooltip && setTooltipOpen(false)}
           onClick={handleClick}
         >
-          {Icon}
-          {config.showText && <span>{item.name}</span>}
+          {(depth === 0 || (collapsed && depth === 1)) && IconComponent && (
+            <IconComponent className={`my-1 inline-block ${size}`} />
+          )}
+          {showText && (
+            <span
+              className={`${depth == 1 ? "text-sm" : depth > 1 ? "text-xs" : ""}`}
+            >
+              {item.name}
+            </span>
+          )}
         </button>
       </li>
 
-      {config.showTooltip && tooltipOpen && (
+      {showTooltip && tooltipOpen && (
         <FloatingPortal>
           <div
             ref={tooltipRefs.setFloating}
             style={tooltipStyles}
-            className={`z-[9999] rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content shadow-lg ${collapsed && depth == 1 && "ml-1"}`}
+            className={`z-[9999] rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content shadow-lg ${collapsed && depth === 1 && "ml-1"}`}
           >
             {item.name}
           </div>
@@ -242,3 +252,5 @@ export default function MenuItem({
     </>
   );
 }
+
+export default memo(MenuItem);
