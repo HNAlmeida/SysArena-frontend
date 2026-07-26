@@ -12,6 +12,7 @@ import {
   Bell,
   Blocks,
   Book,
+  BookA,
   BookDown,
   Bookmark,
   BookMarked,
@@ -154,6 +155,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/", isActive: true }],
       },
+      { type: "divider", label: { sm: "Módulos", xs: "MOD" } },
       {
         title: { sm: "Acadêmico", xs: "ACD" },
         items: [
@@ -185,6 +187,7 @@ const modulos = [
           { name: "Biblioteca", icon: LibraryBig, path: "/biblioteca" },
         ],
       },
+      { type: "divider", label: { sm: "Outros", xs: "OUT" } },
       {
         title: { sm: "Exemplos", xs: "EXE" },
         items: [
@@ -212,6 +215,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         //title: { sm: "Cadastros", xs: "CAD" },
         items: [
@@ -406,6 +410,7 @@ const modulos = [
       },
       {
         items: [{ name: "Censo Escolar", icon: DatabaseCheck, path: null }],
+        divider: { label: { sm: "Censo", xs: "CEN" } },
       },
     ],
   },
@@ -418,7 +423,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
-
+      { type: "divider" },
       {
         items: [
           {
@@ -426,7 +431,7 @@ const modulos = [
             icon: FileText,
             path: null,
           },
-          { name: "Comunicados / Ocorrências", icon: Bell, path: null },
+          { name: "Comunicados", icon: Bell, path: null },
           { name: "Notas", icon: NotebookTabs, path: null },
           { name: "Tarefas", icon: ListTodo, path: null },
           { name: "Redação", icon: FilePenLine, path: null },
@@ -454,6 +459,7 @@ const modulos = [
           },
         ],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -468,6 +474,7 @@ const modulos = [
           },
         ],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -494,6 +501,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -532,12 +540,12 @@ const modulos = [
               { name: "Unificar Disciplinas", icon: BookOpen, path: null },
               { name: "Unificar Responsáveis", icon: User, path: null },
               {
-                name: "Alterar Grupos de Períodos Letivos em Lote",
+                name: "Alterar Grupos de Períodos",
                 icon: CalendarRange,
                 path: null,
               },
               {
-                name: "Alterar Grades de Horários em Lote",
+                name: "Alterar Grades de Horários",
                 icon: CalendarDays,
                 path: null,
               },
@@ -545,7 +553,7 @@ const modulos = [
           },
           {
             name: "Dicionário de dados",
-            icon: Book,
+            icon: BookA,
             submenu: [
               { name: "Consulta", icon: BookSearch, path: null },
               { name: "Cadastro", icon: BookPlus, path: null },
@@ -564,6 +572,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -721,6 +730,7 @@ const modulos = [
           { name: "Caixas", icon: PiggyBank, path: null },
         ],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -793,6 +803,7 @@ const modulos = [
           },
         ],
       },
+      { type: "divider" },
       {
         items: [{ name: "Matrícula Online", icon: ClipboardCheck, path: null }],
       },
@@ -807,6 +818,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -854,6 +866,7 @@ const modulos = [
           },
         ],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -879,6 +892,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [{ name: "Cadastros", icon: Database, submenu: [] }],
       },
@@ -906,6 +920,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -942,6 +957,7 @@ const modulos = [
           { name: "Caixas", icon: PiggyBank, path: null },
         ],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -967,6 +983,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -1022,6 +1039,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -1094,6 +1112,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [{ name: "Criar Horário", icon: ClockPlus, path: null }],
       },
@@ -1137,6 +1156,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [
           {
@@ -1195,6 +1215,7 @@ const modulos = [
       {
         items: [{ name: "Início", icon: Home, path: "/" }],
       },
+      { type: "divider" },
       {
         items: [
           {

@@ -178,7 +178,7 @@ function MenuItem({
                   className={
                     collapsed && depth < 1
                       ? "ml-0 rounded-md bg-base-100/60 py-1 pl-0.5"
-                      : "ml-2.5 rounded-r-md border-l bg-base-200/80 pl-1.5"
+                      : "ml-2.5 rounded-r-md border-l border-l-base-content/60 bg-base-200/80 pl-1.5"
                   }
                 >
                   {item.submenu.map((sub) => (
@@ -216,7 +216,7 @@ function MenuItem({
           ref={tooltipRefs.setReference}
           className={`flex items-center gap-3 ${
             collapsed && depth === 0
-              ? "justify-center py-1.25"
+              ? "justify-center"
               : !collapsed
                 ? "px-2"
                 : ""
