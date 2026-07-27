@@ -6,7 +6,13 @@ function SidebarSection({ section, collapsed = false, depth = 0 }) {
   const [openItems, setOpenItems] = useState({});
 
   if (section.type === "divider") {
-    return <SidebarDivider collapsed={collapsed} label={section.label} />;
+    return (
+      <SidebarDivider
+        collapsed={collapsed}
+        label={section.label}
+        className="my-1 px-1"
+      />
+    );
   }
 
   const title = collapsed ? section.title?.xs : section.title?.sm;
@@ -16,7 +22,11 @@ function SidebarSection({ section, collapsed = false, depth = 0 }) {
   return (
     <>
       {section.divider && (
-        <SidebarDivider collapsed={collapsed} label={dividerLabel} />
+        <SidebarDivider
+          collapsed={collapsed}
+          label={dividerLabel}
+          className="my-1 px-1"
+        />
       )}
       <ul className="sidebar-menu menu w-full gap-0.5 py-0">
         {title && (
