@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { Link } from "react-router";
 import {
   PanelLeftOpen,
   PanelLeftClose,
@@ -8,6 +9,97 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
+import { modulos } from "../data/modulos";
+
+const menuGroups = Array.from(
+  modulos
+    .filter((modulo) => modulo.group)
+    .reduce((groups, modulo) => {
+      if (!groups.has(modulo.group)) {
+        groups.set(modulo.group, {
+          name: modulo.group,
+          modules: [],
+        });
+      }
+
+      groups.get(modulo.group).modules.push(modulo);
+
+      return groups;
+    }, new Map())
+    .values(),
+);
+
+function ModuleColumn({ modulo }) {
+  const Icon = modulo.icon;
+
+  return (
+    <li>
+      <Link to={modulo.id}>
+        {Icon && <Icon className="size-4 shrink-0" />}
+        <span className="min-w-0 truncate">{modulo.name}</span>
+      </Link>
+    </li>
+  );
+}
+
+function MobileMegaMenu() {
+  return (
+    <div className="max-xs:megamenu-vertical megamenu megamenu-sm md:hidden">
+      <button
+        className="btn btn-circle btn-ghost after:content-none"
+        popoverTarget="navbar-megamenu-mobile"
+      >
+        <SquareMenu />
+      </button>
+      <div id="navbar-megamenu-mobile" popover="auto">
+        {menuGroups.map((group) => {
+          return (
+            <Fragment key={group.name}>
+              <div className="divider mb-0 divider-start px-3 text-sm font-semibold">
+                {group.name}
+              </div>
+              <ul className="menu w-full">
+                {group.modules.map((modulo) => (
+                  <ModuleColumn key={modulo.id} modulo={modulo} />
+                ))}
+              </ul>
+            </Fragment>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function DesktopMegaMenu() {
+  return (
+    <div
+      className="megamenu megamenu-wide hidden megamenu-sm max-sm:megamenu-vertical md:flex"
+      id="my-megamenu"
+      popover="auto"
+    >
+      <span className="megamenu-active"></span>
+      {menuGroups.map((group, index) => {
+        const popoverId = `navbar-megamenu-${index}`;
+
+        return (
+          <Fragment key={group.name}>
+            <button popoverTarget={popoverId}>{group.name}</button>
+            <div id={popoverId} popover="auto">
+              <div className="flex items-start max-sm:flex-col">
+                <ul className="menu w-full items-start md:menu-horizontal">
+                  {group.modules.map((modulo) => (
+                    <ModuleColumn key={modulo.id} modulo={modulo} />
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </Fragment>
+        );
+      })}
+    </div>
+  );
+}
 
 function getInitialDarkMode() {
   const storedTheme = localStorage.getItem("theme");
@@ -70,253 +162,10 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
           </button>
         )}
 
-        <div className="dropdown">
-          <button
-            tabIndex={0}
-            role="button"
-            className="btn btn-circle btn-ghost md:hidden"
-            aria-label="Menu dropdown"
-            aria-haspopup="true"
-          >
-            <SquareMenu />
-          </button>
-          <ul
-            tabIndex="-1"
-            className="dropdown-content menu z-1 mt-3 w-52 menu-sm rounded-box bg-base-100 p-2 shadow"
-            role="menu"
-          >
-            <li role="menuitem">
-              <a>Item 1</a>
-            </li>
-            <li role="menuitem">
-              <a>Parent</a>
-              <ul className="p-2">
-                <li role="menuitem">
-                  <a>Submenu 1</a>
-                </li>
-                <li role="menuitem">
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </li>
-            <li role="menuitem">
-              <a>Item 3</a>
-            </li>
-          </ul>
-        </div>
+        <MobileMegaMenu />
       </div>
       <div className="navbar-center">
-        <div
-          className="megamenu megamenu-wide hidden megamenu-sm max-sm:megamenu-vertical md:flex"
-          id="my-megamenu"
-          popover="auto"
-        >
-          <span className="megamenu-active"></span>
-          <button popoverTarget="d1">Acadêmico</button>
-          <div id="d1" popover="auto">
-            <div className="flex items-start max-sm:flex-col">
-              <ul className="menu w-full items-start md:menu-horizontal">
-                <li>
-                  <a>Secretaria</a>
-                  <ul>
-                    <li>
-                      <a>Cadastros</a>
-                    </li>
-                    <li>
-                      <a>Notas</a>
-                    </li>
-                    <li>
-                      <a>Históricos</a>
-                    </li>
-                    <li>
-                      <a>Relatórios</a>
-                    </li>
-                    <li>
-                      <a>Gráficos</a>
-                    </li>
-                    <li>
-                      <a>Censo Escolar</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>Professor</a>
-                  <ul>
-                    <li>
-                      <a>Registro de aula / Frequência</a>
-                    </li>
-                    <li>
-                      <a>Comunicados / Ocorrências</a>
-                    </li>
-                    <li>
-                      <a>Notas</a>
-                    </li>
-                    <li>
-                      <a>Tarefas</a>
-                    </li>
-                    <li>
-                      <a>Redação</a>
-                    </li>
-                    <li>
-                      <a>EAD</a>
-                    </li>
-                    <li>
-                      <a>Coordenação</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>Escolas</a>
-                  <ul>
-                    <li>
-                      <a>Cadastros</a>
-                    </li>
-                    <li>
-                      <a>Empresas</a>
-                    </li>
-                    <li>
-                      <a>Rotinas</a>
-                    </li>
-                    <li>
-                      <a>Dicionário de dados</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <button popoverTarget="d2">Financeiro</button>
-          <div id="d2" popover="auto">
-            <div className="flex items-start max-sm:flex-col">
-              <ul className="menu w-full items-start md:menu-horizontal">
-                <li>
-                  <a>Receber</a>
-                  <ul>
-                    <li>
-                      <a>Cadastros</a>
-                    </li>
-                    <li>
-                      <a>Duplicatas</a>
-                    </li>
-                    <li>
-                      <a>Notas fiscais</a>
-                    </li>
-                    <li>
-                      <a>Caixas</a>
-                    </li>
-                    <li>
-                      <a>Relatórios</a>
-                    </li>
-                    <li>
-                      <a>Gráficos</a>
-                    </li>
-                    <li>
-                      <a>Matrícula Online</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>Pagar</a>
-                  <ul>
-                    <li>
-                      <a>Cadastros</a>
-                    </li>
-                    <li>
-                      <a>Lançamentos</a>
-                    </li>
-                    <li>
-                      <a>Caixas</a>
-                    </li>
-                    <li>
-                      <a>Controle Bancário</a>
-                    </li>
-                    <li>
-                      <a>Relatórios</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>Conciliação Bancária</a>
-                  <ul>
-                    <li>
-                      <a>Cadastros</a>
-                    </li>
-                    <li>
-                      <a>Notas</a>
-                    </li>
-                    <li>
-                      <a>Históricos</a>
-                    </li>
-                    <li>
-                      <a>Relatórios</a>
-                    </li>
-                    <li>
-                      <a>Gráficos</a>
-                    </li>
-                    <li>
-                      <a>Censo Escolar</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <button popoverTarget="d3">Administrativo</button>
-          <div id="d3" popover="auto">
-            <div className="flex items-start max-sm:flex-col">
-              <ul className="menu w-full items-start md:menu-horizontal">
-                <li>
-                  <a>Estoque</a>
-                  <ul>
-                    <li>
-                      <a>Vendas</a>
-                    </li>
-                    <li>
-                      <a>Cadastros</a>
-                    </li>
-                    <li>
-                      <a>Caixas</a>
-                    </li>
-                    <li>
-                      <a>Relatórios</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>CRM</a>
-                  <ul>
-                    <li>
-                      <a>Funil</a>
-                    </li>
-                    <li>
-                      <a>Cadastros</a>
-                    </li>
-                    <li>
-                      <a>Relatórios</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>Acesso</a>
-                  <ul>
-                    <li>
-                      <a>Cadastros</a>
-                    </li>
-                    <li>
-                      <a>Faltas</a>
-                    </li>
-                    <li>
-                      <a>Relatórios</a>
-                    </li>
-                    <li>
-                      <a>Processamento</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        <DesktopMegaMenu />
         <a className="btn btn-ghost text-xl md:hidden">SysArena</a>
       </div>
       <div className="navbar-end flex gap-3 lg:flex-none">
