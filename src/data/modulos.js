@@ -146,7 +146,7 @@ import {
   Waypoints,
 } from "lucide-react";
 
-const modulos = [
+export const modulos = [
   {
     id: "/",
     icon: Home,

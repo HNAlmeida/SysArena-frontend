@@ -165,7 +165,7 @@ function MenuItem({
                     ref={submenuRefs.setFloating}
                     style={submenuStyles}
                     {...getFloatingProps()}
-                    className={`menu z-[9999] -mt-1 w-48 rounded-md bg-base-300 px-0.5 pt-0.5 pb-1 shadow-md transition-opacity duration-100 ${
+                    className={`menu z-9999 -mt-1 w-48 rounded-md bg-base-300 px-0.5 pt-0.5 pb-1 shadow-md transition-opacity duration-100 ${
                       submenuOpen ? "opacity-100" : "opacity-0"
                     }`}
                   >
@@ -209,7 +209,7 @@ function MenuItem({
               <div
                 ref={tooltipRefs.setFloating}
                 style={tooltipStyles}
-                className="z-[9999] rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content shadow-lg"
+                className="z-9999 rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content shadow-lg"
               >
                 {item.name}
               </div>
@@ -254,7 +254,7 @@ function MenuItem({
           <div
             ref={tooltipRefs.setFloating}
             style={tooltipStyles}
-            className={`z-[9999] rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content shadow-lg ${collapsed && depth === 1 && "ml-1"}`}
+            className={`z-9999 rounded-md bg-neutral px-2 py-1 text-sm text-neutral-content shadow-lg ${collapsed && depth === 1 && "ml-1"}`}
           >
             {item.name}
           </div>
