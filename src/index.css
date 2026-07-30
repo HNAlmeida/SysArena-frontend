@@ -3,9 +3,9 @@
   themes:
     light,
     nord,
-    winter,
+    winter --default,
     cmyk,
-    pastel --default,
+    pastel,
     dark,
     sunset,
     night,
@@ -47,10 +47,6 @@
   .botao.vermelho {
     @apply bg-red-500;
   }
-}
-
-.submenu {
-  /* margin-left: -1px; */ /* cola o submenu no botão pai */
 }
 
 #d-menus-sidebar {
