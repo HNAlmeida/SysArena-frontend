@@ -109,7 +109,7 @@ function getInitialDarkMode() {
   ).matches;
 
   return (
-    (storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "pastel")) === "dim"
+    (storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "winter")) === "dim"
   );
 }
 
@@ -117,7 +117,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
   const [isDarkTheme, setIsDarkTheme] = useState(getInitialDarkMode);
 
   useEffect(() => {
-    const theme = isDarkTheme ? "dim" : "pastel";
+    const theme = isDarkTheme ? "dim" : "winter";
 
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("theme", theme);
