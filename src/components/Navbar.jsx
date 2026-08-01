@@ -220,8 +220,8 @@ function DesktopMegaMenu({ accessCounts, onItemAccess }) {
           <Fragment key={group.name}>
             <button popoverTarget={popoverId}>{group.name}</button>
             <div id={popoverId} popover="auto">
-              <div className="max-h-[calc(100vh-5rem)] overflow-y-auto p-3">
-                <ul className="menu grid w-[min(72rem,calc(95vw-2rem))] grid-cols-3 items-start gap-2 p-0 lg:w-[min(56rem,calc(65vw-2rem))]">
+              <div className="max-h-[calc(100vh-5rem)] overflow-y-auto">
+                <ul className="menu grid grid-cols-3 items-start gap-2">
                   {group.modules.map((modulo) => (
                     <ModuleColumn
                       key={modulo.id}
@@ -413,7 +413,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
           </div>
           <ul
             tabIndex="-1"
-            className="dropdown-content menu z-1 mt-3 w-52 menu-sm rounded-box bg-base-100 p-2 shadow"
+            className="menu dropdown-content z-1 mt-3 w-52 menu-sm rounded-box bg-base-100 p-2 shadow"
             role="menu"
           >
             <li role="menuitem">
