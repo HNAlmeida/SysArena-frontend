@@ -100,6 +100,7 @@ export default function DrawerSidebarDaisy() {
                 collapsed={collapsed}
                 section={section}
                 depth={0}
+                moduleId={moduloAtual.id}
               />
             ))}
           </nav>
