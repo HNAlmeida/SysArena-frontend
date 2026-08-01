@@ -13,6 +13,10 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import SidebarDivider from "./SidebarDivider";
+import {
+  buildMenuAccessKey,
+  incrementMenuAccessCount,
+} from "../../utils/menuAccess";
 
 function MenuItem({
   item,
@@ -20,6 +24,8 @@ function MenuItem({
   depth = 0,
   openItems,
   setOpenItems,
+  menuAccessModuleId,
+  menuAccessPath = [],
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,6 +36,13 @@ function MenuItem({
       (item.path !== "/" && location.pathname.startsWith(`${item.path}/`)));
 
   const hasSubmenu = item.submenu?.length > 0;
+  const currentMenuAccessPath = item.name
+    ? [...menuAccessPath, item.name]
+    : menuAccessPath;
+  const menuAccessKey =
+    !hasSubmenu && item.name !== "Início"
+      ? buildMenuAccessKey(menuAccessModuleId, currentMenuAccessPath)
+      : null;
 
   const size = depth > 0 ? "size-4" : "size-5";
 
@@ -90,10 +103,12 @@ function MenuItem({
   const IconComponent = item.icon;
 
   const handleClick = useCallback(() => {
+    incrementMenuAccessCount(menuAccessKey);
+
     if (item.path) {
       navigate(item.path);
     }
-  }, [item.path, navigate]);
+  }, [item.path, menuAccessKey, navigate]);
 
   if (item.type === "divider") {
     return (
@@ -179,6 +194,8 @@ function MenuItem({
                         depth={depth + 1}
                         openItems={openItems}
                         setOpenItems={setOpenItems}
+                        menuAccessModuleId={menuAccessModuleId}
+                        menuAccessPath={currentMenuAccessPath}
                       />
                     ))}
                   </ul>
@@ -200,6 +217,8 @@ function MenuItem({
                       depth={depth + 1}
                       openItems={openItems}
                       setOpenItems={setOpenItems}
+                      menuAccessModuleId={menuAccessModuleId}
+                      menuAccessPath={currentMenuAccessPath}
                     />
                   ))}
                 </ul>

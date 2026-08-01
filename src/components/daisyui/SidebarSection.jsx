@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 
-function SidebarSection({ section, collapsed = false, depth = 0 }) {
+function SidebarSection({ section, collapsed = false, depth = 0, moduleId }) {
   const [openItems, setOpenItems] = useState({});
 
   if (section.type === "divider") {
@@ -46,6 +46,7 @@ function SidebarSection({ section, collapsed = false, depth = 0 }) {
             depth={depth}
             openItems={openItems}
             setOpenItems={setOpenItems}
+            menuAccessModuleId={moduleId}
           />
         ))}
       </ul>

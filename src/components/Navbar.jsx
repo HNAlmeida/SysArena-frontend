@@ -10,6 +10,12 @@ import {
   Sun,
 } from "lucide-react";
 import { modulos } from "../data/modulos";
+import {
+  buildMenuAccessKey,
+  incrementMenuAccessCount,
+  MENU_ACCESS_UPDATED_EVENT,
+  readMenuAccessCounts,
+} from "../utils/menuAccess";
 
 const menuGroups = Array.from(
   modulos
@@ -29,7 +35,135 @@ const menuGroups = Array.from(
     .values(),
 );
 
-function ModuleColumn({ modulo }) {
+function getStaticAccessCount(item) {
+  return Number(
+    item.accessCount ?? item.accesses ?? item.hits ?? item.views ?? 0,
+  );
+}
+
+function collectMenuItems(items, modulo, parentNames = [], collected = []) {
+  items?.forEach((item) => {
+    if (!item || item.type === "divider") {
+      return;
+    }
+
+    const itemPath = [...parentNames, item.name];
+    const hasSubmenu = item.submenu?.length > 0;
+
+    if (item.name !== "Início" && !hasSubmenu) {
+      collected.push({
+        ...item,
+        menuItemLabel: item.name,
+        menuLabel: itemPath.join(" -> "),
+        menuParentLabel: parentNames.join(" -> "),
+        fallbackRank: collected.length,
+        menuKey: buildMenuAccessKey(modulo.id, itemPath),
+      });
+    }
+
+    if (hasSubmenu) {
+      collectMenuItems(item.submenu, modulo, itemPath, collected);
+    }
+  });
+
+  return collected;
+}
+
+function getModuleMenuItems(modulo) {
+  const rootItems =
+    modulo.menus?.flatMap((section) =>
+      section.type === "divider" ? [] : (section.items ?? []),
+    ) ?? [];
+
+  return collectMenuItems(rootItems, modulo);
+}
+
+function getMostAccessedItems(modulo, accessCounts) {
+  return getModuleMenuItems(modulo)
+    .map((item) => ({
+      ...item,
+      totalAccesses: accessCounts[item.menuKey] ?? getStaticAccessCount(item),
+    }))
+    .sort((current, next) => {
+      if (next.totalAccesses !== current.totalAccesses) {
+        return next.totalAccesses - current.totalAccesses;
+      }
+
+      return current.fallbackRank - next.fallbackRank;
+    })
+    .slice(0, 5);
+}
+
+function MenuAction({ item, className = "", onAccess }) {
+  const Icon = item.icon;
+
+  const handleAccess = () => {
+    onAccess?.(item.menuKey);
+  };
+
+  const content = (
+    <>
+      {Icon && <Icon className="size-4 shrink-0" />}
+      <span className="flex min-w-0 flex-col text-left leading-tight">
+        <span className="truncate">{item.menuItemLabel ?? item.name}</span>
+        {item.menuParentLabel && (
+          <span className="truncate text-[0.7rem] font-normal text-base-content/55">
+            {item.menuParentLabel}
+          </span>
+        )}
+      </span>
+    </>
+  );
+
+  if (item.path) {
+    return (
+      <Link
+        to={item.path}
+        className={className}
+        onClick={handleAccess}
+        title={item.menuLabel}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className={className}
+      onClick={handleAccess}
+      title={item.menuLabel}
+    >
+      {content}
+    </button>
+  );
+}
+
+function ModuleColumn({ modulo, accessCounts, onItemAccess }) {
+  const Icon = modulo.icon;
+  const items = getMostAccessedItems(modulo, accessCounts);
+
+  return (
+    <li>
+      <Link to={modulo.id}>
+        {Icon && <Icon className="size-4 shrink-0" />}
+        <span className="min-w-0 truncate">{modulo.name}</span>
+      </Link>
+      {items.length > 0 && (
+        <ul>
+          {items.map((item, index) => (
+            <li key={`${modulo.id}-${item.name}-${index}`}>
+              <MenuAction item={item} onAccess={onItemAccess} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
+
+function ModuleLink({ modulo }) {
   const Icon = modulo.icon;
 
   return (
@@ -60,7 +194,7 @@ function MobileMegaMenu() {
               </div>
               <ul className="menu w-full">
                 {group.modules.map((modulo) => (
-                  <ModuleColumn key={modulo.id} modulo={modulo} />
+                  <ModuleLink key={modulo.id} modulo={modulo} />
                 ))}
               </ul>
             </Fragment>
@@ -71,7 +205,7 @@ function MobileMegaMenu() {
   );
 }
 
-function DesktopMegaMenu() {
+function DesktopMegaMenu({ accessCounts, onItemAccess }) {
   return (
     <div
       className="megamenu megamenu-wide hidden megamenu-sm max-sm:megamenu-vertical md:flex"
@@ -86,10 +220,15 @@ function DesktopMegaMenu() {
           <Fragment key={group.name}>
             <button popoverTarget={popoverId}>{group.name}</button>
             <div id={popoverId} popover="auto">
-              <div className="flex items-start max-sm:flex-col">
-                <ul className="menu w-full items-start md:menu-horizontal">
+              <div className="max-h-[calc(100vh-5rem)] overflow-y-auto p-3">
+                <ul className="menu grid w-[min(72rem,calc(95vw-2rem))] grid-cols-3 items-start gap-2 p-0 lg:w-[min(56rem,calc(65vw-2rem))]">
                   {group.modules.map((modulo) => (
-                    <ModuleColumn key={modulo.id} modulo={modulo} />
+                    <ModuleColumn
+                      key={modulo.id}
+                      modulo={modulo}
+                      accessCounts={accessCounts}
+                      onItemAccess={onItemAccess}
+                    />
                   ))}
                 </ul>
               </div>
@@ -115,6 +254,8 @@ function getInitialDarkMode() {
 
 export function Navbar({ collapsed, setCollapsed, isMobile }) {
   const [isDarkTheme, setIsDarkTheme] = useState(getInitialDarkMode);
+  const [menuAccessCounts, setMenuAccessCounts] =
+    useState(readMenuAccessCounts);
 
   useEffect(() => {
     const theme = isDarkTheme ? "dim" : "winter";
@@ -135,6 +276,31 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
 
     setCollapsed((prev) => !prev);
   }, [isMobile, setCollapsed]);
+
+  const handleMenuItemAccess = useCallback((menuKey) => {
+    if (!menuKey) {
+      return;
+    }
+
+    setMenuAccessCounts(incrementMenuAccessCount(menuKey));
+  }, []);
+
+  useEffect(() => {
+    const syncMenuAccessCounts = (event) => {
+      setMenuAccessCounts(event.detail?.counts ?? readMenuAccessCounts());
+    };
+
+    window.addEventListener(MENU_ACCESS_UPDATED_EVENT, syncMenuAccessCounts);
+    window.addEventListener("storage", syncMenuAccessCounts);
+
+    return () => {
+      window.removeEventListener(
+        MENU_ACCESS_UPDATED_EVENT,
+        syncMenuAccessCounts,
+      );
+      window.removeEventListener("storage", syncMenuAccessCounts);
+    };
+  }, []);
 
   const SidebarIcon = collapsed ? PanelLeftOpen : PanelLeftClose;
 
@@ -165,7 +331,10 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
         <MobileMegaMenu />
       </div>
       <div className="navbar-center">
-        <DesktopMegaMenu />
+        <DesktopMegaMenu
+          accessCounts={menuAccessCounts}
+          onItemAccess={handleMenuItemAccess}
+        />
         <a className="btn btn-ghost text-xl md:hidden">SysArena</a>
       </div>
       <div className="navbar-end flex gap-3 lg:flex-none">
