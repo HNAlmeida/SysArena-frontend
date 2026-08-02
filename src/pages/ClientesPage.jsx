@@ -252,7 +252,7 @@ function ClientesPage() {
         <div className="card-body p-0">
           <div className="flex flex-col gap-3 px-5 pt-5 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <label className="input input-sm w-full sm:w-56">
+              <label className="input w-full input-sm sm:w-56">
                 <Search className="size-3.5 text-base-content/80" />
                 <input
                   className="min-w-0"
@@ -278,7 +278,7 @@ function ClientesPage() {
             <div className="inline-flex items-center justify-end gap-3">
               <Link
                 aria-label="Link criar cliente"
-                className="btn btn-sm btn-primary max-sm:btn-square"
+                className="btn btn-primary btn-sm max-sm:btn-square"
                 to="/clientes/create"
               >
                 <Plus className="size-4" />
@@ -329,7 +329,7 @@ function ClientesPage() {
           </div>
 
           <div className="mt-4 overflow-auto">
-            <table className="table">
+            <table className="table table-sm">
               <thead>
                 <tr>
                   <th>
@@ -421,7 +421,7 @@ function ClientesPage() {
                         </button>
                         <button
                           aria-label={`Excluir ${cliente.nome}`}
-                          className="btn btn-square border-transparent btn-outline btn-sm btn-error"
+                          className="btn btn-square border-transparent btn-outline btn-error btn-sm"
                           type="button"
                           onClick={() => abrirConfirmacao(cliente)}
                         >
@@ -542,7 +542,7 @@ function ClientesPage() {
             </form>
             <form method="dialog">
               <button
-                className="btn btn-sm btn-error"
+                className="btn btn-error btn-sm"
                 onClick={confirmarExclusao}
               >
                 Sim, exclua
