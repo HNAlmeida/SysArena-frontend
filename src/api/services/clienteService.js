@@ -1,6 +1,6 @@
 import { api } from "../client";
 import { endpoints } from "../endpoints";
-import { normalizarLista } from "../helpers/response";
+import { normalizarLista } from "../helpers/pagination";
 
 const endpoint = endpoints.clientes;
 
