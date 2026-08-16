@@ -3,6 +3,7 @@ import {
   BadgeX,
   ChevronLeft,
   ChevronRight,
+  CircleX,
   CopyPlus,
   DownloadCloud,
   Eye,
@@ -14,121 +15,9 @@ import {
   Wand,
   X,
 } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useClientes } from "../hooks/useClientes";
 import { Link } from "react-router";
-
-const clientesIniciais = [
-  {
-    id: 1,
-    nome: "James S. Jackson",
-    genero: "masculino",
-    email: "james.jack@mail.com",
-    mobile: "845-346-8004",
-    compras: 24,
-    recebido: 405,
-    verificado: true,
-    dataAdesao: "29 Mar 2024",
-  },
-  {
-    id: 2,
-    nome: "Nancy J. Schlueter",
-    genero: "feminino",
-    email: "nancy.schlueter@mail.com",
-    mobile: "703-776-8514",
-    compras: 21,
-    recebido: 630,
-    verificado: true,
-    dataAdesao: "29 Abr 2024",
-  },
-  {
-    id: 3,
-    nome: "Anthony J. Lew",
-    genero: "masculino",
-    email: "anthony_lew@mail.com",
-    mobile: "864-215-2686",
-    compras: 68,
-    recebido: 1241,
-    verificado: false,
-    dataAdesao: "29 Nov 2023",
-  },
-  {
-    id: 4,
-    nome: "Amanda M. Kyle",
-    genero: "feminino",
-    email: "amanda_kyle@mail.com",
-    mobile: "253-565-3114",
-    compras: 43,
-    recebido: 648,
-    verificado: true,
-    dataAdesao: "29 Jan 2024",
-  },
-  {
-    id: 5,
-    nome: "Christine P. Parker",
-    genero: "feminino",
-    email: "christine.parker@mail.com",
-    mobile: "910-508-2946",
-    compras: 36,
-    recebido: 740,
-    verificado: false,
-    dataAdesao: "29 Mai 2023",
-  },
-  {
-    id: 6,
-    nome: "Crystal P. Deberry",
-    genero: "feminino",
-    email: "crystal_deberry@mail.com",
-    mobile: "520-398-7428",
-    compras: 49,
-    recebido: 354,
-    verificado: true,
-    dataAdesao: "29 Jun 2023",
-  },
-  {
-    id: 7,
-    nome: "Herman K. Byard",
-    genero: "masculino",
-    email: "herman_byard@mail.com",
-    mobile: "248-376-5482",
-    compras: 47,
-    recebido: 358,
-    verificado: true,
-    dataAdesao: "29 Jul 2023",
-  },
-  {
-    id: 8,
-    nome: "Patricia T. Gandy",
-    genero: "feminino",
-    email: "pat.gandy@mail.com",
-    mobile: "707-237-9941",
-    compras: 78,
-    recebido: 1547,
-    verificado: true,
-    dataAdesao: "29 Dez 2023",
-  },
-  {
-    id: 9,
-    nome: "James J. Herron",
-    genero: "masculino",
-    email: "james@mail.com",
-    mobile: "262-726-6322",
-    compras: 54,
-    recebido: 1080,
-    verificado: true,
-    dataAdesao: "29 Abr 2023",
-  },
-  {
-    id: 10,
-    nome: "Gladys J. Tudor",
-    genero: "feminino",
-    email: "tudor_jgladys@mail.com",
-    mobile: "508-975-1756",
-    compras: 48,
-    recebido: 1280,
-    verificado: true,
-    dataAdesao: "29 Mar 2023",
-  },
-];
 
 const moeda = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -148,7 +37,6 @@ function getIniciais(nome) {
 
 function ClientesPage() {
   const modalRef = useRef(null);
-  const [clientes, setClientes] = useState(clientesIniciais);
   const [busca, setBusca] = useState("");
   const [status, setStatus] = useState("");
   const [pagina, setPagina] = useState(1);
@@ -156,32 +44,16 @@ function ClientesPage() {
   const [selecionados, setSelecionados] = useState([]);
   const [clienteParaExcluir, setClienteParaExcluir] = useState(null);
 
-  const clientesFiltrados = useMemo(() => {
-    const termo = busca.trim().toLowerCase();
+  const { clientes, total, carregando, erro, excluir } = useClientes({
+    pagina,
+    porPagina,
+    busca,
+    status,
+  });
 
-    return clientes.filter((cliente) => {
-      const correspondeBusca =
-        !termo ||
-        [cliente.nome, cliente.email, cliente.mobile].some((campo) =>
-          campo.toLowerCase().includes(termo),
-        );
-      const correspondeStatus =
-        !status ||
-        (status === "S" && cliente.verificado) ||
-        (status === "N" && !cliente.verificado);
-
-      return correspondeBusca && correspondeStatus;
-    });
-  }, [busca, clientes, status]);
-
-  const totalPaginas = Math.max(
-    1,
-    Math.ceil(clientesFiltrados.length / porPagina),
-  );
+  const totalPaginas = Math.max(1, Math.ceil(total / porPagina));
   const paginaAtual = Math.min(pagina, totalPaginas);
-  const inicio = (paginaAtual - 1) * porPagina;
-  const clientesPaginados = clientesFiltrados.slice(inicio, inicio + porPagina);
-  const idsDaPagina = clientesPaginados.map((cliente) => cliente.id);
+  const idsDaPagina = clientes.map((cliente) => cliente.id);
   const todosSelecionados =
     idsDaPagina.length > 0 &&
     idsDaPagina.every((id) => selecionados.includes(id));
@@ -224,13 +96,13 @@ function ClientesPage() {
     modalRef.current?.showModal();
   }
 
-  function confirmarExclusao() {
+  async function confirmarExclusao() {
     if (!clienteParaExcluir) return;
 
-    setClientes((lista) =>
-      lista.filter((cliente) => cliente.id !== clienteParaExcluir.id),
-    );
+    await excluir(clienteParaExcluir.id);
+
     setSelecionados((ids) => ids.filter((id) => id !== clienteParaExcluir.id));
+
     setClienteParaExcluir(null);
   }
 
@@ -329,183 +201,207 @@ function ClientesPage() {
           </div>
 
           <div className="mt-4 overflow-auto">
-            <table className="table table-sm">
-              <thead>
-                <tr>
-                  <th>
-                    <input
-                      aria-label="Selecionar todos os clientes da página"
-                      className="checkbox checkbox-sm"
-                      type="checkbox"
-                      checked={todosSelecionados}
-                      onChange={alternarSelecaoDaPagina}
-                    />
-                  </th>
-                  <th>ID</th>
-                  <th>Nome</th>
-                  <th>Email</th>
-                  <th className="text-center">Mobile</th>
-                  <th className="text-right">Compras</th>
-                  <th className="text-right">Recebido</th>
-                  <th className="text-center">Verificado</th>
-                  <th className="text-center">Data de adesão</th>
-                  <th className="text-center">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clientesPaginados.map((cliente) => (
-                  <tr
-                    key={cliente.id}
-                    className="cursor-pointer *:text-nowrap hover:bg-base-200/40"
-                  >
-                    <th>
-                      <input
-                        aria-label={`Selecionar ${cliente.nome}`}
-                        className="checkbox checkbox-sm"
-                        type="checkbox"
-                        checked={selecionados.includes(cliente.id)}
-                        onChange={() => alternarSelecao(cliente.id)}
-                      />
-                    </th>
-                    <td className="font-medium">{cliente.id}</td>
-                    <td>
-                      <div className="flex items-center space-x-3 truncate">
-                        <div className="placeholder avatar">
-                          <div className="flex size-10 items-center justify-center rounded-box bg-neutral text-neutral-content">
-                            <span className="text-sm font-semibold">
-                              {getIniciais(cliente.nome)}
-                            </span>
+            {carregando ? (
+              <div className="p-10 text-center">
+                <span className="loading loading-sm loading-ring"></span>{" "}
+                Carregando clientes...
+              </div>
+            ) : erro ? (
+              <div className="mx-5 mb-5 alert alert-error">
+                <CircleX />
+                Não foi possível carregar os clientes.
+              </div>
+            ) : (
+              <>
+                <table className="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input
+                          aria-label="Selecionar todos os clientes da página"
+                          className="checkbox checkbox-sm"
+                          type="checkbox"
+                          checked={todosSelecionados}
+                          onChange={alternarSelecaoDaPagina}
+                        />
+                      </th>
+                      <th>ID</th>
+                      <th>Nome</th>
+                      <th>Email</th>
+                      <th className="text-center">Mobile</th>
+                      <th className="text-right">Compras</th>
+                      <th className="text-right">Recebido</th>
+                      <th className="text-center">Verificado</th>
+                      <th className="text-center">Data de adesão</th>
+                      <th className="text-center">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clientes.map((cliente) => (
+                      <tr
+                        key={cliente.id}
+                        className="cursor-pointer *:text-nowrap hover:bg-base-200/40"
+                      >
+                        <th>
+                          <input
+                            aria-label={`Selecionar ${cliente.nome}`}
+                            className="checkbox checkbox-sm"
+                            type="checkbox"
+                            checked={selecionados.includes(cliente.id)}
+                            onChange={() => alternarSelecao(cliente.id)}
+                          />
+                        </th>
+                        <td className="font-medium">{cliente.id}</td>
+                        <td>
+                          <div className="flex items-center space-x-3 truncate">
+                            <div className="placeholder avatar">
+                              <div className="flex size-10 items-center justify-center rounded-box bg-neutral text-neutral-content">
+                                <span className="text-sm font-semibold">
+                                  {getIniciais(cliente.nome)}
+                                </span>
+                              </div>
+                            </div>
+                            <div>
+                              <p className="font-medium">{cliente.nome}</p>
+                              <p className="text-xs text-base-content/80 capitalize">
+                                {cliente.genero}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                        <div>
-                          <p className="font-medium">{cliente.nome}</p>
-                          <p className="text-xs text-base-content/80 capitalize">
-                            {cliente.genero}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>{cliente.email}</td>
-                    <td className="text-center">{cliente.mobile}</td>
-                    <td className="text-right">{cliente.compras}</td>
-                    <td className="text-right text-sm font-medium">
-                      {moeda.format(cliente.recebido)}
-                    </td>
-                    <td className="text-center">
-                      <div className="inline-flex w-fit">
-                        {cliente.verificado ? (
-                          <BadgeCheck className="size-4.5 text-success" />
-                        ) : (
-                          <BadgeX className="size-4.5 text-error" />
-                        )}
-                      </div>
-                    </td>
-                    <td className="text-center text-sm">
-                      {cliente.dataAdesao}
-                    </td>
-                    <td className="text-center">
-                      <div className="inline-flex w-fit">
-                        <Link
-                          aria-label={`Editar ${cliente.nome}`}
-                          className="btn btn-square btn-ghost btn-sm"
-                          to={`/clientes/${cliente.id}`}
-                        >
-                          <Pencil className="size-4 text-base-content/80" />
-                        </Link>
-                        <button
-                          aria-label={`Visualizar ${cliente.nome}`}
-                          className="btn btn-square btn-ghost btn-sm"
-                          type="button"
-                        >
-                          <Eye className="size-4 text-base-content/80" />
-                        </button>
-                        <button
-                          aria-label={`Excluir ${cliente.nome}`}
-                          className="btn btn-square border-transparent btn-outline btn-error btn-sm"
-                          type="button"
-                          onClick={() => abrirConfirmacao(cliente)}
-                        >
-                          <Trash className="size-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                        </td>
+                        <td>{cliente.email}</td>
+                        <td className="text-center">{cliente.mobile}</td>
+                        <td className="text-right">{cliente.compras}</td>
+                        <td className="text-right text-sm font-medium">
+                          {moeda.format(cliente.recebido)}
+                        </td>
+                        <td className="text-center">
+                          <div className="inline-flex w-fit">
+                            {cliente.verificado ? (
+                              <BadgeCheck className="size-4.5 text-success" />
+                            ) : (
+                              <BadgeX className="size-4.5 text-error" />
+                            )}
+                          </div>
+                        </td>
+                        <td className="text-center text-sm">
+                          {cliente.dataAdesao}
+                        </td>
+                        <td className="text-center">
+                          <div className="inline-flex w-fit">
+                            <Link
+                              aria-label={`Editar ${cliente.nome}`}
+                              className="tooltip btn btn-square btn-ghost btn-sm"
+                              data-tip="Editar"
+                              to={`/clientes/${cliente.id}`}
+                            >
+                              <Pencil className="size-4 text-base-content/80" />
+                            </Link>
+                            <button
+                              aria-label={`Visualizar ${cliente.nome}`}
+                              className="tooltip btn btn-square btn-ghost btn-sm"
+                              data-tip="Visualizar"
+                              type="button"
+                            >
+                              <Eye className="size-4 text-base-content/80" />
+                            </button>
+                            <button
+                              aria-label={`Excluir ${cliente.nome}`}
+                              className="tooltip btn btn-square border-transparent btn-outline tooltip-error btn-error btn-sm"
+                              data-tip="Excluir"
+                              type="button"
+                              onClick={() => abrirConfirmacao(cliente)}
+                            >
+                              <Trash className="size-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
 
-                {clientesPaginados.length === 0 && (
-                  <tr>
-                    <td
-                      className="py-10 text-center text-base-content/70"
-                      colSpan="10"
+                    {clientes.length === 0 && (
+                      <tr>
+                        <td
+                          className="py-10 text-center text-base-content/70"
+                          colSpan="10"
+                        >
+                          Nenhum cliente encontrado.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+                <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex gap-2 text-sm text-base-content/80 hover:text-base-content">
+                    <span className="hidden sm:inline">
+                      Resultados por página
+                    </span>
+                    <select
+                      className="select w-18 select-xs"
+                      aria-label="Resultados por página"
+                      value={porPagina}
+                      onChange={(event) =>
+                        atualizarPorPagina(event.target.value)
+                      }
                     >
-                      Nenhum cliente encontrado.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex gap-2 text-sm text-base-content/80 hover:text-base-content">
-              <span className="hidden sm:inline">Resultados por página</span>
-              <select
-                className="select w-18 select-xs"
-                aria-label="Resultados por página"
-                value={porPagina}
-                onChange={(event) => atualizarPorPagina(event.target.value)}
-              >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-            </div>
-            <span className="text-sm text-base-content/80">
-              Mostrando{" "}
-              <span className="font-medium text-base-content">
-                {clientesFiltrados.length === 0 ? 0 : inicio + 1} até{" "}
-                {Math.min(inicio + porPagina, clientesFiltrados.length)}
-              </span>{" "}
-              de {clientesFiltrados.length} registros
-            </span>
-            <div className="inline-flex items-center gap-1">
-              <button
-                className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
-                aria-label="Página anterior"
-                type="button"
-                disabled={paginaAtual === 1}
-                onClick={() => setPagina((valor) => Math.max(1, valor - 1))}
-              >
-                <ChevronLeft />
-              </button>
-              {Array.from(
-                { length: totalPaginas },
-                (_, index) => index + 1,
-              ).map((numero) => (
-                <button
-                  key={numero}
-                  className={`btn btn-circle btn-xs sm:btn-sm ${
-                    numero === paginaAtual ? "btn-primary" : "btn-ghost"
-                  }`}
-                  type="button"
-                  onClick={() => setPagina(numero)}
-                >
-                  {numero}
-                </button>
-              ))}
-              <button
-                className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
-                aria-label="Próxima página"
-                type="button"
-                disabled={paginaAtual === totalPaginas}
-                onClick={() =>
-                  setPagina((valor) => Math.min(totalPaginas, valor + 1))
-                }
-              >
-                <ChevronRight />
-              </button>
-            </div>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                  <span className="text-sm text-base-content/80">
+                    Mostrando{" "}
+                    <span className="font-medium text-base-content">
+                      {clientes.length === 0
+                        ? 0
+                        : (paginaAtual - 1) * porPagina + 1}{" "}
+                      até {Math.min(paginaAtual * porPagina, total)}
+                    </span>{" "}
+                    de {total} registros
+                  </span>
+                  <div className="inline-flex items-center gap-1">
+                    <button
+                      className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
+                      aria-label="Página anterior"
+                      type="button"
+                      disabled={paginaAtual === 1}
+                      onClick={() =>
+                        setPagina((valor) => Math.max(1, valor - 1))
+                      }
+                    >
+                      <ChevronLeft />
+                    </button>
+                    {Array.from(
+                      { length: totalPaginas },
+                      (_, index) => index + 1,
+                    ).map((numero) => (
+                      <button
+                        key={numero}
+                        className={`btn btn-circle btn-xs sm:btn-sm ${
+                          numero === paginaAtual ? "btn-primary" : "btn-ghost"
+                        }`}
+                        type="button"
+                        onClick={() => setPagina(numero)}
+                      >
+                        {numero}
+                      </button>
+                    ))}
+                    <button
+                      className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
+                      aria-label="Próxima página"
+                      type="button"
+                      disabled={paginaAtual === totalPaginas}
+                      onClick={() =>
+                        setPagina((valor) => Math.min(totalPaginas, valor + 1))
+                      }
+                    >
+                      <ChevronRight />
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
