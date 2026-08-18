@@ -418,7 +418,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
           >
             <li role="menuitem">
               <a className="justify-between">
-                Profile
+                Perfil
                 <span className="badge">New</span>
               </a>
             </li>
