@@ -213,7 +213,10 @@ export const modulos = [
     group: "Acadêmico",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -223,8 +226,8 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Alunos", icon: User2, path: null },
-              { name: "Responsáveis", icon: User, path: null },
+              { name: "Alunos", icon: User2, path: "/alunos" },
+              { name: "Responsáveis", icon: User, path: "/responsaveis" },
               {
                 name: "Extras Curriculares",
                 icon: Stars,
@@ -238,17 +241,21 @@ export const modulos = [
                 name: "Estrutura Escolar",
                 icon: School2,
                 submenu: [
-                  { name: "Cursos", icon: BookMarked, path: null },
-                  { name: "Segmentos", icon: Split, path: null },
-                  { name: "Níveis", icon: Layers3, path: null },
-                  { name: "Turmas", icon: Blocks, path: null },
+                  { name: "Cursos", icon: BookMarked, path: "/cursos" },
+                  { name: "Segmentos", icon: Split, path: "/segmentos" },
+                  { name: "Níveis", icon: Layers3, path: "/niveis" },
+                  { name: "Turmas", icon: Blocks, path: "/turmas" },
                   { name: "Grades de Aulas", icon: Grid2X2, path: null },
                   { name: "Grupo de Períodos", icon: null, path: null },
-                  { name: "Períodos Letivos", icon: null, path: null },
+                  {
+                    name: "Períodos Letivos",
+                    icon: null,
+                    path: "/periodosLetivos",
+                  },
                   {
                     name: "Itinerários Formativos",
                     icon: Waypoints,
-                    path: null,
+                    path: "/itinerariosFormativos",
                   },
                 ],
               },
@@ -256,13 +263,21 @@ export const modulos = [
                 name: "Pedagógico",
                 icon: Brain,
                 submenu: [
-                  { name: "Assuntos", icon: null, path: null },
-                  { name: "Conceitos", icon: null, path: null },
-                  { name: "Disciplinas", icon: BookOpen, path: null },
-                  { name: "Funcionários", icon: UserCog2, path: null },
-                  { name: "Métodos de Avaliação", icon: null, path: null },
-                  { name: "Minutagens", icon: null, path: null },
-                  { name: "Trilhas", icon: null, path: null },
+                  { name: "Assuntos", icon: null, path: "/assuntos" },
+                  { name: "Conceitos", icon: null, path: "/conceitos" },
+                  { name: "Disciplinas", icon: BookOpen, path: "/disciplinas" },
+                  {
+                    name: "Funcionários",
+                    icon: UserCog2,
+                    path: "/funcionários",
+                  },
+                  {
+                    name: "Métodos de Avaliação",
+                    icon: null,
+                    path: "/metodosAvaliacao",
+                  },
+                  { name: "Minutagens", icon: null, path: "/minutagens" },
+                  { name: "Trilhas", icon: null, path: "/trilhas" },
                 ],
               },
               {
@@ -275,7 +290,9 @@ export const modulos = [
               {
                 name: "Serviços",
                 icon: Utensils,
-                submenu: [{ name: "Refeições", icon: null, path: null }],
+                submenu: [
+                  { name: "Refeições", icon: null, path: "/refeicoes" },
+                ],
               },
               {
                 name: "Administrativo",
@@ -284,16 +301,32 @@ export const modulos = [
                   {
                     name: "Categorias de Responsáveis",
                     icon: Users,
-                    path: null,
+                    path: "/categoriasResponsaveis",
                   },
-                  { name: "Departamentos", icon: null, path: null },
-                  { name: "Estabelecimentos", icon: School, path: null },
-                  { name: "Feriados", icon: CalendarHeart, path: null },
-                  { name: "Gestores", icon: UserCog, path: null },
-                  { name: "Grupos de Alunos", icon: null, path: null },
-                  { name: "Motivos de Saída", icon: null, path: null },
-                  { name: "Processos", icon: null, path: null },
-                  { name: "Tipo de Solicitações", icon: null, path: null },
+                  { name: "Departamentos", icon: null, path: "/departamentos" },
+                  {
+                    name: "Estabelecimentos",
+                    icon: School,
+                    path: "/estabelecimentos",
+                  },
+                  { name: "Feriados", icon: CalendarHeart, path: "/feriados" },
+                  { name: "Gestores", icon: UserCog, path: "/gestores" },
+                  {
+                    name: "Grupos de Alunos",
+                    icon: null,
+                    path: "/gruposAlunos",
+                  },
+                  {
+                    name: "Motivos de Saída",
+                    icon: null,
+                    path: "/motivosSaida",
+                  },
+                  { name: "Processos", icon: null, path: "/processos" },
+                  {
+                    name: "Tipos de Solicitações",
+                    icon: null,
+                    path: "/tiposSolicitacoes",
+                  },
                 ],
               },
             ],
@@ -305,9 +338,14 @@ export const modulos = [
           {
             name: "Notas",
             icon: NotebookTabs,
+            path: "/notas",
             submenu: [
-              { name: "Digitação", icon: NotebookPen, path: null },
-              { name: "Consolidação", icon: SigmaSquare, path: null },
+              { name: "Digitação", icon: NotebookPen, path: "/digitacao" },
+              {
+                name: "Consolidação",
+                icon: SigmaSquare,
+                path: "/consolidacao",
+              },
             ],
           },
         ],
@@ -318,8 +356,8 @@ export const modulos = [
             name: "Históricos",
             icon: History,
             submenu: [
-              { name: "Digitação", icon: FilePenLine, path: null },
-              { name: "Emissão", icon: FileArchive, path: null },
+              { name: "Digitação", icon: FilePenLine, path: "digitacao" },
+              { name: "Emissão", icon: FileArchive, path: "emissao" },
             ],
           },
           {
@@ -421,7 +459,10 @@ export const modulos = [
     group: "Acadêmico",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -499,7 +540,10 @@ export const modulos = [
     group: "Acadêmico",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -570,7 +614,10 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -816,7 +863,10 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -890,7 +940,10 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -918,7 +971,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -981,7 +1037,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -1037,7 +1096,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -1110,7 +1172,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -1154,7 +1219,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -1213,7 +1281,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -1289,15 +1360,48 @@ export const modulos = [
   },
 ];
 
-// src/data/modulos.js
+function normalizePath(path = "/") {
+  if (!path || path === "/") {
+    return "/";
+  }
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  return normalizedPath.endsWith("/")
+    ? normalizedPath.slice(0, -1)
+    : normalizedPath;
+}
+
+export function resolveMenuPath(moduleId = "/", itemPaths) {
+  const paths = Array.isArray(itemPaths) ? itemPaths : [itemPaths];
+  const routeSegments = paths.filter(Boolean);
+
+  if (routeSegments.length === 0) {
+    return null;
+  }
+
+  const normalizedModuleId = normalizePath(moduleId);
+
+  if (routeSegments.length === 1 && routeSegments[0] === "/") {
+    return normalizedModuleId;
+  }
+
+  const modulePrefix = normalizedModuleId === "/" ? "" : normalizedModuleId;
+  const normalizedItemPath = routeSegments
+    .filter((path) => path !== "/")
+    .map((path) => path.replace(/^\/+|\/+$/g, ""))
+    .filter(Boolean)
+    .join("/");
+
+  return normalizePath(`${modulePrefix}/${normalizedItemPath}`);
+}
+
 export function getModuloByPath(pathname = "/") {
   if (!pathname || pathname === "/") {
     return modulos.find((modulo) => modulo.id === "/") ?? modulos[0];
   }
 
-  const normalizedPath = pathname.endsWith("/")
-    ? pathname.slice(0, -1)
-    : pathname;
+  const normalizedPath = normalizePath(pathname);
 
   return (
     modulos

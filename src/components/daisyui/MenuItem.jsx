@@ -17,6 +17,7 @@ import {
   buildMenuAccessKey,
   incrementMenuAccessCount,
 } from "../../utils/menuAccess";
+import { resolveMenuPath } from "../../data/modulos";
 
 function MenuItem({
   item,
@@ -26,14 +27,27 @@ function MenuItem({
   setOpenItems,
   menuAccessModuleId,
   menuAccessPath = [],
+  menuRoutePath = [],
 }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const currentMenuRoutePath = item.absolutePath
+    ? menuRoutePath
+    : item.path
+      ? [...menuRoutePath, item.path]
+      : menuRoutePath;
+  const resolvedPath = item.absolutePath
+    ? resolveMenuPath("/", item.absolutePath)
+    : item.path
+      ? resolveMenuPath(menuAccessModuleId, currentMenuRoutePath)
+      : null;
 
   const isActive =
-    item.path &&
-    (location.pathname === item.path ||
-      (item.path !== "/" && location.pathname.startsWith(`${item.path}/`)));
+    resolvedPath &&
+    (location.pathname === resolvedPath ||
+      (item.path !== "/" &&
+        resolvedPath !== "/" &&
+        location.pathname.startsWith(`${resolvedPath}/`)));
 
   const hasSubmenu = item.submenu?.length > 0;
   const currentMenuAccessPath = item.name
@@ -105,10 +119,10 @@ function MenuItem({
   const handleClick = useCallback(() => {
     incrementMenuAccessCount(menuAccessKey);
 
-    if (item.path) {
-      navigate(item.path);
+    if (resolvedPath) {
+      navigate(resolvedPath);
     }
-  }, [item.path, menuAccessKey, navigate]);
+  }, [menuAccessKey, navigate, resolvedPath]);
 
   if (item.type === "divider") {
     return (
@@ -196,6 +210,7 @@ function MenuItem({
                         setOpenItems={setOpenItems}
                         menuAccessModuleId={menuAccessModuleId}
                         menuAccessPath={currentMenuAccessPath}
+                        menuRoutePath={currentMenuRoutePath}
                       />
                     ))}
                   </ul>
@@ -219,6 +234,7 @@ function MenuItem({
                       setOpenItems={setOpenItems}
                       menuAccessModuleId={menuAccessModuleId}
                       menuAccessPath={currentMenuAccessPath}
+                      menuRoutePath={currentMenuRoutePath}
                     />
                   ))}
                 </ul>
