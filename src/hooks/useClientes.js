@@ -15,13 +15,14 @@ export function useClientes({
 
   useEffect(() => {
     const controller = new AbortController();
+    let ignore = false;
 
-    async function carregar() {
+    function carregar() {
       setCarregando(true);
       setErro(null);
 
-      try {
-        const response = await clienteService.listar(
+      clienteService
+        .listar(
           {
             pagina,
             porPagina,
@@ -31,28 +32,37 @@ export function useClientes({
           {
             signal: controller.signal,
           },
-        );
+        )
+        .then((response) => {
+          if (ignore) return;
 
-        if (controller.signal.aborted) return;
+          setClientes(response.dados);
+          setTotal(response.total);
+        })
+        .catch((error) => {
+          if (
+            ignore ||
+            error.name === "CanceledError" ||
+            error.name === "AbortError"
+          ) {
+            return;
+          }
 
-        setClientes(response.dados);
-        setTotal(response.total);
-      } catch (error) {
-        if (error.name === "CanceledError" || error.name === "AbortError") {
-          return;
-        }
-
-        setErro(error);
-      } finally {
-        if (!controller.signal.aborted) {
-          setCarregando(false);
-        }
-      }
+          setErro(error);
+        })
+        .finally(() => {
+          if (!ignore) {
+            setCarregando(false);
+          }
+        });
     }
 
     carregar();
 
-    return () => controller.abort();
+    return () => {
+      ignore = true;
+      controller.abort();
+    };
   }, [pagina, porPagina, busca, status, reload]);
 
   const recarregar = useCallback(() => {

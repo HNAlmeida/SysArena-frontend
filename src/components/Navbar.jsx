@@ -202,6 +202,7 @@ function MobileMegaMenu() {
       <button
         className="btn btn-circle btn-ghost after:content-none"
         popoverTarget="navbar-megamenu-mobile"
+        aria-label="Abrir menu de módulos"
       >
         <SquareMenu />
       </button>
@@ -355,7 +356,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
           accessCounts={menuAccessCounts}
           onItemAccess={handleMenuItemAccess}
         />
-        <a className="btn btn-ghost text-xl md:hidden">SysArena</a>
+        <span className="btn btn-ghost text-xl md:hidden">SysArena</span>
       </div>
       <div className="navbar-end flex gap-3 lg:flex-none">
         <button
@@ -437,16 +438,16 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
             role="menu"
           >
             <li role="menuitem">
-              <a className="justify-between">
+              <button type="button" className="justify-between">
                 Perfil
                 <span className="badge">New</span>
-              </a>
+              </button>
             </li>
             <li role="menuitem">
-              <a>Settings</a>
+              <button type="button">Settings</button>
             </li>
             <li role="menuitem">
-              <a>Logout</a>
+              <button type="button">Logout</button>
             </li>
           </ul>
         </div>

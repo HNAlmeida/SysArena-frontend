@@ -38,9 +38,9 @@ function SidebarSection({ section, collapsed = false, depth = 0, moduleId }) {
             </h2>
           </li>
         )}
-        {section.items?.map((item, idx) => (
+        {section.items?.map((item) => (
           <MenuItem
-            key={`${item.name}-${item.path ?? idx}`}
+            key={`${item.name}-${item.path ?? item.absolutePath ?? ""}-${collapsed}`}
             collapsed={collapsed}
             item={item}
             depth={depth}

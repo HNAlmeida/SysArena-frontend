@@ -18,6 +18,7 @@ import {
 import { useRef, useState } from "react";
 import { useClientes } from "../hooks/useClientes";
 import { Link } from "react-router";
+import { PageHeader } from "../components/PageHeader";
 
 const moeda = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -33,6 +34,162 @@ function getIniciais(nome) {
     .map((parte) => parte[0])
     .join("")
     .toUpperCase();
+}
+
+function ClientesToolbar({
+  busca,
+  status,
+  selecionadosCount,
+  onBuscaChange,
+  onStatusChange,
+}) {
+  return (
+    <div className="flex flex-col gap-3 px-5 pt-5 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <label className="input w-full input-sm sm:w-56">
+          <Search className="size-3.5 text-base-content/80" />
+          <input
+            className="min-w-0"
+            placeholder="Buscar clientes"
+            aria-label="Buscar clientes"
+            type="search"
+            value={busca}
+            onChange={(event) => onBuscaChange(event.target.value)}
+          />
+        </label>
+        <select
+          className="select w-full select-sm sm:w-44"
+          aria-label="Status de verificação"
+          value={status}
+          onChange={(event) => onStatusChange(event.target.value)}
+        >
+          <option value="">Todos os status</option>
+          <option value="S">Verificado</option>
+          <option value="N">Não verificado</option>
+        </select>
+      </div>
+
+      <div className="inline-flex items-center justify-end gap-3">
+        <Link
+          aria-label="Link criar cliente"
+          className="btn btn-primary btn-sm max-sm:btn-square"
+          to="/clientes/create"
+        >
+          <Plus className="size-4" />
+          <span className="hidden sm:inline">Novo Cliente</span>
+        </Link>
+        <div className="dropdown dropdown-end dropdown-bottom">
+          <button
+            type="button"
+            className="btn btn-square border-base-300 btn-ghost btn-sm"
+            aria-label="Mais opções"
+          >
+            <Settings2 className="size-4" />
+          </button>
+          <div className="dropdown-content z-1 w-52 rounded-box bg-base-200 shadow-sm">
+            <ul className="menu w-full p-2">
+              <li>
+                <button type="button" disabled={selecionadosCount === 0}>
+                  <Wand className="size-4" />
+                  Ações em massa
+                </button>
+              </li>
+            </ul>
+            <hr className="border-base-300" />
+            <ul className="menu w-full p-2">
+              <li>
+                <button type="button">
+                  <DownloadCloud className="size-4" />
+                  Importar da loja
+                </button>
+              </li>
+              <li>
+                <button type="button">
+                  <CopyPlus className="size-4" />
+                  Criar a partir de um existente
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ClientesPagination({
+  clientesCount,
+  paginaAtual,
+  porPagina,
+  total,
+  totalPaginas,
+  onPorPaginaChange,
+  onPaginaChange,
+}) {
+  return (
+    <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex gap-2 text-sm text-base-content/80 hover:text-base-content">
+        <span className="hidden sm:inline">Resultados por página</span>
+        <select
+          className="select w-18 select-xs"
+          aria-label="Resultados por página"
+          value={porPagina}
+          onChange={(event) => onPorPaginaChange(event.target.value)}
+        >
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <span className="text-sm text-base-content/80">
+        Mostrando{" "}
+        <span className="font-medium text-base-content">
+          {clientesCount === 0 ? 0 : (paginaAtual - 1) * porPagina + 1} até{" "}
+          {Math.min(paginaAtual * porPagina, total)}
+        </span>{" "}
+        de {total} registros
+      </span>
+      <div className="inline-flex items-center gap-1">
+        <button
+          className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
+          aria-label="Página anterior"
+          type="button"
+          disabled={paginaAtual === 1}
+          onClick={() => onPaginaChange(Math.max(1, paginaAtual - 1))}
+        >
+          <ChevronLeft />
+        </button>
+        {Array.from({ length: totalPaginas }, (_, index) => index + 1).map(
+          (numero) => (
+            <button
+              key={numero}
+              className={`btn btn-circle btn-xs sm:btn-sm ${
+                numero === paginaAtual ? "btn-primary" : "btn-ghost"
+              }`}
+              type="button"
+              aria-label={`Ir para a página ${numero}`}
+              aria-current={numero === paginaAtual ? "page" : undefined}
+              onClick={() => onPaginaChange(numero)}
+            >
+              {numero}
+            </button>
+          ),
+        )}
+        <button
+          className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
+          aria-label="Próxima página"
+          type="button"
+          disabled={paginaAtual === totalPaginas}
+          onClick={() =>
+            onPaginaChange(Math.min(totalPaginas, paginaAtual + 1))
+          }
+        >
+          <ChevronRight />
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function ClientesPage() {
@@ -54,9 +211,11 @@ function ClientesPage() {
   const totalPaginas = Math.max(1, Math.ceil(total / porPagina));
   const paginaAtual = Math.min(pagina, totalPaginas);
   const idsDaPagina = clientes.map((cliente) => cliente.id);
+  const idsDaPaginaSet = new Set(idsDaPagina);
+  const idsSelecionados = new Set(selecionados);
   const todosSelecionados =
     idsDaPagina.length > 0 &&
-    idsDaPagina.every((id) => selecionados.includes(id));
+    idsDaPagina.every((id) => idsSelecionados.has(id));
 
   function atualizarBusca(valor) {
     setBusca(valor);
@@ -84,7 +243,7 @@ function ClientesPage() {
   function alternarSelecaoDaPagina() {
     setSelecionados((ids) => {
       if (todosSelecionados) {
-        return ids.filter((id) => !idsDaPagina.includes(id));
+        return ids.filter((id) => !idsDaPaginaSet.has(id));
       }
 
       return Array.from(new Set([...ids, ...idsDaPagina]));
@@ -108,99 +267,19 @@ function ClientesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <p className="text-lg font-medium">Clientes</p>
-        <div className="breadcrumbs hidden p-0 text-sm sm:inline">
-          <ul>
-            <li>
-              <Link to="/">App</Link>
-            </li>
-            <li className="opacity-80">Clientes</li>
-          </ul>
-        </div>
-      </div>
+      <PageHeader title="Clientes" rootLabel="App" />
 
       <div className="card rounded-md bg-base-100 shadow-sm">
         <div className="card-body p-0">
-          <div className="flex flex-col gap-3 px-5 pt-5 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <label className="input w-full input-sm sm:w-56">
-                <Search className="size-3.5 text-base-content/80" />
-                <input
-                  className="min-w-0"
-                  placeholder="Buscar clientes"
-                  aria-label="Buscar clientes"
-                  type="search"
-                  value={busca}
-                  onChange={(event) => atualizarBusca(event.target.value)}
-                />
-              </label>
-              <select
-                className="select w-full select-sm sm:w-44"
-                aria-label="Status de verificação"
-                value={status}
-                onChange={(event) => atualizarStatus(event.target.value)}
-              >
-                <option value="">Todos os status</option>
-                <option value="S">Verificado</option>
-                <option value="N">Não verificado</option>
-              </select>
-            </div>
+          <ClientesToolbar
+            busca={busca}
+            status={status}
+            selecionadosCount={selecionados.length}
+            onBuscaChange={atualizarBusca}
+            onStatusChange={atualizarStatus}
+          />
 
-            <div className="inline-flex items-center justify-end gap-3">
-              <Link
-                aria-label="Link criar cliente"
-                className="btn btn-primary btn-sm max-sm:btn-square"
-                to="/clientes/create"
-              >
-                <Plus className="size-4" />
-                <span className="hidden sm:inline">Novo Cliente</span>
-              </Link>
-              <div className="dropdown dropdown-end dropdown-bottom">
-                <div
-                  tabIndex="0"
-                  role="button"
-                  className="btn btn-square border-base-300 btn-ghost btn-sm"
-                  aria-label="Mais opções"
-                >
-                  <Settings2 className="size-4" />
-                </div>
-                <div
-                  tabIndex="0"
-                  className="dropdown-content z-1 w-52 rounded-box rounded-md bg-base-200 shadow-sm"
-                >
-                  <ul className="menu w-full p-2">
-                    <li>
-                      <button
-                        type="button"
-                        disabled={selecionados.length === 0}
-                      >
-                        <Wand className="size-4" />
-                        Ações em massa
-                      </button>
-                    </li>
-                  </ul>
-                  <hr className="border-base-300" />
-                  <ul className="menu w-full p-2">
-                    <li>
-                      <button type="button">
-                        <DownloadCloud className="size-4" />
-                        Importar da loja
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button">
-                        <CopyPlus className="size-4" />
-                        Criar a partir de um existente
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 overflow-auto">
+          <div className="mt-4 overflow-x-auto">
             {carregando ? (
               <div className="p-10 text-center">
                 <span className="loading loading-sm loading-ring"></span>{" "}
@@ -247,7 +326,7 @@ function ClientesPage() {
                             aria-label={`Selecionar ${cliente.nome}`}
                             className="checkbox checkbox-sm"
                             type="checkbox"
-                            checked={selecionados.includes(cliente.id)}
+                            checked={idsSelecionados.has(cliente.id)}
                             onChange={() => alternarSelecao(cliente.id)}
                           />
                         </th>
@@ -331,75 +410,15 @@ function ClientesPage() {
                     )}
                   </tbody>
                 </table>
-                <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex gap-2 text-sm text-base-content/80 hover:text-base-content">
-                    <span className="hidden sm:inline">
-                      Resultados por página
-                    </span>
-                    <select
-                      className="select w-18 select-xs"
-                      aria-label="Resultados por página"
-                      value={porPagina}
-                      onChange={(event) =>
-                        atualizarPorPagina(event.target.value)
-                      }
-                    >
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                  </div>
-                  <span className="text-sm text-base-content/80">
-                    Mostrando{" "}
-                    <span className="font-medium text-base-content">
-                      {clientes.length === 0
-                        ? 0
-                        : (paginaAtual - 1) * porPagina + 1}{" "}
-                      até {Math.min(paginaAtual * porPagina, total)}
-                    </span>{" "}
-                    de {total} registros
-                  </span>
-                  <div className="inline-flex items-center gap-1">
-                    <button
-                      className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
-                      aria-label="Página anterior"
-                      type="button"
-                      disabled={paginaAtual === 1}
-                      onClick={() =>
-                        setPagina((valor) => Math.max(1, valor - 1))
-                      }
-                    >
-                      <ChevronLeft />
-                    </button>
-                    {Array.from(
-                      { length: totalPaginas },
-                      (_, index) => index + 1,
-                    ).map((numero) => (
-                      <button
-                        key={numero}
-                        className={`btn btn-circle btn-xs sm:btn-sm ${
-                          numero === paginaAtual ? "btn-primary" : "btn-ghost"
-                        }`}
-                        type="button"
-                        onClick={() => setPagina(numero)}
-                      >
-                        {numero}
-                      </button>
-                    ))}
-                    <button
-                      className="btn btn-circle btn-ghost btn-xs sm:btn-sm"
-                      aria-label="Próxima página"
-                      type="button"
-                      disabled={paginaAtual === totalPaginas}
-                      onClick={() =>
-                        setPagina((valor) => Math.min(totalPaginas, valor + 1))
-                      }
-                    >
-                      <ChevronRight />
-                    </button>
-                  </div>
-                </div>
+                <ClientesPagination
+                  clientesCount={clientes.length}
+                  paginaAtual={paginaAtual}
+                  porPagina={porPagina}
+                  total={total}
+                  totalPaginas={totalPaginas}
+                  onPorPaginaChange={atualizarPorPagina}
+                  onPaginaChange={setPagina}
+                />
               </>
             )}
           </div>

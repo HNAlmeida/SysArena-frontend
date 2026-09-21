@@ -9,6 +9,7 @@ import TasksPage from "./pages/TasksPage.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ClientesPage from "./pages/ClientesPage.jsx";
 import { modulos } from "./data/modulos.js";
+import { LoginPlaceholder, RouteErrorPage } from "./pages/RouteErrorPage.jsx";
 
 const moduleRoutes = modulos
   .filter((modulo) => modulo.id !== "/")
@@ -21,11 +22,13 @@ const moduleRoutes = modulos
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: null,
+    element: <LoginPlaceholder />,
+    errorElement: <RouteErrorPage />,
   },
   {
     path: "/",
     element: <App />,
+    errorElement: <RouteErrorPage />,
     children: [
       ...moduleRoutes,
       {

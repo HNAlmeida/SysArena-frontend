@@ -10,13 +10,14 @@ export function useAlunos({ pagina = 1, porPagina = 10, busca = "" } = {}) {
 
   useEffect(() => {
     const controller = new AbortController();
+    let ignore = false;
 
-    async function carregar() {
+    function carregar() {
       setCarregando(true);
       setErro(null);
 
-      try {
-        const response = await alunoService.listar(
+      alunoService
+        .listar(
           {
             pagina,
             porPagina,
@@ -25,28 +26,37 @@ export function useAlunos({ pagina = 1, porPagina = 10, busca = "" } = {}) {
           {
             signal: controller.signal,
           },
-        );
+        )
+        .then((response) => {
+          if (ignore) return;
 
-        if (controller.signal.aborted) return;
+          setAlunos(response.dados);
+          setTotal(response.total);
+        })
+        .catch((error) => {
+          if (
+            ignore ||
+            error.name === "CanceledError" ||
+            error.name === "AbortError"
+          ) {
+            return;
+          }
 
-        setAlunos(response.dados);
-        setTotal(response.total);
-      } catch (error) {
-        if (error.name === "CanceledError" || error.name === "AbortError") {
-          return;
-        }
-
-        setErro(error);
-      } finally {
-        if (!controller.signal.aborted) {
-          setCarregando(false);
-        }
-      }
+          setErro(error);
+        })
+        .finally(() => {
+          if (!ignore) {
+            setCarregando(false);
+          }
+        });
     }
 
     carregar();
 
-    return () => controller.abort();
+    return () => {
+      ignore = true;
+      controller.abort();
+    };
   }, [pagina, porPagina, busca, reload]);
 
   const recarregar = useCallback(() => {

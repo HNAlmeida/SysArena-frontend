@@ -199,7 +199,7 @@ export const modulos = [
       {
         title: { sm: "Autenticação", xs: "AUTH" },
         items: [
-          { name: "Login", icon: LogIn },
+          { name: "Login", icon: LogIn, path: "/login" },
           { name: "Registro", icon: Edit2 },
           { name: "Error", icon: Bug },
         ],
