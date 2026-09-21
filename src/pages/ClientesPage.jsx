@@ -7,7 +7,9 @@ import {
   CopyPlus,
   DownloadCloud,
   Eye,
+  Mail,
   Pencil,
+  Phone,
   Plus,
   Search,
   Settings2,
@@ -306,8 +308,7 @@ function ClientesPage() {
                       </th>
                       <th>ID</th>
                       <th>Nome</th>
-                      <th>Email</th>
-                      <th className="text-center">Mobile</th>
+                      <th className="text-center">Contato</th>
                       <th className="text-right">Compras</th>
                       <th className="text-right">Recebido</th>
                       <th className="text-center">Verificado</th>
@@ -348,8 +349,16 @@ function ClientesPage() {
                             </div>
                           </div>
                         </td>
-                        <td>{cliente.email}</td>
-                        <td className="text-center">{cliente.mobile}</td>
+                        <td className="text-center">
+                          <div className="inline-flex w-fit gap-2">
+                            <div className="tooltip" data-tip={cliente.email}>
+                              <Mail className="size-4.5" />
+                            </div>
+                            <div className="tooltip" data-tip={cliente.mobile}>
+                              <Phone className="size-4.5" />
+                            </div>
+                          </div>
+                        </td>
                         <td className="text-right">{cliente.compras}</td>
                         <td className="text-right text-sm font-medium">
                           {moeda.format(cliente.recebido)}
@@ -357,9 +366,19 @@ function ClientesPage() {
                         <td className="text-center">
                           <div className="inline-flex w-fit">
                             {cliente.verificado ? (
-                              <BadgeCheck className="size-4.5 text-success" />
+                              <div
+                                className="tooltip tooltip-success"
+                                data-tip="Verificado"
+                              >
+                                <BadgeCheck className="size-4.5 text-success" />
+                              </div>
                             ) : (
-                              <BadgeX className="size-4.5 text-error" />
+                              <div
+                                className="tooltip tooltip-error"
+                                data-tip="Não Verificado"
+                              >
+                                <BadgeX className="size-4.5 text-error" />
+                              </div>
                             )}
                           </div>
                         </td>
