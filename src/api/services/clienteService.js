@@ -14,7 +14,7 @@ export const clienteService = {
       params: {
         _page: pagina,
         _per_page: porPagina,
-        nome: busca || undefined,
+        "nome:contains": busca || undefined,
         verificado: status === "S" ? true : status === "N" ? false : undefined,
       },
     });

@@ -21,6 +21,7 @@ import { useRef, useState } from "react";
 import { useClientes } from "../hooks/useClientes";
 import { Link } from "react-router";
 import { PageHeader } from "../components/PageHeader";
+import { useDebounce } from "../hooks/useDebounce";
 
 const moeda = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -55,6 +56,7 @@ function ClientesToolbar({
             placeholder="Buscar clientes"
             aria-label="Buscar clientes"
             type="search"
+            minLength={2}
             value={busca}
             onChange={(event) => onBuscaChange(event.target.value)}
           />
@@ -203,10 +205,14 @@ function ClientesPage() {
   const [selecionados, setSelecionados] = useState([]);
   const [clienteParaExcluir, setClienteParaExcluir] = useState(null);
 
+  const buscaNormalizada = busca.trim();
+  const buscaParaConsulta = buscaNormalizada.length > 1 ? buscaNormalizada : "";
+  const buscaDebounced = useDebounce(buscaParaConsulta, 400);
+
   const { clientes, total, carregando, erro, excluir } = useClientes({
     pagina,
     porPagina,
-    busca,
+    busca: buscaDebounced,
     status,
   });
 
