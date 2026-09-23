@@ -199,7 +199,7 @@ export const modulos = [
       {
         title: { sm: "Autenticação", xs: "AUTH" },
         items: [
-          { name: "Login", icon: LogIn },
+          { name: "Login", icon: LogIn, path: "/login" },
           { name: "Registro", icon: Edit2 },
           { name: "Error", icon: Bug },
         ],
@@ -213,9 +213,12 @@ export const modulos = [
     group: "Acadêmico",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Secretaria", xs: "SEC" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         //title: { sm: "Cadastros", xs: "CAD" },
         items: [
@@ -223,32 +226,52 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Alunos", icon: User2, path: null },
-              { name: "Responsáveis", icon: User, path: null },
+              { name: "Alunos", icon: User2, path: "/alunos" },
+              { name: "Responsáveis", icon: User, path: "/responsaveis" },
               {
                 name: "Extras Curriculares",
                 icon: Stars,
                 submenu: [
-                  { name: "Grupo de Atividades", icon: Sparkles, path: null },
-                  { name: "Atividades", icon: Sparkle, path: null },
-                  { name: "Geração", icon: StarPlus, path: null },
+                  {
+                    name: "Grupos de Atividades",
+                    icon: Sparkles,
+                    path: "/gruposAtividades",
+                  },
+                  { name: "Atividades", icon: Sparkle, path: "/atividades" },
+                  {
+                    name: "Geração",
+                    icon: StarPlus,
+                    path: "/geracaoAtividades",
+                  },
                 ],
               },
               {
                 name: "Estrutura Escolar",
                 icon: School2,
                 submenu: [
-                  { name: "Cursos", icon: BookMarked, path: null },
-                  { name: "Segmentos", icon: Split, path: null },
-                  { name: "Níveis", icon: Layers3, path: null },
-                  { name: "Turmas", icon: Blocks, path: null },
-                  { name: "Grades de Aulas", icon: Grid2X2, path: null },
-                  { name: "Grupo de Períodos", icon: null, path: null },
-                  { name: "Períodos Letivos", icon: null, path: null },
+                  { name: "Cursos", icon: BookMarked, path: "/cursos" },
+                  { name: "Segmentos", icon: Split, path: "/segmentos" },
+                  { name: "Níveis", icon: Layers3, path: "/niveis" },
+                  { name: "Turmas", icon: Blocks, path: "/turmas" },
+                  {
+                    name: "Grades de Aulas",
+                    icon: Grid2X2,
+                    path: "/gradesAulas",
+                  },
+                  {
+                    name: "Grupo de Períodos",
+                    icon: null,
+                    path: "/gruposPeriodos",
+                  },
+                  {
+                    name: "Períodos Letivos",
+                    icon: null,
+                    path: "/periodosLetivos",
+                  },
                   {
                     name: "Itinerários Formativos",
                     icon: Waypoints,
-                    path: null,
+                    path: "/itinerariosFormativos",
                   },
                 ],
               },
@@ -256,26 +279,40 @@ export const modulos = [
                 name: "Pedagógico",
                 icon: Brain,
                 submenu: [
-                  { name: "Assuntos", icon: null, path: null },
-                  { name: "Conceitos", icon: null, path: null },
-                  { name: "Disciplinas", icon: BookOpen, path: null },
-                  { name: "Funcionários", icon: UserCog2, path: null },
-                  { name: "Métodos de Avaliação", icon: null, path: null },
-                  { name: "Minutagens", icon: null, path: null },
-                  { name: "Trilhas", icon: null, path: null },
+                  { name: "Assuntos", icon: null, path: "/assuntos" },
+                  { name: "Conceitos", icon: null, path: "/conceitos" },
+                  { name: "Disciplinas", icon: BookOpen, path: "/disciplinas" },
+                  {
+                    name: "Funcionários",
+                    icon: UserCog2,
+                    path: "/funcionários",
+                  },
+                  {
+                    name: "Métodos de Avaliação",
+                    icon: null,
+                    path: "/metodosAvaliacao",
+                  },
+                  { name: "Minutagens", icon: null, path: "/minutagens" },
+                  { name: "Trilhas", icon: null, path: "/trilhas" },
                 ],
               },
               {
                 name: "Frequência",
                 icon: ClipboardCheck,
                 submenu: [
-                  { name: "Justificativas de Faltas", icon: null, path: null },
+                  {
+                    name: "Justificativas de Faltas",
+                    icon: null,
+                    path: "/justificativasFaltas",
+                  },
                 ],
               },
               {
                 name: "Serviços",
                 icon: Utensils,
-                submenu: [{ name: "Refeições", icon: null, path: null }],
+                submenu: [
+                  { name: "Refeições", icon: null, path: "/refeicoes" },
+                ],
               },
               {
                 name: "Administrativo",
@@ -284,16 +321,32 @@ export const modulos = [
                   {
                     name: "Categorias de Responsáveis",
                     icon: Users,
-                    path: null,
+                    path: "/categoriasResponsaveis",
                   },
-                  { name: "Departamentos", icon: null, path: null },
-                  { name: "Estabelecimentos", icon: School, path: null },
-                  { name: "Feriados", icon: CalendarHeart, path: null },
-                  { name: "Gestores", icon: UserCog, path: null },
-                  { name: "Grupos de Alunos", icon: null, path: null },
-                  { name: "Motivos de Saída", icon: null, path: null },
-                  { name: "Processos", icon: null, path: null },
-                  { name: "Tipo de Solicitações", icon: null, path: null },
+                  { name: "Departamentos", icon: null, path: "/departamentos" },
+                  {
+                    name: "Estabelecimentos",
+                    icon: School,
+                    path: "/estabelecimentos",
+                  },
+                  { name: "Feriados", icon: CalendarHeart, path: "/feriados" },
+                  { name: "Gestores", icon: UserCog, path: "/gestores" },
+                  {
+                    name: "Grupos de Alunos",
+                    icon: null,
+                    path: "/gruposAlunos",
+                  },
+                  {
+                    name: "Motivos de Saída",
+                    icon: null,
+                    path: "/motivosSaida",
+                  },
+                  { name: "Processos", icon: null, path: "/processos" },
+                  {
+                    name: "Tipos de Solicitações",
+                    icon: null,
+                    path: "/tiposSolicitacoes",
+                  },
                 ],
               },
             ],
@@ -305,9 +358,14 @@ export const modulos = [
           {
             name: "Notas",
             icon: NotebookTabs,
+            path: "/notas",
             submenu: [
-              { name: "Digitação", icon: NotebookPen, path: null },
-              { name: "Consolidação", icon: SigmaSquare, path: null },
+              { name: "Digitação", icon: NotebookPen, path: "/digitacao" },
+              {
+                name: "Consolidação",
+                icon: SigmaSquare,
+                path: "/consolidacao",
+              },
             ],
           },
         ],
@@ -317,34 +375,44 @@ export const modulos = [
           {
             name: "Históricos",
             icon: History,
+            path: "/historicos",
             submenu: [
-              { name: "Digitação", icon: FilePenLine, path: null },
-              { name: "Emissão", icon: FileArchive, path: null },
+              { name: "Digitação", icon: FilePenLine, path: "digitacao" },
+              { name: "Emissão", icon: FileArchive, path: "emissao" },
             ],
           },
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
               {
                 name: "Alunos",
                 icon: User2,
                 submenu: [
-                  { name: "Gerais", icon: Files, path: null },
-                  { name: "Declarações", icon: null, path: null },
-                  { name: "Dossiês", icon: null, path: null },
-                  { name: "Fichas / Requerimentos", icon: null, path: null },
+                  { name: "Gerais", icon: Files, path: "/gerais" },
+                  { name: "Declarações", icon: null, path: "/declaracoes" },
+                  { name: "Dossiês", icon: null, path: "/dossies" },
+                  {
+                    name: "Fichas / Requerimentos",
+                    icon: null,
+                    path: "/fichasRequerimentos",
+                  },
                   {
                     name: "Carteiras de Identificação",
                     icon: null,
-                    path: null,
+                    path: "/carteirinhas",
                   },
-                  { name: "Carômetros", icon: Timer, path: null },
-                  { name: "Livros de Matriculas", icon: null, path: null },
+                  { name: "Carômetros", icon: Timer, path: "/carometros" },
+                  {
+                    name: "Livros de Matriculas",
+                    icon: null,
+                    path: "/livrosMatriculas",
+                  },
                   {
                     name: "Ativ. Extras Curriculares",
                     icon: Stars,
-                    path: null,
+                    path: "atividadesExtras",
                   },
                 ],
               },
@@ -355,61 +423,84 @@ export const modulos = [
                   {
                     name: "Caderneta Online",
                     icon: null,
+                    path: "/cadernetas",
                     submenu: [
-                      { name: "Gerais", icon: Files, path: null },
-                      { name: "Registros de Aulas", icon: null, path: null },
-                      { name: "Frequências", icon: null, path: null },
+                      { name: "Gerais", icon: Files, path: "/gerais" },
+                      {
+                        name: "Registros de Aulas",
+                        icon: null,
+                        path: "/registrosAulas",
+                      },
+                      { name: "Frequências", icon: null, path: "/frequencias" },
                     ],
                   },
-                  { name: "Diários", icon: null, path: null },
-                  { name: "Boletins", icon: null, path: null },
+                  { name: "Diários", icon: null, path: "/diarios" },
+                  { name: "Boletins", icon: null, path: "/boletins" },
                   {
                     name: "Mapas",
                     icon: null,
+                    path: "/mapas",
                     submenu: [
-                      { name: "Avaliações", icon: null, path: null },
-                      { name: "Conferência", icon: null, path: null },
+                      { name: "Avaliações", icon: null, path: "/avaliacoes" },
+                      { name: "Conferência", icon: null, path: "/conferencia" },
                     ],
                   },
-                  { name: "Fichas Individuais", icon: null, path: null },
-                  { name: "Atas", icon: null, path: null },
+                  {
+                    name: "Fichas Individuais",
+                    icon: null,
+                    path: "/fichasIndividuais",
+                  },
+                  { name: "Atas", icon: null, path: "/atas" },
                 ],
               },
               {
                 name: "Funcionários",
                 icon: UserCog2,
+                path: "/funcionarios",
                 submenu: [
-                  { name: "Gerais", icon: Files, path: null },
-                  { name: "Folhas de Ponto", icon: null, path: null },
-                  { name: "Carteiras de ID", icon: null, path: null },
+                  { name: "Gerais", icon: Files, path: "/gerais" },
+                  { name: "Folhas de Ponto", icon: null, path: "/folhas" },
+                  { name: "Carteiras de ID", icon: null, path: "/carteiras" },
                 ],
               },
-              { name: "Etiquetas de Alunos", icon: Tags, path: null },
+              {
+                name: "Etiquetas de Alunos",
+                icon: Tags,
+                path: "/etiquetasAlunos",
+              },
             ],
           },
           {
             name: "Gráficos",
             icon: ChartColumn,
+            path: "/graficos",
             submenu: [
-              { name: "Ocupações", icon: ChartBarStacked, path: null },
-              { name: "Situações", icon: CircleDot, path: null },
-              { name: "Sexos", icon: VenusAndMars, path: null },
-              { name: "Idades", icon: Sprout, path: null },
               {
                 name: "Desempenho",
                 icon: GaugeCircle,
+                path: "/desempenho",
                 submenu: [
-                  { name: "Alunos", icon: User2, path: null },
-                  { name: "Turmas", icon: Blocks, path: null },
-                  { name: "Alunos/Turmas", icon: ChartColumn, path: null },
+                  { name: "Alunos", icon: User2, path: "/alunos" },
+                  { name: "Turmas", icon: Blocks, path: "/turmas" },
+                  {
+                    name: "Alunos/Turmas",
+                    icon: ChartColumn,
+                    path: "/alunosTurmas",
+                  },
                 ],
               },
+              { name: "Idades", icon: Sprout, path: "/idades" },
+              { name: "Ocupações", icon: ChartBarStacked, path: "/ocupacoes" },
+              { name: "Sexos", icon: VenusAndMars, path: "/sexos" },
+              { name: "Situações", icon: CircleDot, path: "/situacoes" },
             ],
           },
         ],
       },
       {
-        items: [{ name: "Censo Escolar", icon: DatabaseCheck, path: null }],
+        items: [
+          { name: "Censo Escolar", icon: DatabaseCheck, path: "censoEscolar" },
+        ],
         divider: { label: { sm: "Censo", xs: "CEN" } },
       },
     ],
@@ -421,7 +512,10 @@ export const modulos = [
     group: "Acadêmico",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -429,12 +523,12 @@ export const modulos = [
           {
             name: "Registro de aula / Frequência",
             icon: FileText,
-            path: null,
+            path: "/registrosAula",
           },
-          { name: "Comunicados", icon: Bell, path: null },
-          { name: "Notas", icon: NotebookTabs, path: null },
-          { name: "Tarefas", icon: ListTodo, path: null },
-          { name: "Redação", icon: FilePenLine, path: null },
+          { name: "Comunicados", icon: Bell, path: "/comunicados" },
+          { name: "Notas", icon: NotebookTabs, path: "/notas" },
+          { name: "Tarefas", icon: ListTodo, path: "/tarefas" },
+          { name: "Redação", icon: FilePenLine, path: "/redacao" },
         ],
       },
       {
@@ -442,19 +536,20 @@ export const modulos = [
           {
             name: "EAD",
             icon: MonitorPlay,
+            path: "/ead",
             submenu: [
-              { name: "Materiais", icon: LibrarySquare, path: null },
+              { name: "Materiais", icon: LibrarySquare, path: "/materiais" },
               {
                 name: "Avaliações",
                 icon: ClipboardCheck,
                 submenu: [
-                  { name: "Conteúdo", icon: null, path: null },
-                  { name: "Questões", icon: null, path: null },
-                  { name: "Avaliações", icon: null, path: null },
-                  { name: "Cadernos", icon: null, path: null },
+                  { name: "Avaliações", icon: null, path: "/avaliacoes" },
+                  { name: "Cadernos", icon: null, path: "/cadernos" },
+                  { name: "Conteúdo", icon: null, path: "/conteudo" },
+                  { name: "Questões", icon: null, path: "/questoes" },
                 ],
               },
-              { name: "Simulados", icon: Target, path: null },
+              { name: "Simulados", icon: Target, path: "/simulados" },
             ],
           },
         ],
@@ -465,11 +560,20 @@ export const modulos = [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
-              { name: "Gerais", icon: Files, path: null },
-              { name: "Registros de Aulas", icon: FileText, path: null },
-              { name: "Frequências", icon: CalendarCheck2, path: null },
-              { name: "Carômetros", icon: Timer, path: null },
+              { name: "Gerais", icon: Files, path: "/gerais" },
+              {
+                name: "Registros de Aulas",
+                icon: FileText,
+                path: "/registrosAulas",
+              },
+              {
+                name: "Frequências",
+                icon: CalendarCheck2,
+                path: "/frequencias",
+              },
+              { name: "Carômetros", icon: Timer, path: "/carometros" },
             ],
           },
         ],
@@ -480,12 +584,29 @@ export const modulos = [
           {
             name: "Coordenação",
             icon: UserRoundCog,
+            path: "/coordenacao",
             submenu: [
-              { name: "Registros de Aulas", icon: FileText, path: null },
-              { name: "Frequências", icon: CalendarCheck2, path: null },
-              { name: "Comunicados / Ocorrências", icon: Bell, path: null },
-              { name: "Tarefas", icon: ListTodo, path: null },
-              { name: "Registros de Tarefas", icon: SquareCheck, path: null },
+              {
+                name: "Registros de Aulas",
+                icon: FileText,
+                path: "/registrosAulas",
+              },
+              {
+                name: "Frequências",
+                icon: CalendarCheck2,
+                path: "/frequencias",
+              },
+              {
+                name: "Comunicados / Ocorrências",
+                icon: Bell,
+                path: "/comunicados",
+              },
+              { name: "Tarefas", icon: ListTodo, path: "/tarefas" },
+              {
+                name: "Registros de Tarefas",
+                icon: SquareCheck,
+                path: "/registrosTarefas",
+              },
             ],
           },
         ],
@@ -499,7 +620,10 @@ export const modulos = [
     group: "Acadêmico",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -508,25 +632,31 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Grupos de Empresas", icon: Building2, path: null },
-              { name: "Empresas", icon: Building, path: null },
-              { name: "Recursos", icon: ToolCase, path: null },
-              { name: "Scripts", icon: Code, path: null },
-              { name: "Logs", icon: Logs, path: null },
+              {
+                name: "Grupos de Empresas",
+                icon: Building2,
+                path: "/gruposEmpresas",
+              },
+              { name: "Empresas", icon: Building, path: "/empresas" },
+              { name: "Recursos", icon: ToolCase, path: "/recursos" },
+              { name: "Scripts", icon: Code, path: "/scripts" },
+              { name: "Logs", icon: Logs, path: "/logs" },
             ],
           },
           {
             name: "Monitoramento",
             icon: Activity,
+            path: "/monitoramento",
             submenu: [
-              { name: "Cadastro", icon: Database, path: null },
+              { name: "Cadastro", icon: Database, path: "/cadastros" },
               {
                 name: "Empresas",
                 icon: Building,
+                path: "/empresas",
                 submenu: [
-                  { name: "Por Região", icon: null, path: null },
-                  { name: "Por Estado", icon: null, path: null },
-                  { name: "Por Cidade", icon: null, path: null },
+                  { name: "Por Região", icon: null, path: "/regiao" },
+                  { name: "Por Estado", icon: null, path: "/estado" },
+                  { name: "Por Cidade", icon: null, path: "/cidade" },
                 ],
               },
               { name: "Personalizados", icon: SlidersHorizontal, path: null },
@@ -535,28 +665,42 @@ export const modulos = [
           {
             name: "Rotinas",
             icon: Repeat2,
+            path: "/Rotinas",
             submenu: [
-              { name: "Unificar Alunos", icon: User2, path: null },
-              { name: "Unificar Disciplinas", icon: BookOpen, path: null },
-              { name: "Unificar Responsáveis", icon: User, path: null },
+              {
+                name: "Unificar Alunos",
+                icon: User2,
+                path: "/unificar/Alunos",
+              },
+              {
+                name: "Unificar Disciplinas",
+                icon: BookOpen,
+                path: "/unificar/Disciplinas",
+              },
+              {
+                name: "Unificar Responsáveis",
+                icon: User,
+                path: "/unificar/Responsáveis",
+              },
               {
                 name: "Alterar Grupos de Períodos",
                 icon: CalendarRange,
-                path: null,
+                path: "/alterar/GruposPeriodos",
               },
               {
                 name: "Alterar Grades de Horários",
                 icon: CalendarDays,
-                path: null,
+                path: "/alterar/GradesHorarios",
               },
             ],
           },
           {
             name: "Dicionário de dados",
             icon: BookA,
+            path: "/dicionarioDados",
             submenu: [
-              { name: "Consulta", icon: BookSearch, path: null },
-              { name: "Cadastro", icon: BookPlus, path: null },
+              { name: "Consulta", icon: BookSearch, path: "/consulta" },
+              { name: "Cadastro", icon: BookPlus, path: "/cadastro" },
             ],
           },
         ],
@@ -570,7 +714,10 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -579,36 +726,56 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Alunos", icon: User2 },
-              { name: "Responsáveis", icon: User },
+              { name: "Alunos", icon: User2, path: "/alunos" },
+              { name: "Responsáveis", icon: User, path: "/responsaveis" },
               {
                 name: "Extras Curriculares",
                 icon: Stars,
                 submenu: [
-                  { name: "Grupo de Atividades", icon: Sparkles },
-                  { name: "Atividades", icon: Sparkle },
-                  { name: "Geração", icon: StarPlus },
+                  {
+                    name: "Grupos de Atividades",
+                    icon: Sparkles,
+                    path: "/gruposAtividades",
+                  },
+                  { name: "Atividades", icon: Sparkle, path: "/atividades" },
+                  {
+                    name: "Geração",
+                    icon: StarPlus,
+                    path: "/geracaoAtividades",
+                  },
                 ],
               },
               {
                 name: "Estrutura Acadêmica",
                 icon: School2,
                 submenu: [
-                  { name: "Cursos", icon: BookMarked, path: null },
-                  { name: "Segmentos", icon: Split, path: null },
-                  { name: "Níveis", icon: Layers3, path: null },
-                  { name: "Turmas", icon: Blocks, path: null },
+                  { name: "Cursos", icon: BookMarked, path: "/cursos" },
+                  { name: "Segmentos", icon: Split, path: "/segmentos" },
+                  { name: "Níveis", icon: Layers3, path: "/niveis" },
+                  { name: "Turmas", icon: Blocks, path: "/turmas" },
                 ],
               },
               {
                 name: "Financeiro",
                 icon: Wallet,
                 submenu: [
-                  { name: "Tipos de Pagamentos", icon: null, path: null },
-                  { name: "Formas de Cobrança", icon: WalletCards, path: null },
-                  { name: "Planos de Contas", icon: null, path: null },
-                  { name: "Tipos de Contas", icon: null, path: null },
-                  { name: "Contas", icon: null, path: null },
+                  {
+                    name: "Tipos de Pagamentos",
+                    icon: null,
+                    path: "/tiposPagamentos",
+                  },
+                  {
+                    name: "Formas de Cobrança",
+                    icon: WalletCards,
+                    path: "/formasCobrancas",
+                  },
+                  {
+                    name: "Planos de Contas",
+                    icon: null,
+                    path: "/planosContas",
+                  },
+                  { name: "Tipos de Contas", icon: null, path: "/tiposContas" },
+                  { name: "Contas", icon: null, path: "/contas" },
                 ],
               },
               {
@@ -618,12 +785,24 @@ export const modulos = [
                   {
                     name: "Categorias de Responsáveis",
                     icon: Users,
-                    path: null,
+                    path: "/categoriasResponsaveis",
                   },
-                  { name: "Grupos de Alunos", icon: Users2, path: null },
-                  { name: "Feriados", icon: CalendarHeart, path: null },
-                  { name: "Motivos de Saída", icon: null, path: null },
-                  { name: "Tipo de Solicitações", icon: null, path: null },
+                  {
+                    name: "Grupos de Alunos",
+                    icon: Users2,
+                    path: "/gruposAlunos",
+                  },
+                  { name: "Feriados", icon: CalendarHeart, path: "/feriados" },
+                  {
+                    name: "Motivos de Saída",
+                    icon: null,
+                    path: "/motivosSaida",
+                  },
+                  {
+                    name: "Tipo de Solicitações",
+                    icon: null,
+                    path: "/tiposSolicitacoes",
+                  },
                 ],
               },
             ],
@@ -635,41 +814,51 @@ export const modulos = [
           {
             name: "Duplicatas",
             icon: File,
+            path: "/duplicatas",
             submenu: [
               {
                 name: "Gerações",
                 icon: FilePlus2,
+                path: "/geracao",
                 submenu: [
-                  { name: "Serviços", icon: null, path: null },
-                  { name: "Atividades", icon: null, path: null },
+                  { name: "Serviços", icon: null, path: "/servicos" },
+                  { name: "Atividades", icon: null, path: "/atividades" },
                 ],
               },
               {
                 name: "Emissões",
                 icon: Barcode,
+                path: "/emissoes",
                 submenu: [
-                  { name: "Serviços", icon: null, path: null },
-                  { name: "Atividades", icon: null, path: null },
-                  { name: "Arquivos de Remessa", icon: null, path: null },
+                  { name: "Serviços", icon: null, path: "/servicos" },
+                  { name: "Atividades", icon: null, path: "/atividades" },
+                  {
+                    name: "Arquivos de Remessa",
+                    icon: null,
+                    path: "/remessas",
+                  },
                 ],
               },
               {
                 name: "Envios",
                 icon: Send,
-                submenu: [{ name: "Serviços", icon: null, path: null }],
+                path: "/envios",
+                submenu: [{ name: "Serviços", icon: null, path: "/servicos" }],
               },
               {
                 name: "Quitações",
                 icon: ScanBarcode,
+                path: "/quitacoes",
                 submenu: [
-                  { name: "Automáticas", icon: null, path: null },
-                  { name: "Manuais", icon: null, path: null },
+                  { name: "Automáticas", icon: null, path: "/automaticas" },
+                  { name: "Manuais", icon: null, path: "/manuais" },
                   {
                     name: "Parceiros",
                     icon: null,
+                    path: "/parceiros",
                     submenu: [
-                      { name: "API", icon: null, path: null },
-                      { name: "CSV", icon: null, path: null },
+                      { name: "API", icon: null, path: "/api" },
+                      { name: "CSV", icon: null, path: "/csv" },
                     ],
                   },
                 ],
@@ -677,28 +866,31 @@ export const modulos = [
               {
                 name: "Controles Bancários",
                 icon: Landmark,
+                path: "/controlesBancarios",
                 submenu: [
-                  { name: "Contas", icon: null, path: null },
-                  { name: "Automações", icon: null, path: null },
+                  { name: "Contas", icon: null, path: "/contas" },
+                  { name: "Automações", icon: null, path: "/automacoes" },
                   {
                     name: "Conciliações de Crédito",
                     icon: GitCompareArrows,
-                    path: null,
+                    path: "/conciliacoes",
                   },
-                  { name: "Relatórios", icon: null, path: null },
+                  { name: "Relatórios", icon: null, path: "/relatorios" },
                 ],
               },
               {
                 name: "Controles Cartão de Crédito",
                 icon: CreditCard,
+                path: "/controlesCartoes",
                 submenu: [
-                  { name: "Tarifas", icon: null, path: null },
+                  { name: "Tarifas", icon: null, path: "/tarifas" },
                   {
                     name: "Conciliações",
                     icon: GitCompareArrows,
+                    path: "/conciliacoes",
                     submenu: [
-                      { name: "Manual", icon: null, path: null },
-                      { name: "Adquirente", icon: null, path: null },
+                      { name: "Manual", icon: null, path: "/manual" },
+                      { name: "Adquirente", icon: null, path: "/adquirente" },
                     ],
                   },
                 ],
@@ -706,28 +898,30 @@ export const modulos = [
             ],
           },
           {
-            name: "Notas fiscais",
+            name: "Notas Fiscais",
             icon: ReceiptText,
+            path: "/notasFiscais",
             submenu: [
               {
                 name: "Itens de Faturamento",
                 icon: TableOfContents,
-                path: null,
+                path: "/itensFaturamento",
               },
               {
                 name: "RPS",
                 icon: Receipt,
+                path: "/rps",
                 submenu: [
-                  { name: "Geração", icon: null, path: null },
-                  { name: "Consulta", icon: null, path: null },
-                  { name: "Recibos", icon: null, path: null },
-                  { name: "Exportação", icon: null, path: null },
-                  { name: "Relatórios", icon: null, path: null },
+                  { name: "Geração", icon: null, path: "/geracao" },
+                  { name: "Consulta", icon: null, path: "/consulta" },
+                  { name: "Recibos", icon: null, path: "/recibos" },
+                  { name: "Exportação", icon: null, path: "/exportacao" },
+                  { name: "Relatórios", icon: null, path: "/relatorios" },
                 ],
               },
             ],
           },
-          { name: "Caixas", icon: PiggyBank, path: null },
+          { name: "Caixas", icon: PiggyBank, path: "/caixas" },
         ],
       },
       { type: "divider" },
@@ -736,27 +930,29 @@ export const modulos = [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
               {
                 name: "Alunos",
                 icon: User2,
+                path: "/alunos",
                 submenu: [
-                  { name: "Gerais", icon: Files, path: null },
-                  { name: "Declarações", icon: null, path: null },
-                  { name: "Dossiês", icon: null, path: null },
+                  { name: "Gerais", icon: Files, path: "/gerais" },
+                  { name: "Declarações", icon: null, path: "/declaracoes" },
+                  { name: "Dossiês", icon: null, path: "/dossies" },
                   {
                     name: "Contratos",
                     icon: null,
-                    path: null,
+                    path: "/contratos",
                   },
                   {
                     name: "Fichas / Requerimentos",
                     icon: null,
-                    path: null,
+                    path: "/fichasRequerimentos",
                   },
                 ],
               },
-              { name: "Caixas", icon: PiggyBank, path: null },
+              { name: "Caixas", icon: PiggyBank, path: "/caixas" },
               {
                 name: "Contas a Receber",
                 icon: CircleDollarSign,
@@ -764,48 +960,65 @@ export const modulos = [
                   {
                     name: "Adimplentes / Inadimplentes",
                     icon: null,
-                    path: null,
+                    path: "/adimplencia",
                   },
-                  { name: "Cartas de Cobrança", icon: null, path: null },
+                  {
+                    name: "Cartas de Cobrança",
+                    icon: null,
+                    path: "/cartasCobranca",
+                  },
                   {
                     name: "Comprovantes de IR",
                     icon: null,
-                    path: null,
+                    path: "/comprovantes/ir",
                   },
-                  { name: "Diário de Caixa", icon: null, path: null },
+                  { name: "Diário de Caixa", icon: null, path: "/diarioCaixa" },
                   {
                     name: "Duplicatas",
                     icon: null,
+                    path: "/duplicatas",
                     submenu: [
-                      { name: "Gerais", icon: Files, path: null },
-                      { name: "Logs", icon: null, path: null },
+                      { name: "Gerais", icon: Files, path: "/gerais" },
+                      { name: "Logs", icon: null, path: "/logs" },
                     ],
                   },
-                  { name: "Previsões de Faturamento", icon: null, path: null },
+                  {
+                    name: "Previsões de Faturamento",
+                    icon: null,
+                    path: "/previsoes",
+                  },
                 ],
               },
               {
                 name: "Etiquetas",
                 icon: Tickets,
-                submenu: [{ name: "Alunos", icon: null, path: null }],
+                path: "/etiquetas",
+                submenu: [{ name: "Alunos", icon: null, path: "/alunos" }],
               },
             ],
           },
           {
             name: "Gráficos",
             icon: ChartColumn,
+            path: "/graficos",
             submenu: [
-              { name: "Ocupações", icon: ChartBarStacked, path: null },
-              { name: "Situações", icon: CircleDot, path: null },
-              { name: "Sexos", icon: VenusAndMars, path: null },
-              { name: "Idades", icon: Sprout, path: null },
+              { name: "Idades", icon: Sprout, path: "/idades" },
+              { name: "Ocupações", icon: ChartBarStacked, path: "/ocupacoes" },
+              { name: "Sexos", icon: VenusAndMars, path: "/sexos" },
+              { name: "Situações", icon: CircleDot, path: "/situacoes" },
             ],
           },
         ],
       },
       { type: "divider" },
       {
-        items: [{ name: "Matrícula Online", icon: ClipboardCheck, path: null }],
+        items: [
+          {
+            name: "Matrícula Online",
+            icon: ClipboardCheck,
+            path: "/matriculaOnline",
+          },
+        ],
       },
     ],
   },
@@ -816,7 +1029,10 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -825,17 +1041,21 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Fornecedores", icon: Truck, path: null },
+              { name: "Fornecedores", icon: Truck, path: "/fornecedores" },
               {
                 name: "Financeiro",
                 icon: Wallet,
                 submenu: [
-                  { name: "Planos de Contas", icon: null, path: null },
-                  { name: "Tipos de Contas", icon: null, path: null },
-                  { name: "Contas", icon: null, path: null },
+                  {
+                    name: "Planos de Contas",
+                    icon: null,
+                    path: "/planosContas",
+                  },
+                  { name: "Tipos de Contas", icon: null, path: "/tiposContas" },
+                  { name: "Contas", icon: null, path: "/contas" },
                 ],
               },
-              { name: "Tipos de Contatos", icon: Tags, path: null },
+              { name: "Tipos de Contatos", icon: Tags, path: "/tiposContatos" },
             ],
           },
         ],
@@ -845,22 +1065,27 @@ export const modulos = [
           {
             name: "Lançamentos",
             icon: Receipt,
+            path: "/lancamentos",
             submenu: [
-              { name: "Gerações", icon: FilePlus2, path: null },
-              { name: "Quitações", icon: ScanBarcode, path: null },
+              { name: "Gerações", icon: FilePlus2, path: "/geracao" },
+              { name: "Quitações", icon: ScanBarcode, path: "/quitacao" },
             ],
           },
-          { name: "Caixas", icon: PiggyBank, path: null },
+          { name: "Caixas", icon: PiggyBank, path: "/caixas" },
           {
             name: "Controle Bancário",
             icon: Landmark,
             submenu: [
-              { name: "Automação", icon: Bot, path: null },
-              { name: "Contas", icon: CircleDollarSign, path: null },
+              { name: "Automação", icon: Bot, path: "/automacoesConciliacao" },
+              {
+                name: "Contas",
+                icon: CircleDollarSign,
+                path: "/contasBancarias",
+              },
               {
                 name: "Conciliações de Débito",
                 icon: GitCompareArrows,
-                path: null,
+                path: "/conciliacoesDebito",
               },
             ],
           },
@@ -872,11 +1097,20 @@ export const modulos = [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
-              { name: "Contas a Pagar", icon: CircleDollarSign, path: null },
-              { name: "Controle Bancário", icon: Landmark, path: null },
-              { name: "Fluxo de Caixa", icon: PiggyBank, path: null },
-              { name: "Fornecedores", icon: Truck, path: null },
+              {
+                name: "Contas a Pagar",
+                icon: CircleDollarSign,
+                path: "/contasPagar",
+              },
+              {
+                name: "Controle Bancário",
+                icon: Landmark,
+                path: "/controleBancário",
+              },
+              { name: "Fluxo de Caixa", icon: PiggyBank, path: "/fluxoCaixa" },
+              { name: "Fornecedores", icon: Truck, path: "/fornecedores" },
             ],
           },
         ],
@@ -890,7 +1124,10 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -918,7 +1155,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -927,24 +1167,32 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Produtos", icon: Package, path: null },
+              { name: "Produtos", icon: Package, path: "/produtos" },
               {
                 name: "Notas de Entrada",
                 icon: BanknoteArrowDownIcon,
-                path: null,
+                path: "/notasEntrada",
               },
-              { name: "Formas de Cobrança", icon: WalletCards, path: null },
+              {
+                name: "Formas de Cobrança",
+                icon: WalletCards,
+                path: "/formasCobranca",
+              },
               {
                 name: "Configurações",
                 icon: Settings,
                 submenu: [
-                  { name: "Grupos de Produtos", icon: Boxes, path: null },
+                  {
+                    name: "Grupos de Produtos",
+                    icon: Boxes,
+                    path: "/gruposProdutos",
+                  },
                   {
                     name: "Grupos de Unidades",
                     icon: SquareDashed,
-                    path: null,
+                    path: "/gruposUnidades",
                   },
-                  { name: "Unidades", icon: Ruler, path: null },
+                  { name: "Unidades", icon: Ruler, path: "/unidades" },
                 ],
               },
             ],
@@ -953,8 +1201,8 @@ export const modulos = [
       },
       {
         items: [
-          { name: "Vendas", icon: NotebookPen, path: null },
-          { name: "Caixas", icon: PiggyBank, path: null },
+          { name: "Vendas", icon: NotebookPen, path: "/vendas" },
+          { name: "Caixas", icon: PiggyBank, path: "/caixas" },
         ],
       },
       { type: "divider" },
@@ -963,11 +1211,16 @@ export const modulos = [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
-              { name: "Gerais", icon: Files, path: null },
-              { name: "Entradas", icon: BanknoteArrowDownIcon, path: null },
-              { name: "Saídas", icon: BanknoteArrowUp, path: null },
-              { name: "Financeiros", icon: DollarSign, path: null },
+              { name: "Gerais", icon: Files, path: "/gerais" },
+              {
+                name: "Entradas",
+                icon: BanknoteArrowDownIcon,
+                path: "/entradas",
+              },
+              { name: "Saídas", icon: BanknoteArrowUp, path: "/saidas" },
+              { name: "Financeiros", icon: DollarSign, path: "/financeiros" },
             ],
           },
         ],
@@ -981,7 +1234,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -990,23 +1246,27 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Leads", icon: Target, path: null },
+              { name: "Leads", icon: Target, path: "/leads" },
               {
                 name: "Estrutura Acadêmica",
                 icon: School2,
                 submenu: [
-                  { name: "Cursos", icon: BookMarked, path: null },
-                  { name: "Níveis", icon: Layers3, path: null },
+                  { name: "Cursos", icon: BookMarked, path: "/cursos" },
+                  { name: "Níveis", icon: Layers3, path: "/niveis" },
                 ],
               },
               {
                 name: "Configurações",
                 icon: Settings,
                 submenu: [
-                  { name: "Iscas", icon: Magnet, path: null },
-                  { name: "Origens Campanhas", icon: null, path: null },
-                  { name: "Situações", icon: CircleDot, path: null },
-                  { name: "Tipos de Ações", icon: null, path: null },
+                  { name: "Iscas", icon: Magnet, path: "/iscas" },
+                  {
+                    name: "Origens Campanhas",
+                    icon: null,
+                    path: "/origensCampanhas",
+                  },
+                  { name: "Situações", icon: CircleDot, path: "/situacoes" },
+                  { name: "Tipos de Ações", icon: null, path: "/tiposAcoes" },
                 ],
               },
             ],
@@ -1014,16 +1274,17 @@ export const modulos = [
         ],
       },
       {
-        items: [{ name: "Funil", icon: Filter, path: null }],
+        items: [{ name: "Funil", icon: Filter, path: "/funil" }],
       },
       {
         items: [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
-              { name: "Gerais", icon: Files, path: null },
-              { name: "Ações", icon: CircleEllipsis, path: null },
+              { name: "Gerais", icon: Files, path: "/gerais" },
+              { name: "Ações", icon: CircleEllipsis, path: "/acoes" },
             ],
           },
         ],
@@ -1037,7 +1298,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -1067,17 +1331,18 @@ export const modulos = [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
-              { name: "Alunos", icon: User2, path: null },
+              { name: "Alunos", icon: User2, path: "/alunos" },
               {
                 name: "Frequências",
                 icon: CalendarCheck2,
                 submenu: [
-                  { name: "Alunos", icon: User2, path: null },
+                  { name: "Alunos", icon: User2, path: "/alunos" },
                   {
                     name: "Professores / Funcionários",
                     icon: UserCog2,
-                    path: null,
+                    path: "/funcionarios",
                   },
                 ],
               },
@@ -1091,11 +1356,15 @@ export const modulos = [
             name: "Processamentos",
             icon: Cpu,
             submenu: [
-              { name: "Importar Registros E/S", icon: ArrowDownUp, path: null },
+              {
+                name: "Importar Registros E/S",
+                icon: ArrowDownUp,
+                path: "/importarRegistros",
+              },
               {
                 name: "Gerar Faltas",
                 icon: BookmarkPlus,
-                path: null,
+                path: "/gerarFaltasMarcacoes",
               },
             ],
           },
@@ -1110,11 +1379,16 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
-        items: [{ name: "Criar Horário", icon: ClockPlus, path: null }],
+        items: [
+          { name: "Criar Horário", icon: ClockPlus, path: "/horarios/criar" },
+        ],
       },
       {
         items: [
@@ -1122,13 +1396,21 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Cursos", icon: BookMarked, path: null },
-              { name: "Níveis", icon: Layers3, path: null },
-              { name: "Turmas", icon: Blocks, path: null },
-              { name: "Disciplinas", icon: BookOpen, path: null },
-              { name: "Professores", icon: GraduationCap, path: null },
-              { name: "Grades de Aulas", icon: Grid2X2, path: null },
-              { name: "Horários Salvos", icon: FolderClock, path: null },
+              { name: "Cursos", icon: BookMarked, path: "/cursos" },
+              { name: "Níveis", icon: Layers3, path: "/niveis" },
+              { name: "Turmas", icon: Blocks, path: "/turmas" },
+              { name: "Disciplinas", icon: BookOpen, path: "/disciplinas" },
+              {
+                name: "Professores",
+                icon: GraduationCap,
+                path: "/professores",
+              },
+              { name: "Grades de Aulas", icon: Grid2X2, path: "/gradesAulas" },
+              {
+                name: "Horários Salvos",
+                icon: FolderClock,
+                path: "/horarios/salvos",
+              },
             ],
           },
         ],
@@ -1138,9 +1420,10 @@ export const modulos = [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
-              { name: "Gerais", icon: Files, path: null },
-              { name: "Horários", icon: FileClock, path: null },
+              { name: "Gerais", icon: Files, path: "/gerais" },
+              { name: "Horários", icon: FileClock, path: "/horarios" },
             ],
           },
         ],
@@ -1154,7 +1437,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -1163,43 +1449,59 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Produtos", icon: Package2, path: null },
-              { name: "Fornecedores", icon: Truck, path: null },
-              { name: "Grupos de Produtos", icon: Boxes, path: null },
-              { name: "Grupos de Unidades", icon: SquareDashed, path: null },
-              { name: "Unidades", icon: Ruler, path: null },
+              { name: "Produtos", icon: Package2, path: "/produtos" },
+              { name: "Fornecedores", icon: Truck, path: "/fornecedores" },
+              {
+                name: "Grupos de Produtos",
+                icon: Boxes,
+                path: "/gruposProdutos",
+              },
+              {
+                name: "Grupos de Unidades",
+                icon: SquareDashed,
+                path: "/gruposUnidades",
+              },
+              { name: "Unidades", icon: Ruler, path: "/unidades" },
             ],
           },
         ],
       },
       {
-        items: [{ name: "Solicitações", icon: ListTodo, path: null }],
+        items: [
+          { name: "Solicitações", icon: ListTodo, path: "/solicitacoes" },
+        ],
       },
       {
         items: [
           {
             name: "Cotações",
             icon: FileSearch,
+            path: "/cotacoes",
             submenu: [
-              { name: "Cadastro", icon: FilePlus, path: null },
-              { name: "Aprovação", icon: CircleCheck, path: null },
+              { name: "Cadastro", icon: FilePlus, path: "/cadastro" },
+              { name: "Aprovação", icon: CircleCheck, path: "/aprovacao" },
             ],
           },
         ],
       },
       {
-        items: [{ name: "Pedidos", icon: ShoppingCart, path: null }],
+        items: [{ name: "Pedidos", icon: ShoppingCart, path: "/pedidos" }],
       },
       {
         items: [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
-              { name: "Cotações", icon: FileSearch, path: null },
-              { name: "Etiquetas de Livros", icon: Bookmark, path: null },
-              { name: "Pedidos", icon: ShoppingCart, path: null },
-              { name: "Solicitações", icon: ListTodo, path: null },
+              { name: "Cotações", icon: FileSearch, path: "/cotacoes" },
+              {
+                name: "Etiquetas de Livros",
+                icon: Bookmark,
+                path: "/etiquetas",
+              },
+              { name: "Pedidos", icon: ShoppingCart, path: "/pedidos" },
+              { name: "Solicitações", icon: ListTodo, path: "/solicitacoes" },
             ],
           },
         ],
@@ -1213,7 +1515,10 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [{ name: "Início", icon: Home, path: "/" }],
+        items: [
+          { name: "Início", icon: Home, absolutePath: "/" },
+          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
+        ],
       },
       { type: "divider" },
       {
@@ -1222,26 +1527,38 @@ export const modulos = [
             name: "Cadastros",
             icon: Database,
             submenu: [
-              { name: "Bibliotecas", icon: Library, path: null },
-              { name: "Obras / Acervos", icon: Archive, path: null },
-              { name: "Autores", icon: UserPen, path: null },
-              { name: "Categorias", icon: ListTree, path: null },
-              { name: "Coleções", icon: Layers2, path: null },
-              { name: "Editoras", icon: Building2, path: null },
-              { name: "Estados de Conservação", icon: BadgeCheck, path: null },
-              { name: "Faixas Etárias", icon: Baby, path: null },
-              { name: "Formas de Aquisição", icon: ShoppingBag, path: null },
-              { name: "Gêneros", icon: BookType, path: null },
-              { name: "Idiomas", icon: Globe, path: null },
-              { name: "Ilustradores", icon: Palette, path: null },
-              { name: "Localizações", icon: MapPin, path: null },
+              { name: "Bibliotecas", icon: Library, path: "/bibliotecas" },
+              { name: "Obras / Acervos", icon: Archive, path: "/obras" },
+              { name: "Autores", icon: UserPen, path: "/autores" },
+              { name: "Categorias", icon: ListTree, path: "/categorias" },
+              { name: "Coleções", icon: Layers2, path: "/colecoes" },
+              { name: "Editoras", icon: Building2, path: "/editoras" },
+              {
+                name: "Estados de Conservação",
+                icon: BadgeCheck,
+                path: "/estados",
+              },
+              { name: "Faixas Etárias", icon: Baby, path: "/faixasEtarias" },
+              {
+                name: "Formas de Aquisição",
+                icon: ShoppingBag,
+                path: "/formasAquisicao",
+              },
+              { name: "Gêneros", icon: BookType, path: "/generos" },
+              { name: "Idiomas", icon: Globe, path: "/idiomas" },
+              { name: "Ilustradores", icon: Palette, path: "/ilustradores" },
+              { name: "Localizações", icon: MapPin, path: "/localizações" },
               {
                 name: "Regras de Empréstimos",
                 icon: ClipboardCheck,
-                path: null,
+                path: "/regrasEmprestimos",
               },
-              { name: "Tipos de Acervo", icon: FolderTree, path: null },
-              { name: "Tradutores", icon: Languages, path: null },
+              {
+                name: "Tipos de Acervo",
+                icon: FolderTree,
+                path: "/tiposAcervo",
+              },
+              { name: "Tradutores", icon: Languages, path: "/tradutores" },
             ],
           },
         ],
@@ -1251,9 +1568,10 @@ export const modulos = [
           {
             name: "Empréstimos",
             icon: HandHelping,
+            path: "/emprestimos",
             submenu: [
-              { name: "Adicionar", icon: BookUp, path: null },
-              { name: "Consulta", icon: BookUser, path: null },
+              { name: "Adicionar", icon: BookUp, path: "/adicionar" },
+              { name: "Consulta", icon: BookUser, path: "/consulta" },
             ],
           },
         ],
@@ -1263,9 +1581,10 @@ export const modulos = [
           {
             name: "Movimentações",
             icon: ArrowLeftRight,
+            path: "/movimentacoes",
             submenu: [
-              { name: "Devoluções", icon: BookDown, path: null },
-              { name: "Reservas", icon: BookMarked, path: null },
+              { name: "Devoluções", icon: BookDown, path: "/devolucoes" },
+              { name: "Reservas", icon: BookMarked, path: "/reservas" },
             ],
           },
         ],
@@ -1275,12 +1594,17 @@ export const modulos = [
           {
             name: "Relatórios",
             icon: ClipboardList,
+            path: "/relatorios",
             submenu: [
-              { name: "Acervo / Exemplares", icon: Archive, path: null },
-              { name: "Empréstimos", icon: HandHelping, path: null },
-              { name: "Devoluções", icon: BookDown, path: null },
-              { name: "Reservas", icon: BookMarked, path: null },
-              { name: "Etiquetas de Exemplares", icon: Tags, path: null },
+              { name: "Acervo / Exemplares", icon: Archive, path: "/acervo" },
+              { name: "Empréstimos", icon: HandHelping, path: "/emprestimos" },
+              { name: "Devoluções", icon: BookDown, path: "/devolucoes" },
+              { name: "Reservas", icon: BookMarked, path: "/reservas" },
+              {
+                name: "Etiquetas de Exemplares",
+                icon: Tags,
+                path: "/etiquetas",
+              },
             ],
           },
         ],
@@ -1289,15 +1613,48 @@ export const modulos = [
   },
 ];
 
-// src/data/modulos.js
+function normalizePath(path = "/") {
+  if (!path || path === "/") {
+    return "/";
+  }
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  return normalizedPath.endsWith("/")
+    ? normalizedPath.slice(0, -1)
+    : normalizedPath;
+}
+
+export function resolveMenuPath(moduleId = "/", itemPaths) {
+  const paths = Array.isArray(itemPaths) ? itemPaths : [itemPaths];
+  const routeSegments = paths.filter(Boolean);
+
+  if (routeSegments.length === 0) {
+    return null;
+  }
+
+  const normalizedModuleId = normalizePath(moduleId);
+
+  if (routeSegments.length === 1 && routeSegments[0] === "/") {
+    return normalizedModuleId;
+  }
+
+  const modulePrefix = normalizedModuleId === "/" ? "" : normalizedModuleId;
+  const normalizedItemPath = routeSegments
+    .filter((path) => path !== "/")
+    .map((path) => path.replace(/^\/+|\/+$/g, ""))
+    .filter(Boolean)
+    .join("/");
+
+  return normalizePath(`${modulePrefix}/${normalizedItemPath}`);
+}
+
 export function getModuloByPath(pathname = "/") {
   if (!pathname || pathname === "/") {
     return modulos.find((modulo) => modulo.id === "/") ?? modulos[0];
   }
 
-  const normalizedPath = pathname.endsWith("/")
-    ? pathname.slice(0, -1)
-    : pathname;
+  const normalizedPath = normalizePath(pathname);
 
   return (
     modulos

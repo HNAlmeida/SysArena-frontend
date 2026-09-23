@@ -9,7 +9,7 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
-import { modulos } from "../data/modulos";
+import { modulos, resolveMenuPath } from "../data/modulos";
 import {
   buildMenuAccessKey,
   incrementMenuAccessCount,
@@ -41,28 +41,48 @@ function getStaticAccessCount(item) {
   );
 }
 
-function collectMenuItems(items, modulo, parentNames = [], collected = []) {
+function collectMenuItems(
+  items,
+  modulo,
+  parentNames = [],
+  parentRoutePath = [],
+  collected = [],
+) {
   items?.forEach((item) => {
     if (!item || item.type === "divider") {
       return;
     }
 
     const itemPath = [...parentNames, item.name];
+    const itemRoutePath = item.absolutePath
+      ? parentRoutePath
+      : item.path
+        ? [...parentRoutePath, item.path]
+        : parentRoutePath;
     const hasSubmenu = item.submenu?.length > 0;
 
-    if (item.name !== "Início" && !hasSubmenu) {
+    if (item.name !== "Início" && !item.absolutePath && !hasSubmenu) {
       collected.push({
         ...item,
         menuItemLabel: item.name,
         menuLabel: itemPath.join(" -> "),
         menuParentLabel: parentNames.join(" -> "),
+        resolvedPath: item.absolutePath
+          ? resolveMenuPath("/", item.absolutePath)
+          : resolveMenuPath(modulo.id, itemRoutePath),
         fallbackRank: collected.length,
         menuKey: buildMenuAccessKey(modulo.id, itemPath),
       });
     }
 
     if (hasSubmenu) {
-      collectMenuItems(item.submenu, modulo, itemPath, collected);
+      collectMenuItems(
+        item.submenu,
+        modulo,
+        itemPath,
+        itemRoutePath,
+        collected,
+      );
     }
   });
 
@@ -115,10 +135,10 @@ function MenuAction({ item, className = "", onAccess }) {
     </>
   );
 
-  if (item.path) {
+  if (item.resolvedPath) {
     return (
       <Link
-        to={item.path}
+        to={item.resolvedPath}
         className={className}
         onClick={handleAccess}
         title={item.menuLabel}
@@ -182,6 +202,7 @@ function MobileMegaMenu() {
       <button
         className="btn btn-circle btn-ghost after:content-none"
         popoverTarget="navbar-megamenu-mobile"
+        aria-label="Abrir menu de módulos"
       >
         <SquareMenu />
       </button>
@@ -335,7 +356,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
           accessCounts={menuAccessCounts}
           onItemAccess={handleMenuItemAccess}
         />
-        <a className="btn btn-ghost text-xl md:hidden">SysArena</a>
+        <span className="btn btn-ghost text-xl md:hidden">SysArena</span>
       </div>
       <div className="navbar-end flex gap-3 lg:flex-none">
         <button
@@ -417,16 +438,16 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
             role="menu"
           >
             <li role="menuitem">
-              <a className="justify-between">
-                Profile
+              <button type="button" className="justify-between">
+                Perfil
                 <span className="badge">New</span>
-              </a>
+              </button>
             </li>
             <li role="menuitem">
-              <a>Settings</a>
+              <button type="button">Settings</button>
             </li>
             <li role="menuitem">
-              <a>Logout</a>
+              <button type="button">Logout</button>
             </li>
           </ul>
         </div>

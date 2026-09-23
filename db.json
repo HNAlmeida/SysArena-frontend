@@ -1,0 +1,125 @@
+{
+  "clientes": [
+    {
+      "id": 1,
+      "nome": "James S. Jackson",
+      "genero": "masculino",
+      "email": "james.jack@mail.com",
+      "mobile": "845-346-8004",
+      "compras": 24,
+      "recebido": 405,
+      "verificado": true,
+      "dataAdesao": "29 Mar 2024"
+    },
+    {
+      "id": 2,
+      "nome": "Nancy J. Schlueter",
+      "genero": "feminino",
+      "email": "nancy.schlueter@mail.com",
+      "mobile": "703-776-8514",
+      "compras": 21,
+      "recebido": 630,
+      "verificado": true,
+      "dataAdesao": "29 Abr 2024"
+    },
+    {
+      "id": 3,
+      "nome": "Anthony J. Lew",
+      "genero": "masculino",
+      "email": "anthony_lew@mail.com",
+      "mobile": "864-215-2686",
+      "compras": 68,
+      "recebido": 1241,
+      "verificado": false,
+      "dataAdesao": "29 Nov 2023"
+    },
+    {
+      "id": 4,
+      "nome": "Amanda M. Kyle",
+      "genero": "feminino",
+      "email": "amanda_kyle@mail.com",
+      "mobile": "253-565-3114",
+      "compras": 43,
+      "recebido": 648,
+      "verificado": true,
+      "dataAdesao": "29 Jan 2024"
+    },
+    {
+      "id": 5,
+      "nome": "Christine P. Parker",
+      "genero": "feminino",
+      "email": "christine.parker@mail.com",
+      "mobile": "910-508-2946",
+      "compras": 36,
+      "recebido": 740,
+      "verificado": false,
+      "dataAdesao": "29 Mai 2023"
+    },
+    {
+      "id": 6,
+      "nome": "Crystal P. Deberry",
+      "genero": "feminino",
+      "email": "crystal_deberry@mail.com",
+      "mobile": "520-398-7428",
+      "compras": 49,
+      "recebido": 354,
+      "verificado": true,
+      "dataAdesao": "29 Jun 2023"
+    },
+    {
+      "id": 7,
+      "nome": "Herman K. Byard",
+      "genero": "masculino",
+      "email": "herman_byard@mail.com",
+      "mobile": "248-376-5482",
+      "compras": 47,
+      "recebido": 358,
+      "verificado": true,
+      "dataAdesao": "29 Jul 2023"
+    },
+    {
+      "id": 8,
+      "nome": "Patricia T. Gandy",
+      "genero": "feminino",
+      "email": "pat.gandy@mail.com",
+      "mobile": "707-237-9941",
+      "compras": 78,
+      "recebido": 1547,
+      "verificado": true,
+      "dataAdesao": "29 Dez 2023"
+    },
+    {
+      "id": 9,
+      "nome": "James J. Herron",
+      "genero": "masculino",
+      "email": "james@mail.com",
+      "mobile": "262-726-6322",
+      "compras": 54,
+      "recebido": 1080,
+      "verificado": true,
+      "dataAdesao": "29 Abr 2023"
+    },
+    {
+      "id": 10,
+      "nome": "Gladys J. Tudor",
+      "genero": "feminino",
+      "email": "tudor_jgladys@mail.com",
+      "mobile": "508-975-1756",
+      "compras": 48,
+      "recebido": 1280,
+      "verificado": true,
+      "dataAdesao": "29 Mar 2023"
+    },
+    {
+      "id": 11,
+      "nome": "Ghandys N. Hopkins",
+      "genero": "masculino",
+      "email": "tudor_jgladys@mail.com",
+      "mobile": "508-975-1756",
+      "compras": 48,
+      "recebido": 1280,
+      "verificado": true,
+      "dataAdesao": "29 Mar 2025"
+    }
+  ]
+}

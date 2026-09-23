@@ -1,9 +1,4 @@
-import {
-  CheckIcon,
-  ChevronRightIcon,
-  Trash2Icon,
-  TrashIcon,
-} from "lucide-react";
+import { CheckIcon, ChevronRightIcon, Trash2Icon } from "lucide-react";
 import { useNavigate } from "react-router";
 
 function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
@@ -33,12 +28,14 @@ function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
             <button
               onClick={() => onSeeDetailsClick(task)}
               className="btn join-item flex-none btn-outline btn-soft"
+              aria-label={`Ver detalhes de ${task.title}`}
             >
               <ChevronRightIcon />
             </button>
             <button
               onClick={() => onDeleteTaskClick(task.id)}
               className="btn join-item flex-none btn-soft btn-error"
+              aria-label={`Excluir ${task.title}`}
             >
               <Trash2Icon />
             </button>

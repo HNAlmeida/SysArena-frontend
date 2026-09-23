@@ -8,6 +8,17 @@ import Dashboard from "../pages/Dashboard";
 import { Outlet, useLocation } from "react-router";
 import { Footer } from "./Footer";
 import { getModuloByPath } from "../data/modulos";
+import { v4 as uuidv4 } from "uuid";
+
+const sectionKeys = new WeakMap();
+
+function getSectionKey(section) {
+  if (!sectionKeys.has(section)) {
+    sectionKeys.set(section, uuidv4());
+  }
+
+  return sectionKeys.get(section);
+}
 
 export default function DrawerSidebarDaisy() {
   const location = useLocation();
@@ -45,7 +56,7 @@ export default function DrawerSidebarDaisy() {
       />
 
       {/* CONTEÚDO */}
-      <div className="drawer-content flex min-h-screen flex-col bg-base-300/50 transition-all duration-300">
+      <div className="drawer-content flex min-h-screen flex-col bg-base-300/50 transition-[margin,width] duration-300">
         {/* NAVBAR */}
         <Navbar
           collapsed={collapsed}
@@ -73,7 +84,7 @@ export default function DrawerSidebarDaisy() {
         />
 
         <aside
-          className={`flex h-screen flex-col items-center space-y-1.5 border-r border-base-300 bg-base-300 transition-all duration-300 ${sidebarWidth}`}
+          className={`flex h-screen flex-col items-center space-y-1.5 border-r border-base-300 bg-base-300 transition-[width] duration-300 ${sidebarWidth}`}
           role="navigation"
           aria-label="Main navigation"
         >
@@ -94,9 +105,9 @@ export default function DrawerSidebarDaisy() {
             className={`flex w-full flex-1 flex-col overflow-y-auto ${navScrollClass}`}
             id="d-menus-sidebar"
           >
-            {moduloAtual.menus?.map((section, idx) => (
+            {moduloAtual.menus?.map((section) => (
               <SidebarSection
-                key={section.title?.sm ?? idx}
+                key={getSectionKey(section)}
                 collapsed={collapsed}
                 section={section}
                 depth={0}
