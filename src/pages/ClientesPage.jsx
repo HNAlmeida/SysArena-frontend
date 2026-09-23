@@ -206,8 +206,10 @@ function ClientesPage() {
   const [clienteParaExcluir, setClienteParaExcluir] = useState(null);
 
   const buscaNormalizada = busca.trim();
-  const buscaParaConsulta = buscaNormalizada.length > 1 ? buscaNormalizada : "";
-  const buscaDebounced = useDebounce(buscaParaConsulta, 400);
+  const buscaEhId = /^\d+$/.test(buscaNormalizada);
+  const buscaParaConsulta =
+    buscaEhId || buscaNormalizada.length > 1 ? buscaNormalizada : "";
+  const buscaDebounced = useDebounce(buscaParaConsulta, 350);
 
   const { clientes, total, carregando, erro, excluir } = useClientes({
     pagina,

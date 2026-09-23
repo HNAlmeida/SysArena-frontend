@@ -1,3 +1,4 @@
+import { criarParamsClientes } from "../adapters/clienteQueryAdapter";
 import { api } from "../client";
 import { endpoints } from "../endpoints";
 import { normalizarLista } from "../helpers/pagination";
@@ -11,12 +12,12 @@ export const clienteService = {
   ) {
     const response = await api.get(endpoint, {
       ...config,
-      params: {
-        _page: pagina,
-        _per_page: porPagina,
-        "nome:contains": busca || undefined,
-        verificado: status === "S" ? true : status === "N" ? false : undefined,
-      },
+      params: criarParamsClientes({
+        pagina,
+        porPagina,
+        busca,
+        status,
+      }),
     });
 
     return normalizarLista(response);
