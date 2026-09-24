@@ -32,7 +32,7 @@ function SidebarSection({ section, collapsed = false, depth = 0, moduleId }) {
         {title && (
           <li>
             <h2
-              className={`menu-title pb-1 text-base-content/50 ${collapsed ? "px-0 text-center text-xs" : "px-2 text-left"}`}
+              className={`menu-title pb-1 text-base-content/60 ${collapsed ? "px-0 text-center text-xs" : "px-2 text-left"}`}
             >
               {title}
             </h2>

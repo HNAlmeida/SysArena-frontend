@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "api": "json-server db.json --port 3001",
+    "dev:all": "concurrently \"npm run api\" \"npm run dev\"",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write ."
@@ -29,6 +31,7 @@
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.5",
     "baseline-browser-mapping": "^2.11.10",
+    "concurrently": "^10.0.5",
     "daisyui": "^5.7.9",
     "eslint": "^10.8.0",
     "eslint-plugin-react-hooks": "^7.1.1",
