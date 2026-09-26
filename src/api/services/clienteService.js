@@ -7,7 +7,14 @@ const endpoint = endpoints.clientes;
 
 export const clienteService = {
   async listar(
-    { pagina = 1, porPagina = 10, busca = "", status = "" } = {},
+    {
+      pagina = 1,
+      porPagina = 10,
+      busca = "",
+      status = "",
+      ordenarPor = "nome",
+      direcao = "asc",
+    } = {},
     config = {},
   ) {
     const response = await api.get(endpoint, {
@@ -17,6 +24,8 @@ export const clienteService = {
         porPagina,
         busca,
         status,
+        ordenarPor,
+        direcao,
       }),
     });
 

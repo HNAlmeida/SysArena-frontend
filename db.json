@@ -2,6 +2,7 @@
   "clientes": [
     {
       "id": 1,
+      "idOrdenacao": 1,
       "nome": "James S. Jackson",
       "genero": "masculino",
       "email": "james.jack@mail.com",
@@ -9,10 +10,11 @@
       "compras": 24,
       "recebido": 405,
       "verificado": true,
-      "dataAdesao": "29 Mar 2024"
+      "dataAdesao": "2024-03-29"
     },
     {
       "id": 2,
+      "idOrdenacao": 2,
       "nome": "Nancy J. Schlueter",
       "genero": "feminino",
       "email": "nancy.schlueter@mail.com",
@@ -20,10 +22,11 @@
       "compras": 21,
       "recebido": 630,
       "verificado": true,
-      "dataAdesao": "29 Abr 2024"
+      "dataAdesao": "2024-04-29"
     },
     {
       "id": 3,
+      "idOrdenacao": 3,
       "nome": "Anthony J. Lew",
       "genero": "masculino",
       "email": "anthony_lew@mail.com",
@@ -31,10 +34,11 @@
       "compras": 68,
       "recebido": 1241,
       "verificado": false,
-      "dataAdesao": "29 Nov 2023"
+      "dataAdesao": "2023-11-29"
     },
     {
       "id": 4,
+      "idOrdenacao": 4,
       "nome": "Amanda M. Kyle",
       "genero": "feminino",
       "email": "amanda_kyle@mail.com",
@@ -42,10 +46,11 @@
       "compras": 43,
       "recebido": 648,
       "verificado": true,
-      "dataAdesao": "29 Jan 2024"
+      "dataAdesao": "2024-01-29"
     },
     {
       "id": 5,
+      "idOrdenacao": 5,
       "nome": "Christine P. Parker",
       "genero": "feminino",
       "email": "christine.parker@mail.com",
@@ -53,10 +58,11 @@
       "compras": 36,
       "recebido": 740,
       "verificado": false,
-      "dataAdesao": "29 Mai 2023"
+      "dataAdesao": "2023-05-29"
     },
     {
       "id": 6,
+      "idOrdenacao": 6,
       "nome": "Crystal P. Deberry",
       "genero": "feminino",
       "email": "crystal_deberry@mail.com",
@@ -64,10 +70,11 @@
       "compras": 49,
       "recebido": 354,
       "verificado": true,
-      "dataAdesao": "29 Jun 2023"
+      "dataAdesao": "2023-06-29"
     },
     {
       "id": 7,
+      "idOrdenacao": 7,
       "nome": "Herman K. Byard",
       "genero": "masculino",
       "email": "herman_byard@mail.com",
@@ -75,10 +82,11 @@
       "compras": 47,
       "recebido": 358,
       "verificado": true,
-      "dataAdesao": "29 Jul 2023"
+      "dataAdesao": "2023-07-29"
     },
     {
       "id": 8,
+      "idOrdenacao": 8,
       "nome": "Patricia T. Gandy",
       "genero": "feminino",
       "email": "pat.gandy@mail.com",
@@ -86,10 +94,11 @@
       "compras": 78,
       "recebido": 1547,
       "verificado": true,
-      "dataAdesao": "29 Dez 2023"
+      "dataAdesao": "2023-12-29"
     },
     {
       "id": 9,
+      "idOrdenacao": 9,
       "nome": "James J. Herron",
       "genero": "masculino",
       "email": "james@mail.com",
@@ -97,10 +106,11 @@
       "compras": 54,
       "recebido": 1080,
       "verificado": true,
-      "dataAdesao": "29 Abr 2023"
+      "dataAdesao": "2023-04-29"
     },
     {
       "id": 10,
+      "idOrdenacao": 10,
       "nome": "Gladys J. Tudor",
       "genero": "feminino",
       "email": "tudor_jgladys@mail.com",
@@ -108,10 +118,11 @@
       "compras": 48,
       "recebido": 1280,
       "verificado": true,
-      "dataAdesao": "29 Mar 2023"
+      "dataAdesao": "2023-03-29"
     },
     {
       "id": 11,
+      "idOrdenacao": 11,
       "nome": "Ghandys N. Hopkins",
       "genero": "masculino",
       "email": "tudor_jgladys@mail.com",
@@ -119,7 +130,7 @@
       "compras": 48,
       "recebido": 1280,
       "verificado": true,
-      "dataAdesao": "29 Mar 2025"
+      "dataAdesao": "2025-03-29"
     }
   ]
 }

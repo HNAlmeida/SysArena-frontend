@@ -1,4 +1,7 @@
 import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
   BadgeCheck,
   BadgeX,
   ChevronLeft,
@@ -29,6 +32,31 @@ const moeda = new Intl.NumberFormat("pt-BR", {
   maximumFractionDigits: 0,
 });
 
+const mesesAbreviados = [
+  "Jan",
+  "Fev",
+  "Mar",
+  "Abr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Set",
+  "Out",
+  "Nov",
+  "Dez",
+];
+
+function formatarData(value) {
+  const match = String(value ?? "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+  if (!match) return value;
+
+  const [, ano, mes, dia] = match;
+
+  return `${dia} ${mesesAbreviados[Number(mes) - 1]} ${ano}`;
+}
+
 function getIniciais(nome) {
   return nome
     .split(" ")
@@ -37,6 +65,47 @@ function getIniciais(nome) {
     .map((parte) => parte[0])
     .join("")
     .toUpperCase();
+}
+
+function CabecalhoOrdenavel({
+  campo,
+  children,
+  ordenacao,
+  onOrdenar,
+  className = "",
+  buttonClassName = "",
+}) {
+  const ativo = ordenacao.campo === campo;
+  const Icone = !ativo
+    ? ArrowUpDown
+    : ordenacao.direcao === "asc"
+      ? ArrowUp
+      : ArrowDown;
+
+  return (
+    <th
+      className={className}
+      aria-sort={
+        ativo
+          ? ordenacao.direcao === "asc"
+            ? "ascending"
+            : "descending"
+          : "none"
+      }
+    >
+      <button
+        type="button"
+        className={`inline-flex w-full items-center gap-1 ${buttonClassName}`}
+        onClick={() => onOrdenar(campo)}
+      >
+        {children}
+        <Icone
+          aria-hidden="true"
+          className={`size-3.5 ${ativo ? "text-primary" : "opacity-50"}`}
+        />
+      </button>
+    </th>
+  );
 }
 
 function ClientesToolbar({
@@ -204,6 +273,10 @@ function ClientesPage() {
   const [porPagina, setPorPagina] = useState(10);
   const [selecionados, setSelecionados] = useState([]);
   const [clienteParaExcluir, setClienteParaExcluir] = useState(null);
+  const [ordenacao, setOrdenacao] = useState({
+    campo: "nome",
+    direcao: "asc",
+  });
 
   const buscaNormalizada = busca.trim();
   const buscaEhId = /^\d+$/.test(buscaNormalizada);
@@ -216,6 +289,8 @@ function ClientesPage() {
     porPagina,
     busca: buscaDebounced,
     status,
+    ordenarPor: ordenacao.campo,
+    direcao: ordenacao.direcao,
   });
 
   const totalPaginas = Math.max(1, Math.ceil(total / porPagina));
@@ -275,6 +350,15 @@ function ClientesPage() {
     setClienteParaExcluir(null);
   }
 
+  function ordenarPor(campo) {
+    setOrdenacao((atual) => ({
+      campo,
+      direcao:
+        atual.campo === campo && atual.direcao === "asc" ? "desc" : "asc",
+    }));
+    setPagina(1);
+  }
+
   return (
     <div className="space-y-6">
       <PageHeader title="Clientes" rootLabel="App" />
@@ -314,13 +398,51 @@ function ClientesPage() {
                           onChange={alternarSelecaoDaPagina}
                         />
                       </th>
-                      <th>ID</th>
-                      <th>Nome</th>
+                      <CabecalhoOrdenavel
+                        campo="id"
+                        className="text-center"
+                        buttonClassName="justify-center"
+                        ordenacao={ordenacao}
+                        onOrdenar={ordenarPor}
+                      >
+                        ID
+                      </CabecalhoOrdenavel>
+                      <CabecalhoOrdenavel
+                        campo="nome"
+                        ordenacao={ordenacao}
+                        onOrdenar={ordenarPor}
+                      >
+                        Nome
+                      </CabecalhoOrdenavel>
                       <th className="text-center">Contato</th>
-                      <th className="text-right">Compras</th>
-                      <th className="text-right">Recebido</th>
+                      <CabecalhoOrdenavel
+                        campo="compras"
+                        className="text-right"
+                        buttonClassName="justify-end"
+                        ordenacao={ordenacao}
+                        onOrdenar={ordenarPor}
+                      >
+                        Compras
+                      </CabecalhoOrdenavel>
+                      <CabecalhoOrdenavel
+                        campo="recebido"
+                        className="text-right"
+                        buttonClassName="justify-end"
+                        ordenacao={ordenacao}
+                        onOrdenar={ordenarPor}
+                      >
+                        Recebido
+                      </CabecalhoOrdenavel>
                       <th className="text-center">Verificado</th>
-                      <th className="text-center">Data de adesão</th>
+                      <CabecalhoOrdenavel
+                        campo="dataAdesao"
+                        className="text-center"
+                        buttonClassName="justify-center"
+                        ordenacao={ordenacao}
+                        onOrdenar={ordenarPor}
+                      >
+                        Data de adesão
+                      </CabecalhoOrdenavel>
                       <th className="text-center">Ações</th>
                     </tr>
                   </thead>
@@ -339,7 +461,9 @@ function ClientesPage() {
                             onChange={() => alternarSelecao(cliente.id)}
                           />
                         </th>
-                        <td className="font-medium">{cliente.id}</td>
+                        <td className="text-center font-medium">
+                          {cliente.id}
+                        </td>
                         <td>
                           <div className="flex items-center space-x-3 truncate">
                             <div className="placeholder avatar">
@@ -391,7 +515,7 @@ function ClientesPage() {
                           </div>
                         </td>
                         <td className="text-center text-sm">
-                          {cliente.dataAdesao}
+                          {formatarData(cliente.dataAdesao)}
                         </td>
                         <td className="text-center">
                           <div className="inline-flex w-fit">

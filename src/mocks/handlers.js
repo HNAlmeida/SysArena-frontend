@@ -81,6 +81,77 @@ function filterRecords(records, url) {
   });
 }
 
+const meses = {
+  jan: 0,
+  fev: 1,
+  mar: 2,
+  abr: 3,
+  mai: 4,
+  jun: 5,
+  jul: 6,
+  ago: 7,
+  set: 8,
+  out: 9,
+  nov: 10,
+  dez: 11,
+};
+
+function parseData(value) {
+  const normalizedValue = String(value ?? "");
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(normalizedValue)) {
+    return Date.parse(`${normalizedValue}T00:00:00Z`);
+  }
+
+  const [dia, mes, ano] = normalizedValue.toLowerCase().split(" ");
+  const numeroMes = meses[mes];
+
+  if (!dia || numeroMes === undefined || !ano) return Number.NaN;
+
+  return Date.UTC(Number(ano), numeroMes, Number(dia));
+}
+
+function getSortableValue(record, field) {
+  if (field === "dataAdesao") return parseData(record[field]);
+
+  return record[field];
+}
+
+function sortRecords(records, url) {
+  const jsonServerSort = url.searchParams.get("_sort");
+  const field = jsonServerSort
+    ? jsonServerSort.replace(/^-/, "")
+    : url.searchParams.get("sortBy");
+
+  if (!field) return records;
+
+  const direction =
+    jsonServerSort?.startsWith("-") ||
+    url.searchParams.get("sortOrder") === "desc"
+      ? -1
+      : 1;
+  const collator = new Intl.Collator("pt-BR", {
+    numeric: true,
+    sensitivity: "base",
+  });
+
+  return [...records].sort((leftRecord, rightRecord) => {
+    const left = getSortableValue(leftRecord, field);
+    const right = getSortableValue(rightRecord, field);
+
+    if (typeof left === "number" && typeof right === "number") {
+      if (Number.isNaN(left)) return Number.isNaN(right) ? 0 : 1;
+      if (Number.isNaN(right)) return -1;
+
+      return (left - right) * direction;
+    }
+
+    return (
+      collator.compare(String(left ?? ""), String(right ?? "")) * direction
+    );
+  });
+}
+
 function createId(records) {
   const numericIds = records
     .map((record) => Number(record.id))
@@ -96,6 +167,7 @@ function createResourceHandlers(resource) {
     http.get(path, ({ request }) => {
       const url = new URL(request.url);
       const filteredRecords = filterRecords(collections[resource], url);
+      const sortedRecords = sortRecords(filteredRecords, url);
       const page = Math.max(
         1,
         Number(
@@ -112,7 +184,7 @@ function createResourceHandlers(resource) {
       );
       const start = (page - 1) * perPage;
 
-      return HttpResponse.json(filteredRecords.slice(start, start + perPage), {
+      return HttpResponse.json(sortedRecords.slice(start, start + perPage), {
         headers: {
           "X-Total-Count": String(filteredRecords.length),
         },
