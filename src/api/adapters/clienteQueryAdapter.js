@@ -13,14 +13,27 @@ function criarWhereJsonServer(busca, status) {
   };
 }
 
-export function criarParamsClientes({ pagina, porPagina, busca, status }) {
+export function criarParamsClientes({
+  pagina,
+  porPagina,
+  busca,
+  status,
+  ordenarPor,
+  direcao,
+}) {
   if (import.meta.env.VITE_API_DRIVER === "json-server") {
     const where = criarWhereJsonServer(busca, status);
+    const campoOrdenacao = ordenarPor === "id" ? "idOrdenacao" : ordenarPor;
 
     return {
       _page: pagina,
       _per_page: porPagina,
       _where: Object.keys(where).length ? JSON.stringify(where) : undefined,
+      ...(campoOrdenacao
+        ? {
+            _sort: direcao === "desc" ? `-${campoOrdenacao}` : campoOrdenacao,
+          }
+        : {}),
     };
   }
 
@@ -30,5 +43,7 @@ export function criarParamsClientes({ pagina, porPagina, busca, status }) {
     perPage: porPagina,
     search: busca || undefined,
     verified: status === "S" ? true : status === "N" ? false : undefined,
+    sortBy: ordenarPor || undefined,
+    sortOrder: ordenarPor ? direcao : undefined,
   };
 }

@@ -6,6 +6,8 @@ export function useClientes({
   porPagina = 10,
   busca = "",
   status = "",
+  ordenarPor = "nome",
+  direcao = "asc",
 } = {}) {
   const [clientes, setClientes] = useState([]);
   const [total, setTotal] = useState(0);
@@ -28,6 +30,8 @@ export function useClientes({
             porPagina,
             busca: busca.trim(),
             status,
+            ordenarPor,
+            direcao,
           },
           {
             signal: controller.signal,
@@ -63,7 +67,7 @@ export function useClientes({
       ignore = true;
       controller.abort();
     };
-  }, [pagina, porPagina, busca, status, reload]);
+  }, [pagina, porPagina, busca, status, ordenarPor, direcao, reload]);
 
   const recarregar = useCallback(() => {
     setReload((valor) => valor + 1);
