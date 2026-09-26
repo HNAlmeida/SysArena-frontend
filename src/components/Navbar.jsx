@@ -398,7 +398,7 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
             tabIndex={0}
             role="button"
             className="btn btn-circle btn-ghost"
-            aria-label="Carrinho de compras"
+            aria-label="Carrinho de compras (8 itens)"
           >
             <div className="indicator">
               <ShoppingCart />
