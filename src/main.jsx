@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import ClientesPage from "./pages/ClientesPage.jsx";
 import { modulos } from "./data/modulos.js";
 import { LoginPlaceholder, RouteErrorPage } from "./pages/RouteErrorPage.jsx";
+import { isMockingEnabled } from "./config/environment.js";
 
 const moduleRoutes = modulos
   .filter((modulo) => modulo.id !== "/")
@@ -56,8 +57,30 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
-);
+async function enableApiMocking() {
+  if (!isMockingEnabled) return;
+
+  const { worker } = await import("./mocks/browser.js");
+
+  await worker.start({
+    onUnhandledRequest(request, print) {
+      const url = new URL(request.url);
+
+      if (url.pathname.startsWith("/api/")) {
+        print.warning();
+      }
+    },
+  });
+}
+
+async function bootstrap() {
+  await enableApiMocking();
+
+  createRoot(document.getElementById("root")).render(
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>,
+  );
+}
+
+bootstrap();

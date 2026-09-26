@@ -10,7 +10,7 @@ const reactRefreshConfig =
   reactRefresh.reactRefresh?.configs?.vite;
 
 export default defineConfig([
-  globalIgnores(["dist"]),
+  globalIgnores(["dist", "public/mockServiceWorker.js"]),
   {
     files: ["**/*.{js,jsx}"],
     extends: [

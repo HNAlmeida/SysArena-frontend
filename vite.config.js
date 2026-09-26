@@ -9,5 +9,12 @@ export default defineConfig({
     watch: {
       ignored: ["**/db.json", "**/db - backup.json"],
     },
+    proxy: {
+      "/api": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
 });
