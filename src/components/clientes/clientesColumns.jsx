@@ -8,7 +8,6 @@ import {
   Trash,
 } from "lucide-react";
 import { Link } from "react-router";
-import { IndeterminateCheckbox } from "../ui/data-table/IndeterminateCheckbox";
 
 const moeda = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -53,28 +52,6 @@ function getIniciais(nome) {
 
 export function criarColunasClientes({ onExcluir }) {
   return [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <IndeterminateCheckbox
-          aria-label="Selecionar todos os clientes da página"
-          className="checkbox checkbox-sm"
-          checked={table.getIsAllPageRowsSelected()}
-          indeterminate={table.getIsSomePageRowsSelected()}
-          onChange={table.getToggleAllPageRowsSelectedHandler()}
-        />
-      ),
-      cell: ({ row }) => (
-        <IndeterminateCheckbox
-          aria-label={`Selecionar ${row.original.nome}`}
-          className="checkbox checkbox-sm"
-          checked={row.getIsSelected()}
-          indeterminate={row.getIsSomeSelected()}
-          onChange={row.getToggleSelectedHandler()}
-        />
-      ),
-      enableSorting: false,
-    },
     {
       accessorKey: "id",
       header: "ID",

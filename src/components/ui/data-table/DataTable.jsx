@@ -1,4 +1,5 @@
 import { CircleX, Search } from "lucide-react";
+import { useMemo } from "react";
 import {
   columnFilteringFeature,
   createFilteredRowModel,
@@ -13,6 +14,7 @@ import {
 } from "@tanstack/react-table";
 import { DataTablePagination } from "./DataTablePagination";
 import { DataTableSortableHeader } from "./DataTableSortableHeader";
+import { IndeterminateCheckbox } from "./IndeterminateCheckbox";
 
 const features = tableFeatures({
   columnFilteringFeature,
@@ -57,6 +59,7 @@ export function DataTable({
 
   // Comportamento da tabela
   paginated = true,
+  selectable = false,
   manualPagination = false,
   manualSorting = false,
   manualFiltering = false,
@@ -86,6 +89,38 @@ export function DataTable({
   className = "",
   tableClassName = "",
 }) {
+  const tableColumns = useMemo(() => {
+    if (!selectable) return columns;
+
+    return [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <IndeterminateCheckbox
+            aria-label="Selecionar todas as linhas da página"
+            className="checkbox checkbox-sm"
+            checked={table.getIsAllPageRowsSelected()}
+            indeterminate={table.getIsSomePageRowsSelected()}
+            onChange={table.getToggleAllPageRowsSelectedHandler()}
+          />
+        ),
+        cell: ({ row }) => (
+          <IndeterminateCheckbox
+            aria-label={`Selecionar linha ${row.index + 1}`}
+            className="checkbox checkbox-sm"
+            checked={row.getIsSelected()}
+            disabled={!row.getCanSelect()}
+            indeterminate={row.getIsSomeSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
+        enableGlobalFilter: false,
+        enableSorting: false,
+      },
+      ...columns,
+    ];
+  }, [columns, selectable]);
+
   const controlledState = {
     ...(pagination ? { pagination } : {}),
     ...(sorting ? { sorting } : {}),
@@ -97,7 +132,7 @@ export function DataTable({
   const table = useTable(
     {
       features,
-      columns,
+      columns: tableColumns,
       data,
       ...(hasControlledState ? { state: controlledState } : {}),
       ...(rowCount === undefined ? {} : { rowCount }),
@@ -109,6 +144,7 @@ export function DataTable({
       manualFiltering,
       manualPagination: manualPagination || !paginated,
       manualSorting,
+      enableRowSelection: selectable,
       enableMultiSort: false,
       enableSortingRemoval: false,
       sortDescFirst: false,

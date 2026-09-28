@@ -200,6 +200,7 @@ function ClientesPage() {
             manualFiltering
             manualPagination
             manualSorting
+            selectable
             getRowId={getClienteRowId}
             onPaginationChange={setPagination}
             onSortingChange={atualizarOrdenacao}
@@ -208,20 +209,50 @@ function ClientesPage() {
         </div>
       </div>
 
-      <ConfirmDialog
-        open={Boolean(clienteParaExcluir)}
-        title="Confirmar exclusão"
-        message={
-          <>
+      <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <div className="flex items-center justify-between text-lg font-medium">
+            Confirmar Exclusão
+            <form method="dialog">
+              <button
+                className="btn absolute top-2 right-2 btn-circle btn-ghost btn-sm"
+                aria-label="Fechar modal"
+                onClick={() => setClienteParaExcluir(null)}
+              >
+                <X className="size-4" />
+              </button>
+            </form>
+          </div>
+          <p className="py-4">
             Você está prestes a excluir{" "}
-            <strong>{clienteParaExcluir?.nome}</strong>. Deseja prosseguir?
-          </>
-        }
-        confirmText="Sim, exclua"
-        confirmClassName="btn-error"
-        onConfirm={confirmarExclusao}
-        onCancel={() => setClienteParaExcluir(null)}
-      />
+            <span className="font-medium">
+              {clienteParaExcluir?.nome ?? "este cliente"}
+            </span>
+            . Deseja prosseguir?
+          </p>
+          <div className="modal-action">
+            <form method="dialog">
+              <button
+                className="btn btn-sm"
+                onClick={() => setClienteParaExcluir(null)}
+              >
+                Não
+              </button>
+            </form>
+            <form method="dialog">
+              <button
+                className="btn btn-error btn-sm"
+                onClick={confirmarExclusao}
+              >
+                Sim, exclua
+              </button>
+            </form>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={() => setClienteParaExcluir(null)}>close</button>
+        </form>
+      </dialog>
     </div>
   );
 }
