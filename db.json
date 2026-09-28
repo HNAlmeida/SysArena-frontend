@@ -1,7 +1,8 @@
 {
+  "$schema": "./node_modules/json-server/schema.json",
   "clientes": [
     {
-      "id": 1,
+      "id": "1",
       "idOrdenacao": 1,
       "nome": "James S. Jackson",
       "genero": "masculino",
@@ -13,7 +14,7 @@
       "dataAdesao": "2024-03-29"
     },
     {
-      "id": 2,
+      "id": "2",
       "idOrdenacao": 2,
       "nome": "Nancy J. Schlueter",
       "genero": "feminino",
@@ -25,7 +26,7 @@
       "dataAdesao": "2024-04-29"
     },
     {
-      "id": 3,
+      "id": "3",
       "idOrdenacao": 3,
       "nome": "Anthony J. Lew",
       "genero": "masculino",
@@ -37,7 +38,7 @@
       "dataAdesao": "2023-11-29"
     },
     {
-      "id": 4,
+      "id": "4",
       "idOrdenacao": 4,
       "nome": "Amanda M. Kyle",
       "genero": "feminino",
@@ -49,7 +50,7 @@
       "dataAdesao": "2024-01-29"
     },
     {
-      "id": 5,
+      "id": "5",
       "idOrdenacao": 5,
       "nome": "Christine P. Parker",
       "genero": "feminino",
@@ -61,7 +62,7 @@
       "dataAdesao": "2023-05-29"
     },
     {
-      "id": 6,
+      "id": "6",
       "idOrdenacao": 6,
       "nome": "Crystal P. Deberry",
       "genero": "feminino",
@@ -73,7 +74,7 @@
       "dataAdesao": "2023-06-29"
     },
     {
-      "id": 7,
+      "id": "7",
       "idOrdenacao": 7,
       "nome": "Herman K. Byard",
       "genero": "masculino",
@@ -85,7 +86,7 @@
       "dataAdesao": "2023-07-29"
     },
     {
-      "id": 8,
+      "id": "8",
       "idOrdenacao": 8,
       "nome": "Patricia T. Gandy",
       "genero": "feminino",
@@ -97,7 +98,7 @@
       "dataAdesao": "2023-12-29"
     },
     {
-      "id": 9,
+      "id": "9",
       "idOrdenacao": 9,
       "nome": "James J. Herron",
       "genero": "masculino",
@@ -109,7 +110,7 @@
       "dataAdesao": "2023-04-29"
     },
     {
-      "id": 10,
+      "id": "10",
       "idOrdenacao": 10,
       "nome": "Gladys J. Tudor",
       "genero": "feminino",
@@ -121,7 +122,7 @@
       "dataAdesao": "2023-03-29"
     },
     {
-      "id": 11,
+      "id": "11",
       "idOrdenacao": 11,
       "nome": "Ghandys N. Hopkins",
       "genero": "masculino",
