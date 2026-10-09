@@ -1,8 +1,12 @@
 import {
+  BadgeX,
   CopyPlus,
+  CreditCard,
   DownloadCloud,
   Plus,
+  Radio,
   Settings2,
+  User2,
   Wand,
   X,
 } from "lucide-react";
@@ -168,8 +172,46 @@ function ClientesPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto w-full max-w-360 space-y-6">
       <PageHeader title="Clientes" rootLabel="App" />
+
+      <div className="stats w-full stats-vertical rounded-md bg-base-100 shadow-sm md:stats-horizontal">
+        <div className="stat">
+          <div className="stat-figure text-primary">
+            <User2 className="size-8" />
+          </div>
+          <div className="stat-title">Total de clientes</div>
+          <div className="stat-value text-primary">11</div>
+          <div className="stat-desc">21% mais que o mês anterior</div>
+        </div>
+
+        <div className="stat">
+          <div className="stat-figure">
+            <Radio className="size-8" />
+          </div>
+          <div className="stat-title">Clientes Ativos</div>
+          <div className="stat-value">8</div>
+          <div className="stat-desc">80% do total de clientes</div>
+        </div>
+
+        <div className="stat">
+          <div className="stat-figure">
+            <CreditCard className="size-8" />
+          </div>
+          <div className="stat-title">Clientes Pagantes</div>
+          <div className="stat-value">5</div>
+          <div className="stat-desc">+2 desde o mês anterior</div>
+        </div>
+
+        <div className="stat">
+          <div className="stat-figure text-error">
+            <BadgeX className="size-8" />
+          </div>
+          <div className="stat-title">Não verificados</div>
+          <div className="stat-value text-error">2</div>
+          <div className="stat-desc">Precisam verificar</div>
+        </div>
+      </div>
 
       <div className="card rounded-md bg-base-100 shadow-sm">
         <div className="card-body p-0">
