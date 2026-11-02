@@ -1,23 +1,19 @@
 import {
-  BadgeX,
   CopyPlus,
-  CreditCard,
   DownloadCloud,
   Plus,
-  Radio,
   Settings2,
-  User2,
   Wand,
   X,
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 import { useClientes } from "../hooks/useClientes";
-import { ConfirmDialog } from "../components/ui/ConfirmDialog";
 import { PageHeader } from "../components/PageHeader";
 import { useDebounce } from "../hooks/useDebounce";
 import { DataTable } from "../components/ui/data-table/DataTable";
 import { criarColunasClientes } from "../components/clientes/clientesColumns";
+import { ClientesStats } from "../components/clientes/ClientesStats";
 
 function ClientesStatusFilter({ status, onStatusChange }) {
   return (
@@ -120,7 +116,17 @@ function ClientesPage() {
   const buscaDebounced = useDebounce(buscaParaConsulta, 350);
   const ordenacao = sorting[0] ?? { id: "nome", desc: false };
 
-  const { clientes, total, carregando, erro, excluir } = useClientes({
+  const {
+    clientes,
+    total,
+    carregando,
+    erro,
+    estatisticas,
+    carregandoEstatisticas,
+    erroEstatisticas,
+    recarregar,
+    excluir,
+  } = useClientes({
     pagina: pagination.pageIndex + 1,
     porPagina: pagination.pageSize,
     busca: buscaDebounced,
@@ -175,43 +181,12 @@ function ClientesPage() {
     <div className="mx-auto w-full max-w-360 space-y-6">
       <PageHeader title="Clientes" rootLabel="App" />
 
-      <div className="stats w-full stats-vertical rounded-md bg-base-100 shadow-sm md:stats-horizontal">
-        <div className="stat">
-          <div className="stat-figure text-primary">
-            <User2 className="size-8" />
-          </div>
-          <div className="stat-title">Total de clientes</div>
-          <div className="stat-value text-primary">11</div>
-          <div className="stat-desc">21% mais que o mês anterior</div>
-        </div>
-
-        <div className="stat">
-          <div className="stat-figure">
-            <Radio className="size-8" />
-          </div>
-          <div className="stat-title">Clientes Ativos</div>
-          <div className="stat-value">8</div>
-          <div className="stat-desc">80% do total de clientes</div>
-        </div>
-
-        <div className="stat">
-          <div className="stat-figure">
-            <CreditCard className="size-8" />
-          </div>
-          <div className="stat-title">Clientes Pagantes</div>
-          <div className="stat-value">5</div>
-          <div className="stat-desc">+2 desde o mês anterior</div>
-        </div>
-
-        <div className="stat">
-          <div className="stat-figure text-error">
-            <BadgeX className="size-8" />
-          </div>
-          <div className="stat-title">Não verificados</div>
-          <div className="stat-value text-error">2</div>
-          <div className="stat-desc">Precisam verificar</div>
-        </div>
-      </div>
+      <ClientesStats
+        estatisticas={estatisticas}
+        carregando={carregandoEstatisticas}
+        erro={erroEstatisticas}
+        onRecarregar={recarregar}
+      />
 
       <div className="card rounded-md bg-base-100 shadow-sm">
         <div className="card-body p-0">
