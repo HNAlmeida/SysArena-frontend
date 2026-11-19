@@ -11,7 +11,6 @@ import {
   Barcode,
   Bell,
   Blocks,
-  Book,
   BookA,
   BookDown,
   Bookmark,
@@ -20,7 +19,6 @@ import {
   BookOpen,
   BookPlus,
   BookSearch,
-  BookText,
   BookType,
   BookUp,
   BookUser,
@@ -37,9 +35,7 @@ import {
   CalendarRange,
   ChartBarStacked,
   ChartColumn,
-  ChartColumnBig,
   ChartNoAxesColumn,
-  ChartNoAxesColumnIncreasing,
   CircleCheck,
   CircleDollarSign,
   CircleDot,
@@ -82,9 +78,11 @@ import {
   Languages,
   Layers2,
   Layers3,
+  LayoutList,
   Library,
   LibraryBig,
   LibrarySquare,
+  ListOrdered,
   ListTodo,
   ListTree,
   LogIn,
@@ -100,13 +98,11 @@ import {
   PiggyBank,
   Receipt,
   ReceiptText,
-  RefreshCcwDot,
   Repeat2,
   Ruler,
   ScanBarcode,
   School,
   School2,
-  Search,
   Send,
   Settings,
   ShoppingBag,
@@ -122,7 +118,6 @@ import {
   StarPlus,
   Stars,
   TableOfContents,
-  TableProperties,
   Tags,
   Target,
   Terminal,
@@ -130,7 +125,6 @@ import {
   Timer,
   ToolCase,
   Truck,
-  Undo2,
   User,
   User2,
   UserCog,
@@ -512,13 +506,14 @@ export const modulos = [
     group: "Acadêmico",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Professor", xs: "PROF" } },
       {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
+      {
+        title: { sm: "Diário de Classe", xs: "" },
         items: [
           {
             name: "Registro de aula / Frequência",
@@ -527,8 +522,20 @@ export const modulos = [
           },
           { name: "Comunicados", icon: Bell, path: "/comunicados" },
           { name: "Notas", icon: NotebookTabs, path: "/notas" },
-          { name: "Tarefas", icon: ListTodo, path: "/tarefas" },
-          { name: "Redação", icon: FilePenLine, path: "/redacao" },
+          { name: "Tarefas", icon: ListOrdered, path: "/tarefas" },
+          {
+            name: "Planejamentos",
+            icon: LayoutList,
+            path: "/planejamentos",
+            submenu: [
+              { name: "Cadastro", icon: Database, path: "/cadastro" },
+              {
+                name: "Acompanhamento",
+                icon: ListTodo,
+                path: "/acompanhamento",
+              },
+            ],
+          },
         ],
       },
       {
@@ -601,7 +608,7 @@ export const modulos = [
                 icon: Bell,
                 path: "/comunicados",
               },
-              { name: "Tarefas", icon: ListTodo, path: "/tarefas" },
+              { name: "Tarefas", icon: ListOrdered, path: "/tarefas" },
               {
                 name: "Registros de Tarefas",
                 icon: SquareCheck,
@@ -620,12 +627,12 @@ export const modulos = [
     group: "Acadêmico",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Escolas", xs: "E" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           {
@@ -714,12 +721,12 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Receber", xs: "R" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           {
@@ -1029,12 +1036,12 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Pagar", xs: "PG" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           {
@@ -1124,12 +1131,12 @@ export const modulos = [
     group: "Financeiro",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Conciliação Bancária", xs: "CB" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [{ name: "Cadastros", icon: Database, submenu: [] }],
       },
@@ -1155,12 +1162,12 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Estoque", xs: "STQ" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           {
@@ -1234,12 +1241,12 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "CRM", xs: "CRM" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           {
@@ -1298,12 +1305,12 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Acesso", xs: "AC" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           {
@@ -1379,12 +1386,12 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Horários", xs: "H" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           { name: "Criar Horário", icon: ClockPlus, path: "/horarios/criar" },
@@ -1437,12 +1444,12 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Compras", xs: "CO" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           {
@@ -1515,12 +1522,12 @@ export const modulos = [
     group: "Administrativo",
     menus: [
       {
-        items: [
-          { name: "Início", icon: Home, absolutePath: "/" },
-          { name: "Dashboard", icon: ChartNoAxesColumn, path: "/" },
-        ],
+        items: [{ name: "Início", icon: Home, absolutePath: "/" }],
       },
-      { type: "divider" },
+      { type: "divider", label: { sm: "Biblioteca", xs: "BL" } },
+      {
+        items: [{ name: "Dashboard", icon: ChartNoAxesColumn, path: "/" }],
+      },
       {
         items: [
           {

@@ -13,6 +13,9 @@ export function useClientes({
   const [total, setTotal] = useState(0);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
+  const [estatisticas, setEstatisticas] = useState(null);
+  const [carregandoEstatisticas, setCarregandoEstatisticas] = useState(true);
+  const [erroEstatisticas, setErroEstatisticas] = useState(null);
   const [reload, setReload] = useState(0);
 
   useEffect(() => {
@@ -69,23 +72,65 @@ export function useClientes({
     };
   }, [pagina, porPagina, busca, status, ordenarPor, direcao, reload]);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    let ignore = false;
+
+    async function carregarEstatisticas() {
+      setCarregandoEstatisticas(true);
+      setErroEstatisticas(null);
+
+      try {
+        const response = await clienteService.estatisticas({
+          signal: controller.signal,
+        });
+
+        if (!ignore) setEstatisticas(response);
+      } catch (error) {
+        if (
+          !ignore &&
+          error.name !== "CanceledError" &&
+          error.name !== "AbortError"
+        ) {
+          setErroEstatisticas(error);
+        }
+      } finally {
+        if (!ignore) setCarregandoEstatisticas(false);
+      }
+    }
+
+    carregarEstatisticas();
+
+    return () => {
+      ignore = true;
+      controller.abort();
+    };
+  }, [reload]);
+
   const recarregar = useCallback(() => {
     setReload((valor) => valor + 1);
   }, []);
 
-  const excluir = useCallback(async (id) => {
-    await clienteService.excluir(id);
+  const excluir = useCallback(
+    async (id) => {
+      await clienteService.excluir(id);
 
-    setClientes((clientes) => clientes.filter((c) => c.id !== id));
+      setClientes((clientes) => clientes.filter((c) => c.id !== id));
 
-    setTotal((total) => Math.max(0, total - 1));
-  }, []);
+      setTotal((total) => Math.max(0, total - 1));
+      recarregar();
+    },
+    [recarregar],
+  );
 
   return {
     clientes,
     total,
     carregando,
     erro,
+    estatisticas,
+    carregandoEstatisticas,
+    erroEstatisticas,
     recarregar,
     excluir,
   };
