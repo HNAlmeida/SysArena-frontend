@@ -79,7 +79,7 @@ function SubmenuChildren({
           ref={submenuRefs.setFloating}
           style={submenuStyles}
           {...getFloatingProps()}
-          className={`menu z-9999 -mt-1 w-48 rounded-md bg-base-300 px-0.5 pt-0.5 pb-1 shadow-md transition-opacity duration-100 ${
+          className={`menu z-9999 -mt-1 w-48 rounded-box border border-base-300 bg-base-100 px-0.5 pt-0.5 pb-1 shadow-lg transition-opacity duration-100 ${
             submenuOpen ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -96,8 +96,8 @@ function SubmenuChildren({
     <ul
       className={
         collapsed && depth < 1
-          ? "ml-0 rounded-md bg-base-100/60 py-1 pl-0.5"
-          : "ml-2.5 rounded-r-md border-l border-l-base-content/60 bg-base-200/80 pl-1.5"
+          ? "ml-0 space-y-0.5 rounded-md bg-base-200/80 py-1 pl-0.5"
+          : "ml-2.5 space-y-1 rounded-r-md bg-base-200/70 py-1.5 pl-1.5"
       }
     >
       {children}
@@ -149,7 +149,7 @@ function SubmenuItem({
   return (
     <li className={padding}>
       <details
-        className={`${depth === 1 && collapsed && "group"} flex flex-col gap-0.5 overflow-visible`}
+        className={`${depth === 1 && collapsed ? "group" : ""} flex flex-col gap-0.5 overflow-visible`}
         open={Boolean(openItems?.[menuKey])}
       >
         <summary
@@ -241,6 +241,7 @@ function LeafMenuItem({
           onMouseEnter={() => showTooltip && setTooltipOpen(true)}
           onMouseLeave={() => showTooltip && setTooltipOpen(false)}
           onClick={handleClick}
+          aria-current={isActive ? "page" : undefined}
         >
           <MenuIconAndLabel
             item={item}

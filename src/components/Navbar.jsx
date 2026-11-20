@@ -262,15 +262,7 @@ function DesktopMegaMenu({ accessCounts, onItemAccess }) {
 }
 
 function getInitialDarkMode() {
-  const storedTheme = localStorage.getItem("theme");
-  const htmlTheme = document.documentElement.dataset.theme;
-  const prefersDark = window.matchMedia?.(
-    "(prefers-color-scheme: dark)",
-  ).matches;
-
-  return (
-    (storedTheme ?? htmlTheme ?? (prefersDark ? "dim" : "winter")) === "dim"
-  );
+  return document.documentElement.dataset.theme === "arena-dark";
 }
 
 export function Navbar({ collapsed, setCollapsed, isMobile }) {
@@ -279,14 +271,18 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
     useState(readMenuAccessCounts);
 
   useEffect(() => {
-    const theme = isDarkTheme ? "dim" : "winter";
+    const theme = isDarkTheme ? "arena-dark" : "arena-light";
 
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem("theme", theme);
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {
+      // A troca continua disponível sem persistência no navegador.
+    }
   }, [isDarkTheme]);
 
-  const toggleTheme = useCallback((event) => {
-    setIsDarkTheme(event.target.checked);
+  const toggleTheme = useCallback(() => {
+    setIsDarkTheme((current) => !current);
   }, []);
 
   const toggleSidebar = useCallback(() => {
@@ -324,6 +320,8 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
   }, []);
 
   const SidebarIcon = collapsed ? PanelLeftOpen : PanelLeftClose;
+  const ThemeIcon = isDarkTheme ? Sun : Moon;
+  const themeAction = isDarkTheme ? "Ativar tema claro" : "Ativar tema escuro";
 
   return (
     <div className="navbar sticky top-0 z-10 border-b border-base-300/70 bg-base-100/95 px-4 shadow-sm backdrop-blur sm:gap-1 md:gap-2">
@@ -356,7 +354,9 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
           accessCounts={menuAccessCounts}
           onItemAccess={handleMenuItemAccess}
         />
-        <span className="btn btn-ghost text-xl md:hidden">SysArena</span>
+        <span className="text-xl font-bold tracking-tight text-primary md:hidden">
+          SysArena
+        </span>
       </div>
       <div className="navbar-end flex gap-3 lg:flex-none">
         <button
@@ -371,28 +371,21 @@ export function Navbar({ collapsed, setCollapsed, isMobile }) {
           <Search className="h-[1em] opacity-50" />
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Buscar no sistema"
             className="grow"
             aria-label="Campo de busca"
           />
         </label>
-        <label
-          className="tooltip swap tooltip-bottom h-10 swap-rotate"
-          data-tip="Alternar tema claro/escuro"
-          aria-label="Alternar tema claro/escuro"
+        <button
+          type="button"
+          className="btn btn-circle btn-ghost"
+          title={themeAction}
+          aria-label={themeAction}
+          aria-pressed={isDarkTheme}
+          onClick={toggleTheme}
         >
-          {/* this hidden checkbox controls the state */}
-          <input
-            type="checkbox"
-            checked={isDarkTheme}
-            onChange={toggleTheme}
-            aria-label={
-              isDarkTheme ? "Tema escuro ativado" : "Tema claro ativado"
-            }
-          />
-          <Sun className="swap-on" />
-          <Moon className="swap-off" />
-        </label>
+          <ThemeIcon className="size-5" aria-hidden="true" />
+        </button>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}

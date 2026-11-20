@@ -56,7 +56,7 @@ export default function DrawerSidebarDaisy() {
       />
 
       {/* CONTEÚDO */}
-      <div className="drawer-content flex min-h-screen flex-col bg-base-300/50 transition-[margin,width] duration-300">
+      <div className="app-content drawer-content flex min-h-screen min-w-0 flex-col transition-[margin,width] duration-300">
         {/* NAVBAR */}
         <Navbar
           collapsed={collapsed}
@@ -66,9 +66,9 @@ export default function DrawerSidebarDaisy() {
         />
 
         {/* CONTEÚDO PRINCIPAL */}
-        <div className="flex-1 p-5">
+        <main className="min-w-0 flex-1 p-4 sm:p-6">
           <Outlet />
-        </div>
+        </main>
 
         <Footer />
       </div>
@@ -84,16 +84,16 @@ export default function DrawerSidebarDaisy() {
         />
 
         <aside
-          className={`flex h-screen flex-col items-center space-y-1.5 border-r border-base-300 bg-base-300 transition-[width] duration-300 ${sidebarWidth}`}
+          className={`app-sidebar flex h-screen flex-col items-center space-y-1.5 border-r border-base-300 transition-[width] duration-300 ${sidebarWidth}`}
           role="navigation"
           aria-label="Main navigation"
         >
           {/* HEADER */}
           <div
-            className={`navbar sticky top-0 z-10 flex h-16 items-center border-b border-base-100/50 bg-base-300 ${collapsed && "justify-center"}`}
+            className={`navbar sticky top-0 z-10 flex h-16 items-center border-b border-base-300 ${collapsed && "justify-center"}`}
           >
             <button
-              className={`btn w-full btn-ghost text-xl font-bold ${!collapsed && "justify-start px-2.5"}`}
+              className={`btn w-full btn-ghost text-xl font-bold tracking-tight text-primary ${!collapsed && "justify-start px-2.5"}`}
               aria-label={collapsed ? "SysArena" : undefined}
             >
               {collapsed ? "SA" : "SysArena"}
@@ -102,7 +102,7 @@ export default function DrawerSidebarDaisy() {
 
           {/* MENU (com scroll vertical; overflow horizontal visível para tooltips/submenus flutuantes) */}
           <nav
-            className={`flex w-full flex-1 flex-col overflow-y-auto ${navScrollClass}`}
+            className={`flex w-full flex-1 flex-col gap-1 overflow-y-auto ${navScrollClass}`}
             id="d-menus-sidebar"
           >
             {moduloAtual.menus?.map((section) => (
@@ -117,7 +117,7 @@ export default function DrawerSidebarDaisy() {
           </nav>
 
           {/* BOTÃO DE COLAPSAR */}
-          <div className="flex w-full flex-col border-t border-base-100/50 bg-base-300">
+          <div className="flex w-full flex-col border-t border-base-300">
             <ul className="menu w-full">
               <li>
                 <button
