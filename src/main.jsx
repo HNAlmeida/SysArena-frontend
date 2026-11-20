@@ -8,6 +8,7 @@ import TaskPage from "./pages/TaskPage.jsx";
 import TasksPage from "./pages/TasksPage.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ClientesPage from "./pages/ClientesPage.jsx";
+import ClientePage from "./pages/ClientePage.jsx";
 import { modulos } from "./data/modulos.js";
 import { LoginPlaceholder, RouteErrorPage } from "./pages/RouteErrorPage.jsx";
 import { isMockingEnabled } from "./config/environment.js";
@@ -49,10 +50,14 @@ const router = createBrowserRouter([
         path: "clientes",
         element: <ClientesPage />,
       },
-      /* {
+      {
+        path: "clientes/create",
+        element: <ClientePage />,
+      },
+      {
         path: "clientes/:id",
         element: <ClientePage />,
-      }, */
+      },
     ],
   },
 ]);

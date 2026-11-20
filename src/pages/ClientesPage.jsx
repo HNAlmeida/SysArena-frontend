@@ -7,7 +7,7 @@ import {
   X,
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useClientes } from "../hooks/useClientes";
 import { PageHeader } from "../components/PageHeader";
 import { useDebounce } from "../hooks/useDebounce";
@@ -89,6 +89,7 @@ function getClienteRowId(cliente) {
 
 function ClientesPage() {
   const modalRef = useRef(null);
+  const { state } = useLocation();
   const [busca, setBusca] = useState("");
   const [status, setStatus] = useState("");
   const [pagination, setPagination] = useState({
@@ -180,6 +181,12 @@ function ClientesPage() {
   return (
     <div className="mx-auto w-full max-w-360 space-y-6">
       <PageHeader title="Clientes" rootLabel="App" />
+
+      {state?.mensagemSucesso && (
+        <div className="alert alert-soft alert-success" role="status">
+          {state.mensagemSucesso}
+        </div>
+      )}
 
       <ClientesStats
         estatisticas={estatisticas}

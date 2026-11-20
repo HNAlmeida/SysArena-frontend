@@ -65,7 +65,7 @@ export const clienteService = {
 
     return estatisticas;
   },
-  buscar: (id) => api.get(`${endpoint}/${id}`),
+  buscar: (id, config = {}) => api.get(`${endpoint}/${id}`, config),
   cadastrar: (dados) => api.post(endpoint, dados),
   editar: (id, dados) => api.put(`${endpoint}/${id}`, dados),
   excluir: (id) => api.delete(`${endpoint}/${id}`),
